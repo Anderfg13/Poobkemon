@@ -51,7 +51,7 @@ public class PoobkemonBattlePanel extends BackgroundPanel { // Cambia JPanel por
 
         // Temporizador arriba
         timerLabel = new JLabel("20", SwingConstants.CENTER);
-        timerLabel.setFont(new Font("Arial", Font.BOLD, 22));
+        timerLabel.setFont(new Font("Times New Roman", Font.BOLD, 22));
         timerLabel.setForeground(Color.WHITE); // <-- Esta línea cambia el color a blanco
         JPanel timerPanel = new JPanel(new BorderLayout());
         timerPanel.setOpaque(false);
@@ -106,7 +106,7 @@ public class PoobkemonBattlePanel extends BackgroundPanel { // Cambia JPanel por
         // Botón de pausa en el centro
         pauseButton = new JButton("II");
         pauseButton.setBounds(370, 210, 40, 40);
-        pauseButton.setFont(new Font("Arial", Font.BOLD, 18));
+        pauseButton.setFont(new Font("Times New Roman", Font.BOLD, 18));
         pauseButton.setFocusPainted(false);
         centerPanel.add(pauseButton);
 
@@ -118,7 +118,7 @@ public class PoobkemonBattlePanel extends BackgroundPanel { // Cambia JPanel por
 
         // Nombre del pokémon con el turno
         pokemonNameLabel = new JLabel(nombrePokemon1, SwingConstants.CENTER);
-        pokemonNameLabel.setFont(new Font("Arial", Font.BOLD, 22));
+        pokemonNameLabel.setFont(new Font("Times New Roman", Font.BOLD, 22));
         pokemonNameLabel.setPreferredSize(new Dimension(300, 60));
         bottomPanel.add(pokemonNameLabel, BorderLayout.WEST);
 
@@ -129,7 +129,7 @@ public class PoobkemonBattlePanel extends BackgroundPanel { // Cambia JPanel por
         itemsBtn = new JButton("Items");
         pokemonsBtn = new JButton("Pokémons");
         fleeBtn = new JButton("Flee");
-        Font btnFont = new Font("Arial", Font.BOLD, 20);
+        Font btnFont = new Font("Times New Roman", Font.BOLD, 20);
         fightBtn.setFont(btnFont);
         itemsBtn.setFont(btnFont);
         pokemonsBtn.setFont(btnFont);
@@ -342,7 +342,7 @@ public class PoobkemonBattlePanel extends BackgroundPanel { // Cambia JPanel por
             int ppActual = poobkemon.getPPDeAtaqueActual(turnoJugador1, nombreAtaque);
             ataqueBtn.setToolTipText("PP: " + ppActual);
 
-            ataqueBtn.setFont(new Font("Arial", Font.BOLD, 18));
+            ataqueBtn.setFont(new Font("Times New Roman", Font.BOLD, 18));
             ataqueBtn.setBackground(color);
             ataqueBtn.setForeground(Color.WHITE);
 
@@ -477,7 +477,7 @@ public class PoobkemonBattlePanel extends BackgroundPanel { // Cambia JPanel por
             itemBtn.setHorizontalTextPosition(SwingConstants.RIGHT);
             itemBtn.setVerticalTextPosition(SwingConstants.CENTER);
 
-            itemBtn.setFont(new Font("Arial", Font.BOLD, 18));
+            itemBtn.setFont(new Font("Times New Roman", Font.BOLD, 18));
             itemBtn.setBackground(color);
             itemBtn.setForeground(Color.WHITE);
 
