@@ -58,6 +58,26 @@ public class PoobkemonGameMode extends JPanel {
         JButton pvmButton = new GradientButton("Player vs Machine");
         pvmButton.setHorizontalAlignment(SwingConstants.CENTER);
 
+        pvmButton.addActionListener(e -> {
+            String[] tiposEntrenador = {"Defensive", "Attacking", "Changing", "Expert"};
+            int seleccion = JOptionPane.showOptionDialog(
+                this,
+                "¿Contra qué tipo de entrenador quieres luchar?",
+                "Selecciona tipo de entrenador",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                tiposEntrenador,
+                tiposEntrenador[0]
+            );
+            if (seleccion != -1) {
+                System.out.println("Tipo de entrenador seleccionado: " + tiposEntrenador[seleccion]);
+                // Aquí puedes guardar el tipo seleccionado para usarlo después
+                PoobkemonSeleccion1PPanel seleccionPanel = new PoobkemonSeleccion1PPanel(app, app.getNombreJugadorHumano());
+                app.cambiarPantallaConPanel(seleccionPanel, "selection1p");
+            }
+        });
+
         JPanel pvmRow = new JPanel(new BorderLayout());
         pvmRow.setOpaque(false);
         pvmRow.add(new JLabel(humanScaled), BorderLayout.WEST);

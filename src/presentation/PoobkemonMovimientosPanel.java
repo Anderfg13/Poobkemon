@@ -14,6 +14,7 @@ public class PoobkemonMovimientosPanel extends BackgroundPanel {
     private final Map<String, List<String>> movimientosSeleccionados1 = new HashMap<>();
     private final Map<String, List<String>> movimientosSeleccionados2 = new HashMap<>();
     private final PoobkemonGUI app;
+    private JPanel centerPanel; // Agrega esto como atributo de la clase
 
     public PoobkemonMovimientosPanel(PoobkemonGUI app, String nombreJugador1, String nombreJugador2,
                                      List<String> pokemones1, List<String> pokemones2) {
@@ -29,16 +30,13 @@ public class PoobkemonMovimientosPanel extends BackgroundPanel {
         // Título
         JLabel titulo = new JLabel("Selecciona los movimientos", SwingConstants.CENTER);
         titulo.setFont(new Font("Times New Roman", Font.BOLD, 28));
-        titulo.setForeground(Color.YELLOW);
+        titulo.setForeground(Color.BLACK);
         add(titulo, BorderLayout.NORTH);
 
         // Panel central con los pokemones de ambos jugadores
-        JPanel centerPanel = new JPanel(new GridLayout(2, 1, 0, 20));
+        centerPanel = new JPanel(new GridLayout(2, 1, 0, 20));
         centerPanel.setOpaque(false);
-
-        centerPanel.add(crearFilaPokemones(nombreJugador1, pokemones1, movimientosSeleccionados1, true));
-        centerPanel.add(crearFilaPokemones(nombreJugador2, pokemones2, movimientosSeleccionados2, false));
-
+        actualizarFilasPokemones();
         add(centerPanel, BorderLayout.CENTER);
 
         // Botón finalizar y volver
@@ -95,9 +93,9 @@ public class PoobkemonMovimientosPanel extends BackgroundPanel {
                 List<String> movimientos = dialog.getMovimientosSeleccionados();
                 if (movimientos.size() == 4) {
                     movimientosSeleccionados.put(poke, movimientos);
-                    // Refresca la vista para actualizar el borde
-                    SwingUtilities.getWindowAncestor(pokeBtn).repaint();
                 }
+                // Refresca toda la fila para actualizar el borde
+                actualizarFilasPokemones();
             });
 
             pokesPanel.add(pokeBtn);
@@ -118,5 +116,13 @@ public class PoobkemonMovimientosPanel extends BackgroundPanel {
             if (!m.trim().isEmpty() && lista.size() < 4) lista.add(m.trim());
         }
         return lista;
+    }
+
+    private void actualizarFilasPokemones() {
+        centerPanel.removeAll();
+        centerPanel.add(crearFilaPokemones(nombreJugador1, pokemones1, movimientosSeleccionados1, true));
+        centerPanel.add(crearFilaPokemones(nombreJugador2, pokemones2, movimientosSeleccionados2, false));
+        centerPanel.revalidate();
+        centerPanel.repaint();
     }
 }

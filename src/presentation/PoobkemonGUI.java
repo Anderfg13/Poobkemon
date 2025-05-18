@@ -148,6 +148,10 @@ public class PoobkemonGUI extends JFrame {
         mainPanel.add(new PoobkemonSeleccionPanel(this, nombreJugador1, nombreJugador2), "selection");
     }
 
+    public String getNombreJugadorHumano() {
+        return nombreJugador1;
+    }
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(PoobkemonGUI::new);
         

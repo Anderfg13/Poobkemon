@@ -17,7 +17,7 @@ public class SeleccionarMovimientosDialog extends JDialog {
 
     public SeleccionarMovimientosDialog(JFrame parent, String nombreJugador, String pokemon) {
         super(parent, nombreJugador + " - Seleccionar movimientos para " + pokemon, true);
-        setContentPane(new FondoPanel("mult/Fondos/Pokemon_ChooseAttacks.jpg"));
+        setContentPane(new FondoPanel("mult/Fondos/Pokemon_ChooseAttacks.jpeg"));
         setLayout(null);
         setSize(500, 500);
         setLocationRelativeTo(parent);
@@ -25,18 +25,23 @@ public class SeleccionarMovimientosDialog extends JDialog {
         // GIF del pokémon
         JLabel gifLabel = new JLabel(new ImageIcon("mult/gifs/" + pokemon + ".gif"));
         gifLabel.setBounds(30, 120, 120, 120);
+        gifLabel.setOpaque(false);
         add(gifLabel);
 
         // Panel de botones de tipo
-        JButton fisicoBtn = new JButton("Ataque Fisico");
-        JButton especialBtn = new JButton("Ataque Especial");
-        JButton statusBtn = new JButton("Status");
-        fisicoBtn.setBounds(160, 20, 120, 32);
-        especialBtn.setBounds(290, 20, 140, 32);
-        statusBtn.setBounds(440, 20, 90, 32);
-        add(fisicoBtn);
-        add(especialBtn);
-        add(statusBtn);
+        JPanel tiposPanel = new JPanel(new GridLayout(1, 3, 10, 0));
+        tiposPanel.setOpaque(false);
+        tiposPanel.setBounds(160, 20, 300, 32);
+
+        JButton fisicoBtn = new GradientButton("Fisico");
+        JButton especialBtn = new GradientButton("Especial");
+        JButton statusBtn = new GradientButton("Status");
+
+        tiposPanel.add(fisicoBtn);
+        tiposPanel.add(especialBtn);
+        tiposPanel.add(statusBtn);
+
+        add(tiposPanel);
 
         // Panel para mostrar movimientos disponibles
         movimientosPanel = new JPanel();
@@ -53,12 +58,15 @@ public class SeleccionarMovimientosDialog extends JDialog {
         seleccionadosScroll.setBounds(30, 260, 430, 60);
         add(seleccionadosScroll);
 
-        // Botones Agregar y Confirmar
-        agregarBtn = new JButton("Agregar");
-        confirmarBtn = new JButton("Confirmar");
-        agregarBtn.setBounds(120, 340, 100, 32);
-        confirmarBtn.setBounds(260, 340, 120, 32);
+        // Botones Agregar, Eliminar y Confirmar
+        agregarBtn = new GradientButton("Agregar");
+        JButton eliminarBtn = new GradientButton("Eliminar");
+        confirmarBtn = new GradientButton("Confirmar");
+        agregarBtn.setBounds(60, 340, 100, 32);
+        eliminarBtn.setBounds(190, 340, 100, 32);
+        confirmarBtn.setBounds(320, 340, 120, 32);
         add(agregarBtn);
+        add(eliminarBtn);
         add(confirmarBtn);
 
         // Acción para mostrar ataques físicos
@@ -68,13 +76,36 @@ public class SeleccionarMovimientosDialog extends JDialog {
 
         // Acción para agregar movimiento seleccionado
         agregarBtn.addActionListener(e -> {
+            boolean added = false;
             for (Component c : movimientosPanel.getComponents()) {
                 if (c instanceof JCheckBox) {
                     JCheckBox cb = (JCheckBox) c;
-                    if (cb.isSelected() && modeloLista.getSize() < 4 && !modeloLista.contains(cb.getText())) {
-                        modeloLista.addElement(cb.getText());
+                    if (cb.isSelected()) {
+                        if (modeloLista.contains(cb.getText())) {
+                            JOptionPane.showMessageDialog(this,
+                                "No puedes seleccionar el mismo ataque más de una vez.",
+                                "Ataque repetido",
+                                JOptionPane.WARNING_MESSAGE);
+                        } else if (modeloLista.getSize() < 4) {
+                            modeloLista.addElement(cb.getText());
+                            added = true;
+                        }
                     }
                 }
+            }
+            if (!added && modeloLista.getSize() >= 4) {
+                JOptionPane.showMessageDialog(this,
+                    "Solo puedes seleccionar 4 ataques.",
+                    "Límite alcanzado",
+                    JOptionPane.WARNING_MESSAGE);
+            }
+        });
+
+        // Acción para eliminar movimiento seleccionado
+        eliminarBtn.addActionListener(e -> {
+            int idx = listaSeleccionados.getSelectedIndex();
+            if (idx != -1) {
+                modeloLista.remove(idx);
             }
         });
 
@@ -84,6 +115,11 @@ public class SeleccionarMovimientosDialog extends JDialog {
                 movimientosSeleccionados.clear();
                 for (int i = 0; i < modeloLista.size(); i++) {
                     movimientosSeleccionados.add(modeloLista.get(i));
+                }
+                // Imprime en consola el nombre del pokémon y los ataques seleccionados
+                System.out.println("Movimientos seleccionados para " + pokemon + ":");
+                for (String mov : movimientosSeleccionados) {
+                    System.out.println("  - " + mov);
                 }
                 dispose();
             } else {
@@ -110,6 +146,7 @@ public class SeleccionarMovimientosDialog extends JDialog {
         private final Image fondo;
         public FondoPanel(String ruta) {
             fondo = new ImageIcon(ruta).getImage();
+            setOpaque(false);
             setOpaque(false);
         }
         @Override
