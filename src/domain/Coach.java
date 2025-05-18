@@ -114,6 +114,27 @@ public abstract class Coach {
         item.applyItemEffect(activePokemon);
     }
 
+    public void usarItem(String nombreItem) throws PoobkemonException {
+        // ...lógica de uso...
+        // Elimina el ítem del inventario:
+        items.removeIf(item -> item.getName().equals(nombreItem));
+    }
+
+    public void useItem(String nombreItem) throws PoobkemonException {
+        Item item = null;
+        for (Item it : items) {
+            if (it.getName().equals(nombreItem)) {
+                item = it;
+                break;
+            }
+        }
+        if (item == null) throw new PoobkemonException("No tienes ese ítem.");
+        // Aplica el ítem al pokémon activo de este coach
+        item.applyItemEffect(getActivePokemon());
+        // Elimina el ítem del inventario
+        items.remove(item);
+    }
+
     public int getScore() {
         return score;
     }
@@ -149,6 +170,20 @@ public abstract class Coach {
             nombres.add(item.getName());
         }
         return nombres;
+    }
+
+    public void revivirPokemon(String nombrePokemon) throws PoobkemonException {
+        for (Pokemon p : pokemons) {
+            if (p.getName().equals(nombrePokemon) && p.getPs() == 0) {
+                p.setPs(p.getTotalPs() / 2); // Revive con la mitad de la vida
+                return;
+            }
+        }
+        throw new PoobkemonException("No se pudo revivir el pokémon.");
+    }
+
+    public void eliminarItem(String nombreItem) {
+        items.removeIf(item -> item.getName().equals(nombreItem));
     }
 
     

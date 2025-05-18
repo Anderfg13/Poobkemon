@@ -41,6 +41,10 @@ public class PoobkemonBattlePanel extends BackgroundPanel { // Cambia JPanel por
         setLayout(new BorderLayout(0, 0));
         setBackground(Color.WHITE);
 
+        // Pausa la música global y reproduce la de batalla
+        app.pausarMusicaGlobal();
+        app.reproducirMusicaBatalla();
+
         // Obtén los nombres de los pokemones activos usando la GUI
         nombrePokemon1 = app.getPokemonActivoJugador1();
         nombrePokemon2 = app.getPokemonActivoJugador2();
@@ -184,7 +188,9 @@ public class PoobkemonBattlePanel extends BackgroundPanel { // Cambia JPanel por
                     "Partida terminada",
                     JOptionPane.INFORMATION_MESSAGE
                 );
-                // Redirige al menú principal
+                // Ejemplo en el lugar donde termina la batalla
+                app.pausarMusicaBatalla();
+                app.reanudarMusicaGlobal();
                 app.mostrarMenuPrincipal();
             }
         });
@@ -372,6 +378,9 @@ public class PoobkemonBattlePanel extends BackgroundPanel { // Cambia JPanel por
                             timer.cancel();
                             timer = null;
                         }
+                        // Ejemplo en el lugar donde termina la batalla
+                        app.pausarMusicaBatalla();
+                        app.reanudarMusicaGlobal();
                         app.mostrarMenuPrincipal();
                         return; // No cambiar turno si ya terminó
                     }
@@ -437,6 +446,9 @@ public class PoobkemonBattlePanel extends BackgroundPanel { // Cambia JPanel por
                             timer.cancel();
                             timer = null;
                         }
+                        // Ejemplo en el lugar donde termina la batalla
+                        app.pausarMusicaBatalla();
+                        app.reanudarMusicaGlobal();
                         app.mostrarMenuPrincipal();
                         return;
                     }
@@ -466,11 +478,69 @@ public class PoobkemonBattlePanel extends BackgroundPanel { // Cambia JPanel por
             itemBtn.setVerticalTextPosition(SwingConstants.CENTER);
 
             itemBtn.setFont(new Font("Arial", Font.BOLD, 18));
-            itemBtn.setBackground(color);         // <-- Color del jugador
-            itemBtn.setForeground(Color.WHITE);   // <-- Texto blanco
+            itemBtn.setBackground(color);
+            itemBtn.setForeground(Color.WHITE);
+
             itemBtn.addActionListener(e -> {
-                JOptionPane.showMessageDialog(this, "Has usado el ítem: " + item, "Ítem usado", JOptionPane.INFORMATION_MESSAGE);
-                mostrarPanelBotones();
+                try {
+                    if (item.equalsIgnoreCase("Revivir")) {
+                        // Obtener pokémon muertos del jugador actual
+                        java.util.List<String> pokemonsMuertos = poobkemon.getPokemonsMuertos(turnoJugador1);
+                        if (pokemonsMuertos.isEmpty()) {
+                            JOptionPane.showMessageDialog(this, "No tienes pokémon muertos para revivir.", "Revivir", JOptionPane.INFORMATION_MESSAGE);
+                            return;
+                        }
+                        // Panel de selección con imágenes y nombres
+                        JPanel panel = new JPanel(new GridLayout(0, 1, 8, 8));
+                        ButtonGroup group = new ButtonGroup();
+                        java.util.List<JRadioButton> botones = new java.util.ArrayList<>();
+                        for (String nombre : pokemonsMuertos) {
+                            ImageIcon pokeIcon = new ImageIcon("mult/gifs/" + nombre + ".gif");
+                            JRadioButton btn = new JRadioButton(nombre, pokeIcon, false);
+                            btn.setHorizontalTextPosition(SwingConstants.RIGHT);
+                            btn.setVerticalTextPosition(SwingConstants.CENTER);
+                            group.add(btn);
+                            panel.add(btn);
+                            botones.add(btn);
+                        }
+                        int result = JOptionPane.showConfirmDialog(
+                            this,
+                            panel,
+                            "Selecciona el pokémon que deseas revivir:",
+                            JOptionPane.OK_CANCEL_OPTION,
+                            JOptionPane.PLAIN_MESSAGE
+                        );
+                        if (result == JOptionPane.OK_OPTION) {
+                            for (JRadioButton btn : botones) {
+                                if (btn.isSelected()) {
+                                    String pokemonARevivir = btn.getText();
+                                    poobkemon.revivirPokemon(turnoJugador1, pokemonARevivir); // Método en el dominio
+                                    poobkemon.eliminarItem(turnoJugador1, item); // Elimina el ítem del inventario
+                                    JOptionPane.showMessageDialog(this, "Has revivido a " + pokemonARevivir, "Ítem usado", JOptionPane.INFORMATION_MESSAGE);
+                                    actualizarBarrasDeVida();
+                                    mostrarPanelBotones();
+                                    cambiarTurno();
+                                    break;
+                                }
+                            }
+                        }
+                    } else {
+                        // Ítems curativos: solo si el pokémon activo no tiene la vida completa
+                        int vidaActual = poobkemon.getActivePokemonCurrentHP(turnoJugador1);
+                        int vidaMax = poobkemon.getActivePokemonMaxHP(turnoJugador1);
+                        if (vidaActual == vidaMax) {
+                            JOptionPane.showMessageDialog(this, "El pokémon ya tiene la vida completa.", "Ítem no permitido", JOptionPane.INFORMATION_MESSAGE);
+                            return;
+                        }
+                        poobkemon.useItem(item, turnoJugador1);
+                        JOptionPane.showMessageDialog(this, "Has usado el ítem: " + item, "Ítem usado", JOptionPane.INFORMATION_MESSAGE);
+                        actualizarBarrasDeVida();
+                        mostrarPanelBotones();
+                        cambiarTurno();
+                    }
+                } catch (PoobkemonException ex) {
+                    JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
             });
             buttonsPanel.add(itemBtn);
         }

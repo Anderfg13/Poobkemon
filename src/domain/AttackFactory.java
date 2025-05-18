@@ -10,7 +10,7 @@ public class AttackFactory {
 
     static {
         // Registrar ataques físicos
-        ATTACK_REGISTRY.put("Puño meteoro", new PhysicalAttack("Puño meteoro", "Acero", 90, 4, 10, "Physical"));
+        ATTACK_REGISTRY.put("Puño meteoro", new PhysicalAttack("Puño meteoro", "Acero", 900, 6, 80, "Physical"));
         ATTACK_REGISTRY.put("Ala de acero", new PhysicalAttack("Ala de acero", "Acero", 70, 5, 90, "Physical"));
         ATTACK_REGISTRY.put("Cascada", new PhysicalAttack("Cascada", "Agua", 80, 5, 100, "Physical"));
         ATTACK_REGISTRY.put("Matillazo", new PhysicalAttack("Matillazo", "Agua", 100, 5, 90, "Physical"));

@@ -295,5 +295,41 @@ public abstract class BattleArena {
     public void cambiarPokemonActivo(boolean esJugador1, String nombrePokemon) {
         coaches[esJugador1 ? 0 : 1].cambiarPokemonActivo(nombrePokemon);
     }
+
+    public void useItem(String nombreItem, boolean esJugador1) throws PoobkemonException {
+        coaches[esJugador1 ? 0 : 1].useItem(nombreItem);
+    }
+
+    public List<String> getPokemonsMuertos(boolean esJugador1) {
+    List<String> muertos = new ArrayList<>();
+        for (Pokemon p : coaches[esJugador1 ? 0 : 1].getPokemons()) {
+            if (p.getPs() == 0) muertos.add(p.getName());
+        }
+        return muertos;
+    }
+
+    public void revivirPokemon(boolean esJugador1, String nombrePokemon) throws PoobkemonException {
+        coaches[esJugador1 ? 0 : 1].revivirPokemon(nombrePokemon);
+    }
+
+    public void setPokemonStatus(int status, boolean esJugador1) {
+        coaches[esJugador1 ? 0 : 1].getActivePokemon().setStatus(status);
+    }
+
+    public int getPokemonStatus(boolean esJugador1) {
+        return coaches[esJugador1 ? 0 : 1].getActivePokemon().getStatus();
+    }
+
+    public int getTurnStatus(boolean esJugador1) {
+        return coaches[esJugador1 ? 0 : 1].getActivePokemon().getTurnStatus();
+    }
+
+    public void setTurnStatus(int turnStatus, boolean esJugador1) {
+        coaches[esJugador1 ? 0 : 1].getActivePokemon().setTurnStatus(turnStatus);
+    }
+
+    public void eliminarItem(boolean esJugador1, String nombreItem) {
+        coaches[esJugador1 ? 0 : 1].eliminarItem(nombreItem);
+    }
 }
 

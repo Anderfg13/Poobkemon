@@ -65,8 +65,15 @@ public abstract class Attack {
             return 0;
         }
 
-        double efectividad = efectivity.efectividad(efectivity.numberType.get(this.getType()), 
-                                                   efectivity.numberType.get(defensor.getType()));
+        Integer tipoAtaque = efectivity.numberType.get(this.getType());
+        Integer tipoDefensor = efectivity.numberType.get(defensor.getType());
+        if (tipoAtaque == null) {
+            throw new RuntimeException("Tipo de ataque no reconocido: " + this.getType());
+        }
+        if (tipoDefensor == null) {
+            throw new RuntimeException("Tipo de defensor no reconocido: " + defensor.getType());
+        }
+        double efectividad = efectivity.efectividad(tipoAtaque, tipoDefensor);
         int danioBase = (int) ((atacante.getSpecialAttack() * baseDamage * efectividad) / defensor.getSpecialDefense());
         danioBase = Math.max(danioBase, 1); // Mínimo 1 de daño
 

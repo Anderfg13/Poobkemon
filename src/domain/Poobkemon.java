@@ -229,6 +229,22 @@ public class Poobkemon {
     public void cambiarPokemonActivo(boolean esJugador1, String nombrePokemon) {
         battleArenaNormal.cambiarPokemonActivo(esJugador1, nombrePokemon);
     }
+
+    public void useItem(String nombreItem, boolean esJugador1) throws PoobkemonException {
+        battleArenaNormal.useItem(nombreItem, esJugador1);
+    }
+
+    public List<String> getPokemonsMuertos(boolean esJugador1) {
+        return battleArenaNormal.getPokemonsMuertos(esJugador1);
+    }
+    
+    public void revivirPokemon(boolean esJugador1, String nombrePokemon) throws PoobkemonException {
+        battleArenaNormal.revivirPokemon(esJugador1, nombrePokemon);
+    }
+
+    public void eliminarItem(boolean esJugador1, String nombreItem) {
+        battleArenaNormal.eliminarItem(esJugador1, nombreItem);
+    }
 }
 
 

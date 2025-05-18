@@ -18,9 +18,16 @@ public class PoobkemonGUI extends JFrame {
     private String nombreJugador2 = "Jugador 2";
     private String monedaElegidaJugador1 = "Cara";
 
+    private Musica musicaGlobal;
+    private Musica musicaBatalla;
+
     public PoobkemonGUI() {
         musica = new Musica("mult/musicaIntro.wav");
         musica.reproducir();
+
+        musicaGlobal = new Musica("mult/tu_musica_global.wav");
+        musicaBatalla = new Musica("mult/Pokemon_BattleAudio.wav");
+        musicaGlobal.reproducir();
 
         // --- MENÚ ---
         JMenuBar menuBar = new JMenuBar();
@@ -190,6 +197,22 @@ public class PoobkemonGUI extends JFrame {
 
     public void mostrarMenuPrincipal() {
         cambiarPantalla("menu");
+    }
+
+    public void pausarMusicaGlobal() {
+        musicaGlobal.pausar();
+    }
+
+    public void reanudarMusicaGlobal() {
+        musicaGlobal.reproducir();
+    }
+
+    public void reproducirMusicaBatalla() {
+        musicaBatalla.reproducir();
+    }
+
+    public void pausarMusicaBatalla() {
+        musicaBatalla.pausar();
     }
 
     public static void main(String[] args) {

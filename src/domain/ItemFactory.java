@@ -38,11 +38,11 @@ public class ItemFactory {
             Item.AttributeType.HP
         ));
 
-        ITEM_REGISTRY.put("Revive", new ItemData(
-            "Revive a un Pokémon debilitado y restaura la mitad de sus PS.", 
-            180,  // PS máximos / 2 (ejemplo para Blastoise: 362 / 2 ≈ 180)
-            Item.AttributeType.REVIVE
-        ));
+        //ITEM_REGISTRY.put("Revive", new ItemData(
+            //"Revive a un Pokémon debilitado y restaura la mitad de sus PS.", 
+            //180,  // PS máximos / 2 (ejemplo para Blastoise: 362 / 2 ≈ 180)
+            //Item.AttributeType.REVIVE
+        //));
 
         //ITEM_REGISTRY.put("Ataque X", new ItemData(
         //    "Aumenta el ataque físico de un Pokémon.", 
