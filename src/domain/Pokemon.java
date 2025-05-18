@@ -51,6 +51,7 @@ public class Pokemon {
     public int getStatus() { return status; }
     public int getTurnStatus() { return turnStatus; }
 
+
     public void setSpeed(int speed) { this.speed = speed; }
     public void setEvasion(int evasion) { this.evasion = evasion; }
     public void setSpecialAttack(int specialAttack) { this.specialAttack = specialAttack; }
@@ -78,6 +79,14 @@ public class Pokemon {
 
     public List<Attack> getAtaques() {
         return ataques;
+    }
+
+    public List<String> getNombreAtaques() {
+        List<String> nombres = new ArrayList<>();
+        for (Attack ataque : ataques) {
+            nombres.add(ataque.getName());
+        }
+        return nombres;
     }
 
     //Hacerlo sin los swiches

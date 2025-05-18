@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.List;
 
 public abstract class BattleArena {
     private int currentTurn = 0;
@@ -15,6 +16,7 @@ public abstract class BattleArena {
     private long timeRemaining = MAX_TIME_SECONDS * 1000L; // Tiempo restante en milisegundos
     private long pauseStartTime; // Momento en que se pausó el juego
     protected boolean battleFinished;
+    protected boolean isPlayer1Turn;
 
 
     public BattleArena() {
@@ -254,6 +256,29 @@ public abstract class BattleArena {
         // Cambia el Pokémon activo al indicado por el jugador
         Coach currentCoach = getCurrentCoach();
         currentCoach.switchToPokemon(index);
+    }
+
+    public boolean whoStarts(){
+        this.isPlayer1Turn = rand.nextBoolean();
+        return this.isPlayer1Turn;
+    }
+
+    public List<String> getActivePokemonMoves(boolean esJugador1) {
+        // Si esJugador1 == true, coaches[0]; si esJugador1 == false, coaches[1]
+        Pokemon activo = coaches[esJugador1 ? 0 : 1].getActivePokemon();
+        return activo.getNombreAtaques();
+    }
+
+    public String getActivePokemonName(boolean esJugador1) {
+        return coaches[esJugador1 ? 0 : 1].getActivePokemon().getName();
+    }
+
+    public int getActivePokemonCurrentHP(boolean esJugador1) {
+        return coaches[esJugador1 ? 0 : 1].getActivePokemon().getPs();
+    }
+
+    public int getActivePokemonMaxHP(boolean esJugador1) {
+        return coaches[esJugador1 ? 0 : 1].getActivePokemon().getTotalPs();
     }
 }
 

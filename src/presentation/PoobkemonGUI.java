@@ -2,12 +2,14 @@ package presentation;
 
 import javax.swing.*;
 import java.awt.*;
+import domain.Poobkemon;
 
 public class PoobkemonGUI extends JFrame {
     private CardLayout layout;
     private JPanel mainPanel;
     private Musica musica;
     private JCheckBoxMenuItem musicToggle;
+    private Poobkemon poobkemonDominio = new Poobkemon();
 
     // Variables globales para los contrincantes
     private Color colorJugador1 = Color.RED;
@@ -150,6 +152,40 @@ public class PoobkemonGUI extends JFrame {
 
     public String getNombreJugadorHumano() {
         return nombreJugador1;
+    }
+
+    public Poobkemon getPoobkemonDominio() {
+        return poobkemonDominio;
+    }
+
+    public Color getColorJugador1() {
+        return colorJugador1;
+    }
+
+    public Color getColorJugador2() {
+        return colorJugador2;
+    }
+
+    public String getPokemonActivoJugador1() {
+        // Suponiendo que el dominio tiene un método así:
+        // return poobkemonDominio.getActivePokemonName(true);
+        // O si tienes acceso directo al entrenador:
+        // return poobkemonDominio.getBattleArena().getCoach(0).getActivePokemon().getName();
+        // Ajusta según tu estructura real:
+        return poobkemonDominio.getActivePokemonName(true);
+    }
+
+    public String getPokemonActivoJugador2() {
+        // Igual que arriba, pero para el segundo jugador
+        return poobkemonDominio.getActivePokemonName(false);
+    }
+
+    public String getNombreJugador1() {
+        return nombreJugador1;
+    }
+
+    public String getNombreJugador2() {
+        return nombreJugador2;
     }
 
     public static void main(String[] args) {

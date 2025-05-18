@@ -235,7 +235,20 @@ public class PoobkemonSeleccionPanel extends BackgroundPanel {
                 for (int i = 0; i < cantidad; i++) pokes2.add(pokemones.get(idx));
             });
 
-            PoobkemonMovimientosPanel movPanel = new PoobkemonMovimientosPanel(app, nombreJugador1, nombreJugador2, pokes1, pokes2);
+            // Construye las listas de ítems seleccionados para cada jugador
+            List<String> itemsSel1 = new ArrayList<>();
+            seleccionItems1.forEach((idx, cantidad) -> {
+                for (int i = 0; i < cantidad; i++) itemsSel1.add(items.get(idx));
+            });
+            List<String> itemsSel2 = new ArrayList<>();
+            seleccionItems2.forEach((idx, cantidad) -> {
+                for (int i = 0; i < cantidad; i++) itemsSel2.add(items.get(idx));
+            });
+
+            // Ahora sí, pásalas al constructor:
+            PoobkemonMovimientosPanel movPanel = new PoobkemonMovimientosPanel(
+                app, nombreJugador1, nombreJugador2, pokes1, pokes2, itemsSel1, itemsSel2
+            );
             app.cambiarPantallaConPanel(movPanel, "movimientos"); // Implementa este método para cambiar el panel central dinámicamente
         });
 

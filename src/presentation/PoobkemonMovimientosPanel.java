@@ -5,25 +5,32 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import java.util.List;
+import domain.Poobkemon;
+import domain.PoobkemonException;
 
 public class PoobkemonMovimientosPanel extends BackgroundPanel {
     private final String nombreJugador1;
     private final String nombreJugador2;
     private final List<String> pokemones1;
     private final List<String> pokemones2;
+    private final List<String> items1;
+    private final List<String> items2;
     private final Map<String, List<String>> movimientosSeleccionados1 = new HashMap<>();
     private final Map<String, List<String>> movimientosSeleccionados2 = new HashMap<>();
     private final PoobkemonGUI app;
     private JPanel centerPanel; // Agrega esto como atributo de la clase
 
     public PoobkemonMovimientosPanel(PoobkemonGUI app, String nombreJugador1, String nombreJugador2,
-                                     List<String> pokemones1, List<String> pokemones2) {
+                                     List<String> pokemones1, List<String> pokemones2,
+                                     List<String> items1, List<String> items2) {
         super("mult/Fondos/Pokemon_NormalSelection.jpg");
         this.app = app;
         this.nombreJugador1 = nombreJugador1;
         this.nombreJugador2 = nombreJugador2;
         this.pokemones1 = pokemones1;
         this.pokemones2 = pokemones2;
+        this.items1 = items1;
+        this.items2 = items2;
 
         setLayout(new BorderLayout());
 
@@ -51,7 +58,64 @@ public class PoobkemonMovimientosPanel extends BackgroundPanel {
         });
 
         finalizar.addActionListener(e -> {
-            // Aquí puedes validar que todos los pokemones tengan 4 movimientos y continuar
+            try {
+                // 1. Convertir los movimientos seleccionados a String[][]
+                String[][] pokemAttacks1 = new String[pokemones1.size()][4];
+                for (int i = 0; i < pokemones1.size(); i++) {
+                    String poke = pokemones1.get(i);
+                    List<String> movs = movimientosSeleccionados1.getOrDefault(poke, new ArrayList<>());
+                    for (int j = 0; j < 4; j++) {
+                        pokemAttacks1[i][j] = (j < movs.size()) ? movs.get(j) : "";
+                    }
+                }
+                String[][] pokemAttacks2 = new String[pokemones2.size()][4];
+                for (int i = 0; i < pokemones2.size(); i++) {
+                    String poke = pokemones2.get(i);
+                    List<String> movs = movimientosSeleccionados2.getOrDefault(poke, new ArrayList<>());
+                    for (int j = 0; j < 4; j++) {
+                        pokemAttacks2[i][j] = (j < movs.size()) ? movs.get(j) : "";
+                    }
+                }
+
+                // 2. Llamar al dominio
+                Poobkemon poobkemon = app.getPoobkemonDominio(); // Asegúrate de tener este método
+                poobkemon.startBattleNormal(
+                    nombreJugador1,
+                    nombreJugador2,
+                    new ArrayList<>(pokemones1),
+                    new ArrayList<>(pokemones2),
+                    new ArrayList<>(items1),
+                    new ArrayList<>(items2),
+                    pokemAttacks1,
+                    pokemAttacks2
+                );
+
+                // 3. Lanzamiento de moneda antes de la batalla
+                boolean jugador1Empieza = poobkemon.whoStarts();
+                String resultado = jugador1Empieza ? nombreJugador1 : nombreJugador2;
+
+                // Usa el gif de la moneda y escálalo a un tamaño más pequeño
+                ImageIcon coinGif = new ImageIcon("mult/gifs/gifCoin.gif");
+                Image img = coinGif.getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT);
+                ImageIcon smallCoinGif = new ImageIcon(img);
+
+                JLabel label = new JLabel("¡" + resultado + " inicia la batalla!", smallCoinGif, JLabel.CENTER);
+                label.setHorizontalTextPosition(JLabel.CENTER);
+                label.setVerticalTextPosition(JLabel.BOTTOM);
+                label.setFont(new Font("Arial", Font.BOLD, 18));
+                label.setHorizontalAlignment(SwingConstants.CENTER);
+
+                JOptionPane.showMessageDialog(this, label, "Lanzamiento de moneda", JOptionPane.INFORMATION_MESSAGE);
+
+                // 4. Redirigir a la pantalla de batalla
+                PoobkemonBattlePanel battlePanel = new PoobkemonBattlePanel(
+                    app.getPoobkemonDominio(), app, app.getColorJugador1(), app.getColorJugador2()
+                );
+                app.cambiarPantallaConPanel(battlePanel, "battle");
+
+            } catch (PoobkemonException ex) {
+                JOptionPane.showMessageDialog(this, "Error al iniciar la batalla: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
         });
 
         JPanel bottomPanel = new JPanel();
@@ -102,20 +166,6 @@ public class PoobkemonMovimientosPanel extends BackgroundPanel {
         }
         fila.add(pokesPanel, BorderLayout.CENTER);
         return fila;
-    }
-
-    // Simula la selección de movimientos (puedes reemplazar esto por un diálogo real)
-    private List<String> seleccionarMovimientos(String poke, List<String> actuales) {
-        // Aquí deberías mostrar un diálogo real con los movimientos disponibles para ese pokémon
-        // Por ahora, solo simula con JOptionPane y texto
-        String movs = JOptionPane.showInputDialog(null, "Escribe 4 movimientos separados por coma para " + poke, String.join(",", actuales));
-        if (movs == null) return actuales;
-        String[] arr = movs.split(",");
-        List<String> lista = new ArrayList<>();
-        for (String m : arr) {
-            if (!m.trim().isEmpty() && lista.size() < 4) lista.add(m.trim());
-        }
-        return lista;
     }
 
     private void actualizarFilasPokemones() {

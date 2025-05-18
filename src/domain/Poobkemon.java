@@ -181,6 +181,29 @@ public class Poobkemon {
             machine1Pokemon, machine2Pokemon, 
             machine1Type, machine2Type);
     }
+
+    public boolean whoStarts(){
+        // Delegar la lógica del quien empieza a la arena de batalla
+        return battleArenaNormal.whoStarts();
+    }
+
+    public List<String> getActivePokemonMoves(boolean esJugador1) {
+        // Devuelve los 4 movimientos del pokémon activo del jugador correspondiente
+        return battleArenaNormal.getActivePokemonMoves(esJugador1);
+    }
+
+    public String getActivePokemonName(boolean esJugador1) {
+        // Suponiendo que tienes una referencia a la arena de batalla
+        // y que coaches[0] es jugador1, coaches[1] es jugador2
+        return battleArenaNormal.getActivePokemonName(esJugador1);
+    }
+
+    public int getActivePokemonCurrentHP(boolean esJugador1) {
+        return battleArenaNormal.getActivePokemonCurrentHP(esJugador1);
+    }
+    public int getActivePokemonMaxHP(boolean esJugador1) {
+        return battleArenaNormal.getActivePokemonMaxHP(esJugador1);
+    }
 }
 
 
