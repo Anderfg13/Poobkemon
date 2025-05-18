@@ -188,6 +188,10 @@ public class PoobkemonGUI extends JFrame {
         return nombreJugador2;
     }
 
+    public void mostrarMenuPrincipal() {
+        cambiarPantalla("menu");
+    }
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(PoobkemonGUI::new);
         

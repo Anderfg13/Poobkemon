@@ -147,40 +147,21 @@ public abstract class BattleArena {
         return coaches;
     }
 
-    public int attack(String moveName, String itself) throws PoobkemonException {
-        Coach currentCoach = getCurrentCoach();
-        Coach opponentCoach = getOpponentCoach();
-
+    public int attack(String nombreAtaque, boolean toItself, boolean esJugador1) throws PoobkemonException {
+        Coach currentCoach = coaches[esJugador1 ? 0 : 1];
+        Coach opponentCoach = coaches[esJugador1 ? 1 : 0];
         Pokemon attacker = currentCoach.getActivePokemon();
         Pokemon defender = opponentCoach.getActivePokemon();
 
-        // Encuentra el ataque por nombre
-        Attack attack = attacker.getAtaques().stream()
-            .filter(a -> a.getName().equals(moveName))
-            .findFirst()
-            .orElse(null); // Si no encuentra el ataque, devuelve null
+        Attack attack = attacker.getAtaquePorNombre(nombreAtaque); // Implementa este método si no existe
 
-        int damage = 0;
+        if (attack == null) throw new PoobkemonException("El Pokémon no conoce este ataque.");
 
-        System.out.println("Movimientos del Pokémon atacante (" + attacker.getName() + "):");
-        for (Attack a : attacker.getAtaques()) {
-            System.out.println("- " + a.getName() + " (PP: " + a.getPowerPoint() + ")");
-        }
-        System.out.println("Intentando usar: " + moveName);
-
-        if (attack != null && attack.getPowerPoint() > 0) {
-            if ("itself".equals(itself)) {
-                // Realiza el ataque sobre sí mismo
-                damage = attacker.attack(attacker, attack);
-                nextTurn();
-            } else {
-                // Realiza el ataque sobre el oponente
-                damage = attacker.attack(defender, attack);
-            }
+        if (toItself) {
+            return attacker.attack(attacker, attack);
         } else {
-            System.out.println("No puedes usar este ataque, no tienes PP o el ataque no existe.");
+            return attacker.attack(defender, attack);
         }
-        return damage;
     }
 
 
@@ -279,6 +260,40 @@ public abstract class BattleArena {
 
     public int getActivePokemonMaxHP(boolean esJugador1) {
         return coaches[esJugador1 ? 0 : 1].getActivePokemon().getTotalPs();
+    }
+
+    public int getPPDeAtaqueActual(boolean esJugador1, String nombreAtaque) {
+        Pokemon activo = coaches[esJugador1 ? 0 : 1].getActivePokemon();
+        return activo.getPPDeAtaque(nombreAtaque);
+    }
+
+    public int getPPMaxDeAtaqueActual(boolean esJugador1, String nombreAtaque) {
+        Pokemon activo = coaches[esJugador1 ? 0 : 1].getActivePokemon();
+        return activo.getPPMaxDeAtaque(nombreAtaque);
+    }
+
+    public List<String> getItemsJugador(boolean esJugador1) {
+        return coaches[esJugador1 ? 0 : 1].getNombreItems(); // Ajusta según tu estructura
+    }
+
+    public boolean tienePokemonesVivos(boolean esJugador1) {
+        Coach coach = coaches[esJugador1 ? 0 : 1];
+        for (Pokemon p : coach.getPokemons()) {
+            if (p.getPs() > 0) return true;
+        }
+        return false;
+    }
+
+    public List<String> getPokemonsVivos(boolean esJugador1) {
+        List<String> vivos = new ArrayList<>();
+        for (Pokemon p : coaches[esJugador1 ? 0 : 1].getPokemons()) {
+            if (p.getPs() > 0) vivos.add(p.getName());
+        }
+        return vivos;
+    }
+
+    public void cambiarPokemonActivo(boolean esJugador1, String nombrePokemon) {
+        coaches[esJugador1 ? 0 : 1].cambiarPokemonActivo(nombrePokemon);
     }
 }
 

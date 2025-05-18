@@ -20,7 +20,7 @@ public class efectivity {
         numberType.put("Lucha", 9);
         numberType.put("Normal", 10);
         numberType.put("Planta", 11);
-        numberType.put("Psíquico", 12);
+        numberType.put("Psiquico", 12);
         numberType.put("Roca", 13);
         numberType.put("Siniestro", 14);
         numberType.put("Tierra", 15);

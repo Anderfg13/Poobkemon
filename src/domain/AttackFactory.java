@@ -10,7 +10,7 @@ public class AttackFactory {
 
     static {
         // Registrar ataques físicos
-        ATTACK_REGISTRY.put("Puño meteoro", new PhysicalAttack("Puño meteoro", "Acero", 90, 5, 90, "Physical"));
+        ATTACK_REGISTRY.put("Puño meteoro", new PhysicalAttack("Puño meteoro", "Acero", 90, 4, 10, "Physical"));
         ATTACK_REGISTRY.put("Ala de acero", new PhysicalAttack("Ala de acero", "Acero", 70, 5, 90, "Physical"));
         ATTACK_REGISTRY.put("Cascada", new PhysicalAttack("Cascada", "Agua", 80, 5, 100, "Physical"));
         ATTACK_REGISTRY.put("Matillazo", new PhysicalAttack("Matillazo", "Agua", 100, 5, 90, "Physical"));
@@ -58,7 +58,7 @@ public class AttackFactory {
         ATTACK_REGISTRY.put("Vozarrón", new SpecialAttack("Vozarrón", "Normal", 90, 5, 100, "Special"));
         ATTACK_REGISTRY.put("Hoja mágica", new SpecialAttack("Hoja mágica", "Planta", 60, 5, 0, "Special"));
         ATTACK_REGISTRY.put("Silbato", new SpecialAttack("Silbato", "Planta", 0, 5, 55, "Special"));
-        ATTACK_REGISTRY.put("Manto espejo", new SpecialAttack("Manto espejo", "Psiquico", 0, 5, 100, "Special"));
+        ATTACK_REGISTRY.put("Manto espejo", new SpecialAttack("Manto espejo", "Psiquico", 10, 5, 100, "Special"));
         ATTACK_REGISTRY.put("Premonición", new SpecialAttack("Premonición", "Psiquico", 120, 5, 100, "Special"));
         ATTACK_REGISTRY.put("Poder pasado", new SpecialAttack("Poder pasado", "Roca", 60, 5, 100, "Special"));
         ATTACK_REGISTRY.put("Roca afilada", new SpecialAttack("Roca afilada", "Roca", 80, 5, 90, "Special"));

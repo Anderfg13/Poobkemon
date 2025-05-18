@@ -167,4 +167,31 @@ public class Pokemon {
         }
         return daño;
     }
+
+    public int getPPDeAtaque(String nombreAtaque) {
+        for (Attack ataque : ataques) {
+            if (ataque.getName().equals(nombreAtaque)) {
+                return ataque.getPowerPoint();
+            }
+        }
+        return 0; // O lanza excepción si no lo encuentra
+    }
+
+    public int getPPMaxDeAtaque(String nombreAtaque) {
+        for (Attack ataque : ataques) {
+            if (ataque.getName().equals(nombreAtaque)) {
+                return ataque.getPowerPoint();
+            }
+        }
+        return 0;
+    }
+
+    public Attack getAtaquePorNombre(String nombreAtaque) {
+        for (Attack ataque : ataques) {
+            if (ataque.getName().equals(nombreAtaque)) {
+                return ataque;
+            }
+        }
+        return null; // O lanza una excepción si prefieres
+    }
 }

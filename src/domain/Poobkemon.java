@@ -61,10 +61,9 @@ public class Poobkemon {
         return allAttacks;
     } 
 
-    public int attack(String moveName, String itself) throws PoobkemonException {
-        // Delegar la lógica del ataque a la arena de batalla
-        return battleArenaNormal.attack(moveName, itself);
-        
+
+    public int attack(String nombreAtaque, boolean toItself, boolean esJugador1) throws PoobkemonException {
+        return battleArenaNormal.attack(nombreAtaque, toItself, esJugador1);
     }
 
     /**
@@ -203,6 +202,32 @@ public class Poobkemon {
     }
     public int getActivePokemonMaxHP(boolean esJugador1) {
         return battleArenaNormal.getActivePokemonMaxHP(esJugador1);
+    }
+
+    public int getPPDeAtaqueActual(boolean esJugador1, String nombreAtaque) {
+        return battleArenaNormal.getPPDeAtaqueActual(esJugador1, nombreAtaque);
+    }
+
+    public List<String> getItemsJugador(boolean esJugador1) {
+        return battleArenaNormal.getItemsJugador(esJugador1);
+    }
+
+    public boolean esAtaqueSobreSiMismo(String nombreAtaque) {
+        // Puedes mejorar esto usando el dominio o una propiedad del ataque
+        List<String> ataquesSelf = List.of("Curación", "Reflejo", "Danza Espada"); // Ejemplo
+        return ataquesSelf.contains(nombreAtaque);
+    }
+
+    public boolean tienePokemonesVivos(boolean esJugador1) {
+        return battleArenaNormal.tienePokemonesVivos(esJugador1);
+    }
+
+    public List<String> getPokemonsVivos(boolean esJugador1) {
+        return battleArenaNormal.getPokemonsVivos(esJugador1);
+    }
+
+    public void cambiarPokemonActivo(boolean esJugador1, String nombrePokemon) {
+        battleArenaNormal.cambiarPokemonActivo(esJugador1, nombrePokemon);
     }
 }
 

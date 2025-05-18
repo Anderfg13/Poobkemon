@@ -81,6 +81,14 @@ public abstract class Coach {
         System.out.println("El entrenador ha cambiado al Pokémon activo a: " + selected.getName());
     }
 
+    public void cambiarPokemonActivo(String nombrePokemon) {
+        for (int i = 0; i < pokemons.size(); i++) {
+            if (pokemons.get(i).getName().equals(nombrePokemon) && pokemons.get(i).getPs() > 0) {
+                activePokemonIndex = i;
+                break;
+            }
+        }
+    }
 
     public boolean areAllPokemonFainted() {
     	
@@ -135,4 +143,13 @@ public abstract class Coach {
         this.fled = true;
     }
 
+    public List<String> getNombreItems() {
+        List<String> nombres = new ArrayList<>();
+        for (Item item : items) {
+            nombres.add(item.getName());
+        }
+        return nombres;
+    }
+
+    
 }

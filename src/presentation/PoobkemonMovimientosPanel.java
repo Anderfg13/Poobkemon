@@ -108,9 +108,7 @@ public class PoobkemonMovimientosPanel extends BackgroundPanel {
                 JOptionPane.showMessageDialog(this, label, "Lanzamiento de moneda", JOptionPane.INFORMATION_MESSAGE);
 
                 // 4. Redirigir a la pantalla de batalla
-                PoobkemonBattlePanel battlePanel = new PoobkemonBattlePanel(
-                    app.getPoobkemonDominio(), app, app.getColorJugador1(), app.getColorJugador2()
-                );
+                PoobkemonBattlePanel battlePanel = new PoobkemonBattlePanel(poobkemon, app, app.getColorJugador1(), app.getColorJugador2(), jugador1Empieza);
                 app.cambiarPantallaConPanel(battlePanel, "battle");
 
             } catch (PoobkemonException ex) {
