@@ -2,6 +2,11 @@ package presentation;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import domain.Poobkemon;
+import domain.PoobkemonException;
 
 public class PoobkemonGameMode extends JPanel {
     public PoobkemonGameMode(PoobkemonGUI app, Musica musica) {
@@ -43,8 +48,76 @@ public class PoobkemonGameMode extends JPanel {
                 app.actualizarSeleccionPanel();
                 app.cambiarPantalla("selection");
             } else if (seleccion == 1) {
-                // Aquí puedes iniciar el modo Supervivencia
-                System.out.println("Modo Supervivencia seleccionado");
+                // Lanzamiento de moneda con GIF
+                String[] opcionesMoneda = {"Cara", "Sello"};
+                int resultadoMoneda = (int) (Math.random() * 2); // 0 o 1
+                String quienEmpieza = (resultadoMoneda == 0) ? app.getNombreJugador1() : app.getNombreJugador2();
+
+                // Carga el GIF de la moneda y lo escala a un tamaño menor (por ejemplo, 60x60 píxeles)
+                ImageIcon gifCoin = new ImageIcon("mult/gifs/gifCoin.gif");
+                Image img = gifCoin.getImage().getScaledInstance(60, 60, Image.SCALE_DEFAULT);
+                ImageIcon gifCoinSmall = new ImageIcon(img);
+
+                JLabel label = new JLabel(
+                    "<html>¡Lanzando la moneda!<br>Resultado: <b>" + opcionesMoneda[resultadoMoneda] +
+                    "</b><br>Empieza: <b>" + quienEmpieza + "</b></html>", gifCoinSmall, JLabel.CENTER
+                );
+                label.setHorizontalTextPosition(JLabel.CENTER);
+                label.setVerticalTextPosition(JLabel.BOTTOM);
+
+                JOptionPane.showMessageDialog(
+                    this,
+                    label,
+                    "Lanzamiento de moneda",
+                    JOptionPane.INFORMATION_MESSAGE
+                );
+                boolean jugador1Empieza = (resultadoMoneda == 0);
+
+                // 1. Obtén todos los pokémon y ataques disponibles
+                ArrayList<String> pokemonesDisponibles = new ArrayList<>(Poobkemon.getAvailablePokemon()); // ArrayList<String>
+                ArrayList<String> ataquesDisponibles = Poobkemon.getAvailableAttacks(); // ArrayList<String>
+
+                // --- JUGADOR 1 ---
+                Collections.shuffle(pokemonesDisponibles);
+                ArrayList<String> pokemonesAleatoriosJ1 = new ArrayList<>(pokemonesDisponibles.subList(0, 6));
+                String[][] ataquesPorPokemonJ1 = new String[6][4];
+                for (int i = 0; i < 6; i++) {
+                    Collections.shuffle(ataquesDisponibles);
+                    for (int j = 0; j < 4; j++) {
+                        ataquesPorPokemonJ1[i][j] = ataquesDisponibles.get(j);
+                    }
+                }
+
+                // --- JUGADOR 2 ---
+                Collections.shuffle(pokemonesDisponibles);
+                ArrayList<String> pokemonesAleatoriosJ2 = new ArrayList<>(pokemonesDisponibles.subList(0, 6));
+                String[][] ataquesPorPokemonJ2 = new String[6][4];
+                for (int i = 0; i < 6; i++) {
+                    Collections.shuffle(ataquesDisponibles);
+                    for (int j = 0; j < 4; j++) {
+                        ataquesPorPokemonJ2[i][j] = ataquesDisponibles.get(j);
+                    }
+                }
+
+                // 4. Llama a startBattleNormal en Poobkemon con los nombres de los jugadores y sin items
+                String nombreJugador1 = app.getNombreJugador1();
+                String nombreJugador2 = app.getNombreJugador2();
+                try {
+                    app.getPoobkemon().startBattleNormal(
+                        nombreJugador1, nombreJugador2,
+                        pokemonesAleatoriosJ1, pokemonesAleatoriosJ2,
+                        new ArrayList<>(), new ArrayList<>(),
+                        ataquesPorPokemonJ1, ataquesPorPokemonJ2
+                    );
+                    // Crea el panel de batalla y cámbialo
+                    PoobkemonBattlePanel battlePanel = new PoobkemonBattlePanel(
+                        app.getPoobkemon(), app,
+                        app.getColorJugador1(), app.getColorJugador2(), jugador1Empieza
+                    );
+                    app.cambiarPantallaConPanel(battlePanel, "battle");
+                } catch (PoobkemonException ex) {
+                    JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
 

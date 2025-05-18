@@ -17,7 +17,7 @@ public class PokemonFactory {
         POKEMON_REGISTRY.put("Dragonite", () -> new Pokemon("Dragonite", 5, 386, 284, 328, 403, 328, 317, "Dragon",100));
         POKEMON_REGISTRY.put("Togetic", () -> new Pokemon("Togetic", 6, 314, 196, 284, 196, 339, 295, "Hada",110));
         POKEMON_REGISTRY.put("Tyranitar", () -> new Pokemon("Tyranitar", 7, 404, 243, 317, 403, 328, 350, "Roca",85));
-        POKEMON_REGISTRY.put("Gardevoir", () -> new Pokemon("Gardevoir", 8, 340, 284, 383, 251, 361, 251, "Psíquico",105));
+        POKEMON_REGISTRY.put("Gardevoir", () -> new Pokemon("Gardevoir", 8, 340, 284, 383, 251, 361, 251, "Psiquico",105));
         POKEMON_REGISTRY.put("Snorlax", () -> new Pokemon("Snorlax", 9, 524, 174, 251, 350, 350, 251, "Normal",80));
         POKEMON_REGISTRY.put("Metagross", () -> new Pokemon("Metagross", 10, 364, 262, 317, 405, 306, 394, "Acero",90));
         POKEMON_REGISTRY.put("Machamp", () -> new Pokemon("Machamp", 12, 384, 229, 251, 394, 295, 284, "Lucha",100));

@@ -9,7 +9,7 @@ public class PoobkemonGUI extends JFrame {
     private JPanel mainPanel;
     private Musica musica;
     private JCheckBoxMenuItem musicToggle;
-    private Poobkemon poobkemonDominio = new Poobkemon();
+    private Poobkemon poobkemon;
 
     // Variables globales para los contrincantes
     private Color colorJugador1 = Color.RED;
@@ -28,6 +28,8 @@ public class PoobkemonGUI extends JFrame {
         musicaGlobal = new Musica("mult/tu_musica_global.wav");
         musicaBatalla = new Musica("mult/Pokemon_BattleAudio.wav");
         musicaGlobal.reproducir();
+
+        poobkemon = new Poobkemon();
 
         // --- MENÚ ---
         JMenuBar menuBar = new JMenuBar();
@@ -162,7 +164,7 @@ public class PoobkemonGUI extends JFrame {
     }
 
     public Poobkemon getPoobkemonDominio() {
-        return poobkemonDominio;
+        return poobkemon;
     }
 
     public Color getColorJugador1() {
@@ -179,12 +181,12 @@ public class PoobkemonGUI extends JFrame {
         // O si tienes acceso directo al entrenador:
         // return poobkemonDominio.getBattleArena().getCoach(0).getActivePokemon().getName();
         // Ajusta según tu estructura real:
-        return poobkemonDominio.getActivePokemonName(true);
+        return poobkemon.getActivePokemonName(true);
     }
 
     public String getPokemonActivoJugador2() {
         // Igual que arriba, pero para el segundo jugador
-        return poobkemonDominio.getActivePokemonName(false);
+        return poobkemon.getActivePokemonName(false);
     }
 
     public String getNombreJugador1() {
@@ -213,6 +215,10 @@ public class PoobkemonGUI extends JFrame {
 
     public void pausarMusicaBatalla() {
         musicaBatalla.pausar();
+    }
+
+    public Poobkemon getPoobkemon() {
+        return poobkemon;
     }
 
     public static void main(String[] args) {
