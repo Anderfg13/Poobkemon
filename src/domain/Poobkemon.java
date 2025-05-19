@@ -123,10 +123,7 @@ public class Poobkemon {
         battleArenaNormal.statusEffect();
     }
 
-    public void changeTurn() {
-        // Delegar el cambio de turno a la arena de batalla
-        battleArenaNormal.changeTurn();
-    }
+
 
     public void setCurrentPokemon(int index) throws PoobkemonException {
         // Delegar la lógica del cambio de Pokémon a la arena de batalla
@@ -218,8 +215,76 @@ public class Poobkemon {
         return ataquesSelf.contains(nombreAtaque);
     }
 
+    /**
+     * Procesa el turno de la máquina y devuelve un mensaje con la acción realizada.
+     * @return Mensaje describiendo la acción realizada por la máquina
+     */
+    public String processMachineTurn() {
+        if (battleArenaNormal == null) {
+            return "No hay una batalla en curso";
+        }
+        
+        try {
+            // Obtener el entrenador actual
+            Coach currentCoach = battleArenaNormal.getCurrentCoach();
+            
+            // Verificar si es una máquina
+            if (currentCoach instanceof Machine) {
+                Machine machine = (Machine) currentCoach;
+                
+                // Verificar si el Pokémon activo está debilitado
+                if (machine.getActivePokemon().getPs() <= 0) {
+                    // Seleccionar mejor Pokémon
+                    int bestPokemonIndex = machine.selectBestPokemon();
+                    machine.switchPokemon(bestPokemonIndex);
+                    return "La máquina cambió a " + machine.getActivePokemon().getName();
+                } else {
+                    // Seleccionar y usar un movimiento
+                    int moveIndex = machine.selectMove();
+                    String moveName = machine.getActivePokemon().getAtaques().get(moveIndex).getName();
+                    
+                    // Ejecutar el ataque
+                    battleArenaNormal.attack(moveName, false, 
+                        battleArenaNormal.getCurrentTurn() == 0);
+                    
+                    return "La máquina usó " + moveName;
+                }
+            } else {
+                return "No es el turno de la máquina";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error en el turno de la máquina: " + e.getMessage();
+        }
+    }
+
+    /**
+     * Cambia el turno al siguiente jugador.
+     */
+    public void changeTurn() {
+        if (battleArenaNormal != null) {
+            battleArenaNormal.changeTurn();
+        }
+    }
+
+    /**
+     * Verifica si el jugador indicado tiene Pokémon vivos.
+     * @param esJugador1 true para el jugador 1, false para el jugador 2
+     * @return true si tiene al menos un Pokémon vivo
+     */
     public boolean tienePokemonesVivos(boolean esJugador1) {
-        return battleArenaNormal.tienePokemonesVivos(esJugador1);
+        if (battleArenaNormal == null) return false;
+        
+        Coach coach = esJugador1 ? 
+            battleArenaNormal.getCoach(0) : 
+            battleArenaNormal.getCoach(1);
+        
+        for (Pokemon pokemon : coach.getPokemons()) {
+            if (pokemon.getPs() > 0) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public List<String> getPokemonsVivos(boolean esJugador1) {

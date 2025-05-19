@@ -115,9 +115,27 @@ public abstract class BattleArena {
     /**
      * Obtiene el entrenador actual.
      */
-    protected Coach getCurrentCoach() {
+    public Coach getCurrentCoach() {
         return coaches[currentTurn];
     }
+
+    /**
+     * Obtiene el entrenador en la posición especificada.
+     */
+    public Coach getCoach(int index) {
+        if (index >= 0 && index < coaches.length) {
+            return coaches[index];
+        }
+        return null;
+    }
+
+    /**
+     * Obtiene el turno actual.
+     */
+    public int getCurrentTurn() {
+        return currentTurn;
+    }
+
 
     /**
      * Obtiene el entrenador oponente.
@@ -131,13 +149,6 @@ public abstract class BattleArena {
      */
     protected void nextTurn() {
         currentTurn = 1 - currentTurn;
-    }
-
-    /**
-     * Obtiene el turno actual.
-     */
-    protected int getCurrentTurn() {
-        return currentTurn;
     }
 
     /**
@@ -363,9 +374,9 @@ public abstract class BattleArena {
      * @throws PoobkemonException Si ocurre un error al configurar la batalla
      */
     public abstract void setupHumanVsMachine(String humanName, String machineName, 
-                         ArrayList<String> humanPokemon, ArrayList<String> machinePokemon,
-                         ArrayList<String> humanItems, String[][] humanAttacks, 
-                         String machineType) throws PoobkemonException;
+                     ArrayList<String> humanPokemon, ArrayList<String> machinePokemon,
+                     ArrayList<String> humanItems, String[][] humanAttacks, 
+                     String machineType) throws PoobkemonException;
 
     /**
      * Configura una batalla entre una máquina y un humano (máquina como player 1).
@@ -379,9 +390,9 @@ public abstract class BattleArena {
      * @throws PoobkemonException Si ocurre un error al configurar la batalla
      */
     public abstract void setupMachineVsHuman(String machineName, String humanName, 
-                         ArrayList<String> machinePokemon, ArrayList<String> humanPokemon,
-                         ArrayList<String> humanItems, String[][] humanAttacks, 
-                         String machineType) throws PoobkemonException;
+                     ArrayList<String> machinePokemon, ArrayList<String> humanPokemon,
+                     ArrayList<String> humanItems, String[][] humanAttacks, 
+                     String machineType) throws PoobkemonException;
 
     /**
      * Configura una batalla entre dos máquinas.
@@ -394,7 +405,7 @@ public abstract class BattleArena {
      * @throws PoobkemonException Si ocurre un error al configurar la batalla
      */
     public abstract void setupMachineVsMachine(String machine1Name, String machine2Name, 
-                         ArrayList<String> machine1Pokemon, ArrayList<String> machine2Pokemon,
-                         String machine1Type, String machine2Type) throws PoobkemonException;
+                     ArrayList<String> machine1Pokemon, ArrayList<String> machine2Pokemon,
+                     String machine1Type, String machine2Type) throws PoobkemonException;
 }
 

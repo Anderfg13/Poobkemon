@@ -18,7 +18,11 @@ public abstract class Coach {
         this.activePokemonIndex = 0; // Por defecto, el primer Pokémon es el activo
         this.score = 0;
     }
-
+    /**
+     * Returns the name of the coach.
+     * @return the coach's name
+     */
+    public abstract String getName();
 
     public void agregarItem(String nombreItem) {
         Item item = ItemFactory.createItem(nombreItem);
@@ -208,5 +212,9 @@ public abstract class Coach {
                 break;
             }
         }
+    }
+
+    public boolean isMachine() {
+        return false;
     }
 }

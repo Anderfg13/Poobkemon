@@ -1,11 +1,12 @@
 package presentation;
 
 import domain.Poobkemon;
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 import java.util.*;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.*;
 
 public class PoobkemonSeleccionPanel extends BackgroundPanel {
     private final List<String> pokemones = Poobkemon.getAvailablePokemon();
@@ -29,6 +30,11 @@ public class PoobkemonSeleccionPanel extends BackgroundPanel {
     private final JLabel player1Label;
     private final JLabel player2Label;
     private final PoobkemonGUI app;
+
+    private List<String> pokemones1 = new ArrayList<>();
+    private List<String> pokemones2 = new ArrayList<>();
+    private List<String> items1 = new ArrayList<>();
+    private List<String> items2 = new ArrayList<>();
 
     public PoobkemonSeleccionPanel(PoobkemonGUI app, String nombreJugador1, String nombreJugador2) {
         super("mult/Fondos/Pokemon_NormalSelection.jpg"); // Llama al constructor del fondo
@@ -62,7 +68,7 @@ public class PoobkemonSeleccionPanel extends BackgroundPanel {
         player1Button.setBackground(new Color(220, 230, 255));
         player2Button.setBackground(new Color(255, 230, 220));
 
-        player1Button.addActionListener(e -> {
+        player1Button.addActionListener(_ -> {
             jugadorActual = 1;
             refreshPokemons();
             refreshItems();
@@ -209,6 +215,7 @@ public class PoobkemonSeleccionPanel extends BackgroundPanel {
                 return;
             }
 
+            // Mostrar selecciones en consola (para depuración)
             System.out.println("Selección de " + player1Button.getText() + ":");
             seleccionPokemones1.forEach((idx, cantidad) -> {
                 System.out.println("  Poobkemon: " + pokemones.get(idx) + " x" + cantidad);
@@ -225,31 +232,8 @@ public class PoobkemonSeleccionPanel extends BackgroundPanel {
                 System.out.println("  Item: " + items.get(idx) + " x" + cantidad);
             });
 
-            // Ejemplo:
-            List<String> pokes1 = new ArrayList<>();
-            seleccionPokemones1.forEach((idx, cantidad) -> {
-                for (int i = 0; i < cantidad; i++) pokes1.add(pokemones.get(idx));
-            });
-            List<String> pokes2 = new ArrayList<>();
-            seleccionPokemones2.forEach((idx, cantidad) -> {
-                for (int i = 0; i < cantidad; i++) pokes2.add(pokemones.get(idx));
-            });
-
-            // Construye las listas de ítems seleccionados para cada jugador
-            List<String> itemsSel1 = new ArrayList<>();
-            seleccionItems1.forEach((idx, cantidad) -> {
-                for (int i = 0; i < cantidad; i++) itemsSel1.add(items.get(idx));
-            });
-            List<String> itemsSel2 = new ArrayList<>();
-            seleccionItems2.forEach((idx, cantidad) -> {
-                for (int i = 0; i < cantidad; i++) itemsSel2.add(items.get(idx));
-            });
-
-            // Ahora sí, pásalas al constructor:
-            PoobkemonMovimientosPanel movPanel = new PoobkemonMovimientosPanel(
-                app, nombreJugador1, nombreJugador2, pokes1, pokes2, itemsSel1, itemsSel2
-            );
-            app.cambiarPantallaConPanel(movPanel, "movimientos"); // Implementa este método para cambiar el panel central dinámicamente
+            // Iniciar batalla (nuevo método)
+            iniciarBatalla();
         });
 
         bottomPanel.add(backButton);
@@ -286,8 +270,8 @@ public class PoobkemonSeleccionPanel extends BackgroundPanel {
 
     private void refreshPokemons() {
         pokemonsGrid.removeAll();
-        Map<Integer, Integer> seleccionPokemones = (jugadorActual == 1) ? seleccionPokemones1 : seleccionPokemones2;
-        int totalSeleccionados = seleccionPokemones.values().stream().mapToInt(Integer::intValue).sum();
+        Map<Integer, Integer> seleccionPokemonesActual = (jugadorActual == 1) ? seleccionPokemones1 : seleccionPokemones2;
+        int totalSeleccionados = seleccionPokemonesActual.values().stream().mapToInt(Integer::intValue).sum();
         for (int i = 0; i < POKES_POR_PAG; i++) {
             int idx = pokeOffset + i;
             if (idx < pokemones.size()) {
@@ -301,15 +285,15 @@ public class PoobkemonSeleccionPanel extends BackgroundPanel {
                 pokeBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 pokeBtn.addActionListener(e -> {
                     if (totalSeleccionados < 6) {
-                        int count = seleccionPokemones.getOrDefault(idx, 0);
-                        seleccionPokemones.put(idx, count + 1);
+                        int count = seleccionPokemonesActual.getOrDefault(idx, 0);
+                        seleccionPokemonesActual.put(idx, count + 1);
                         refreshPokemons();
                     }
                 });
 
-                if (seleccionPokemones.containsKey(idx)) {
+                if (seleccionPokemonesActual.containsKey(idx)) {
                     pokeBtn.setBackground(new Color(120, 220, 120));
-                    pokeBtn.setText("" + seleccionPokemones.get(idx));
+                    pokeBtn.setText("" + seleccionPokemonesActual.get(idx));
                 } else {
                     pokeBtn.setBackground(Color.WHITE);
                     pokeBtn.setText("");
@@ -326,8 +310,8 @@ public class PoobkemonSeleccionPanel extends BackgroundPanel {
 
     private void refreshItems() {
         itemsGrid.removeAll();
-        Map<Integer, Integer> seleccionItems = (jugadorActual == 1) ? seleccionItems1 : seleccionItems2;
-        int totalSeleccionados = seleccionItems.values().stream().mapToInt(Integer::intValue).sum();
+        Map<Integer, Integer> seleccionItemsActual = (jugadorActual == 1) ? seleccionItems1 : seleccionItems2;
+        int totalSeleccionados = seleccionItemsActual.values().stream().mapToInt(Integer::intValue).sum();
         for (int i = 0; i < ITEMS_POR_PAG; i++) {
             int idx = itemOffset + i;
             if (idx < items.size()) {
@@ -341,15 +325,15 @@ public class PoobkemonSeleccionPanel extends BackgroundPanel {
                 itemBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 itemBtn.addActionListener(e -> {
                     if (totalSeleccionados < 4) {
-                        int count = seleccionItems.getOrDefault(idx, 0);
-                        seleccionItems.put(idx, count + 1);
+                        int count = seleccionItemsActual.getOrDefault(idx, 0);
+                        seleccionItemsActual.put(idx, count + 1);
                         refreshItems();
                     }
                 });
 
-                if (seleccionItems.containsKey(idx)) {
+                if (seleccionItemsActual.containsKey(idx)) {
                     itemBtn.setBackground(new Color(255, 200, 120));
-                    itemBtn.setText("" + seleccionItems.get(idx));
+                    itemBtn.setText("" + seleccionItemsActual.get(idx));
                 } else {
                     itemBtn.setBackground(Color.WHITE);
                     itemBtn.setText("");
@@ -362,6 +346,155 @@ public class PoobkemonSeleccionPanel extends BackgroundPanel {
         }
         itemsGrid.revalidate();
         itemsGrid.repaint();
+    }
+
+    private void iniciarBatalla() {
+        // Convertir los mapas de selecciones a listas
+        pokemones1.clear();
+        pokemones2.clear();
+        items1.clear();
+        items2.clear();
+        
+        // Poblar pokemones1 y pokemones2
+        seleccionPokemones1.forEach((idx, cantidad) -> {
+            String pokemon = pokemones.get(idx);
+            for (int i = 0; i < cantidad; i++) {
+                pokemones1.add(pokemon);
+            }
+        });
+        
+        seleccionPokemones2.forEach((idx, cantidad) -> {
+            String pokemon = pokemones.get(idx);
+            for (int i = 0; i < cantidad; i++) {
+                pokemones2.add(pokemon);
+            }
+        });
+        
+        // Poblar items1 y items2
+        seleccionItems1.forEach((idx, cantidad) -> {
+            String item = items.get(idx);
+            for (int i = 0; i < cantidad; i++) {
+                items1.add(item);
+            }
+        });
+        
+        seleccionItems2.forEach((idx, cantidad) -> {
+            String item = items.get(idx);
+            for (int i = 0; i < cantidad; i++) {
+                items2.add(item);
+            }
+        });
+        
+        // Convertir a ArrayList para compatibilidad con el API
+        ArrayList<String> pokes1 = new ArrayList<>(pokemones1);
+        ArrayList<String> pokes2 = new ArrayList<>(pokemones2);
+        ArrayList<String> itemsList1 = new ArrayList<>(items1);
+        ArrayList<String> itemsList2 = new ArrayList<>(items2);
+        
+        try {
+            if (app.isBattleWithMachine()) {
+                if (app.isMachineVsMachine()) {
+                    // Código para batallas máquina vs máquina
+                    String tipoMaquina1 = seleccionarTipoMaquina("Seleccionar tipo para Máquina 1");
+                    String tipoMaquina2 = seleccionarTipoMaquina("Seleccionar tipo para Máquina 2");
+                    
+                    // Iniciar directamente la batalla máquina vs máquina
+                    app.getPoobkemon().startBattleMachineVsMachine(
+                        "CPU " + tipoMaquina1, "CPU " + tipoMaquina2,
+                        pokes1, pokes2, tipoMaquina1, tipoMaquina2);
+                        
+                    // Crear y mostrar el panel de batalla
+                    boolean jugador1Empieza = app.getPoobkemon().whoStarts();
+                    PoobkemonBattlePanel battlePanel = new PoobkemonBattlePanel(
+                        app.getPoobkemon(), app, app.getColorJugador1(), app.getColorJugador2(), jugador1Empieza);
+                    app.cambiarPantallaConPanel(battlePanel, "battle");
+                } 
+                else if (app.isMachinePlayer1()) {
+                    // Batalla máquina vs humano
+                    String tipoMaquina = seleccionarTipoMaquina("Seleccionar tipo de Máquina");
+                    
+                    // Ir a la pantalla de selección de movimientos
+                    PoobkemonMovimientosPanel movimientosPanel = new PoobkemonMovimientosPanel(
+                        app, "CPU " + tipoMaquina, app.getNombreJugador2(), 
+                        pokes1, pokes2, itemsList1, itemsList2, 
+                        tipoMaquina, true);
+                    app.cambiarPantallaConPanel(movimientosPanel, "movimientos");
+                } 
+                else {
+                    // Batalla humano vs máquina
+                    String tipoMaquina = seleccionarTipoMaquina("Seleccionar tipo de Máquina");
+                    
+                    // Ir a la pantalla de selección de movimientos
+                    PoobkemonMovimientosPanel movimientosPanel = new PoobkemonMovimientosPanel(
+                        app, app.getNombreJugador1(), "CPU " + tipoMaquina, 
+                        pokes1, pokes2, itemsList1, itemsList2, 
+                        tipoMaquina, true);
+                    app.cambiarPantallaConPanel(movimientosPanel, "movimientos");
+                }
+            } 
+            else {
+                // Batalla humano vs humano (normal)
+                PoobkemonMovimientosPanel movimientosPanel = new PoobkemonMovimientosPanel(
+                    app, app.getNombreJugador1(), app.getNombreJugador2(), 
+                    pokes1, pokes2, itemsList1, itemsList2);
+                app.cambiarPantallaConPanel(movimientosPanel, "movimientos");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al iniciar la batalla: " + e.getMessage(), 
+                                         "Error", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Error al iniciar batalla", e);
+        }
+    }
+
+    /**
+     * Muestra un diálogo para seleccionar el tipo de máquina
+     * @param titulo Título del diálogo
+     * @return El tipo de máquina seleccionado
+     */
+    private String seleccionarTipoMaquina(String titulo) {
+        String[] tiposMaquina = {"Attacking", "Defensive", "Changing", "Expert"};
+        
+        // Crear descripciones para cada tipo
+        Map<String, String> descripciones = new HashMap<>();
+        descripciones.put("Attacking", "Prioriza ataques potentes y estadísticas ofensivas");
+        descripciones.put("Defensive", "Enfocada en resistencia y recuperación");
+        descripciones.put("Changing", "Cambia estrategias y Pokémon según la situación");
+        descripciones.put("Expert", "Combina todas las estrategias de forma inteligente");
+        
+        // Crear panel con botones de radio
+        JPanel panel = new JPanel(new GridLayout(0, 1));
+        ButtonGroup group = new ButtonGroup();
+        JRadioButton[] buttons = new JRadioButton[tiposMaquina.length];
+        
+        for (int i = 0; i < tiposMaquina.length; i++) {
+            String tipo = tiposMaquina[i];
+            buttons[i] = new JRadioButton("<html><b>" + tipo + "</b>: " + descripciones.get(tipo) + "</html>");
+            group.add(buttons[i]);
+            panel.add(buttons[i]);
+        }
+        
+        // Seleccionar el primero por defecto
+        buttons[0].setSelected(true);
+        
+        // Mostrar diálogo
+        int result = JOptionPane.showConfirmDialog(
+            this,
+            panel,
+            titulo,
+            JOptionPane.OK_CANCEL_OPTION,
+            JOptionPane.PLAIN_MESSAGE
+        );
+        
+        if (result == JOptionPane.OK_OPTION) {
+            for (int i = 0; i < buttons.length; i++) {
+                if (buttons[i].isSelected()) {
+                    return tiposMaquina[i];
+                }
+            }
+        }
+        
+        // Valor por defecto
+        return "Attacking";
     }
 }
 

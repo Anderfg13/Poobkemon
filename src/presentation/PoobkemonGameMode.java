@@ -132,23 +132,8 @@ public class PoobkemonGameMode extends JPanel {
         pvmButton.setHorizontalAlignment(SwingConstants.CENTER);
 
         pvmButton.addActionListener(e -> {
-            String[] tiposEntrenador = {"Defensive", "Attacking", "Changing", "Expert"};
-            int seleccion = JOptionPane.showOptionDialog(
-                this,
-                "¿Contra qué tipo de entrenador quieres luchar?",
-                "Selecciona tipo de entrenador",
-                JOptionPane.DEFAULT_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                tiposEntrenador,
-                tiposEntrenador[0]
-            );
-            if (seleccion != -1) {
-                System.out.println("Tipo de entrenador seleccionado: " + tiposEntrenador[seleccion]);
-                // Aquí puedes guardar el tipo seleccionado para usarlo después
-                PoobkemonSeleccion1PPanel seleccionPanel = new PoobkemonSeleccion1PPanel(app, app.getNombreJugadorHumano());
-                app.cambiarPantallaConPanel(seleccionPanel, "selection1p");
-            }
+            app.configureBattleHumanVsMachine(); // Configura tipo de batalla
+            app.cambiarPantalla("selection");    // Navega a selección de Pokémon
         });
 
         JPanel pvmRow = new JPanel(new BorderLayout());
@@ -162,40 +147,8 @@ public class PoobkemonGameMode extends JPanel {
         mvmButton.setHorizontalAlignment(SwingConstants.CENTER);
 
         mvmButton.addActionListener(e -> {
-            String[] tiposEntrenador = {"Defensive", "Attacking", "Changing", "Expert"};
-
-            JComboBox<String> combo1 = new JComboBox<>(tiposEntrenador);
-            JComboBox<String> combo2 = new JComboBox<>(tiposEntrenador);
-
-            JPanel panel = new JPanel(new GridLayout(3, 2, 10, 10));
-            panel.add(new JLabel("Máquina 1:"));
-            panel.add(combo1);
-            panel.add(new JLabel("Máquina 2:"));
-            panel.add(combo2);
-
-            // Botones personalizados
-            Object[] options = {"Volver", "Confirmar"};
-            int result = JOptionPane.showOptionDialog(
-                this,
-                panel,
-                "Seleccione las máquinas",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.PLAIN_MESSAGE,
-                null,
-                options,
-                options[1]
-            );
-
-            if (result == 1) { // Confirmar
-                String seleccion1 = (String) combo1.getSelectedItem();
-                String seleccion2 = (String) combo2.getSelectedItem();
-                // Aquí puedes guardar las selecciones donde necesites
-                // Por ahora solo muestra un mensaje
-                JOptionPane.showMessageDialog(this,
-                    "Máquina 1: " + seleccion1 + "\nMáquina 2: " + seleccion2,
-                    "Selección", JOptionPane.INFORMATION_MESSAGE);
-            }
-            // Si es "Volver" (result == 0), no hace nada y se cierra el diálogo
+            app.configureBattleMachineVsMachine(); // Configura tipo de batalla
+            app.cambiarPantalla("selection");      // Navega a selección de Pokémon
         });
 
         JPanel mvmRow = new JPanel(new BorderLayout());

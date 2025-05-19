@@ -1,8 +1,8 @@
 package presentation;
 
-import javax.swing.*;
-import java.awt.*;
 import domain.Poobkemon;
+import java.awt.*;
+import javax.swing.*;
 
 public class PoobkemonGUI extends JFrame {
     private CardLayout layout;
@@ -20,6 +20,10 @@ public class PoobkemonGUI extends JFrame {
 
     private Musica musicaGlobal;
     private Musica musicaBatalla;
+
+    private boolean battleWithMachine = false;
+    private boolean machineVsMachine = false;
+    private boolean machineIsPlayer1 = false;
 
     public PoobkemonGUI() {
         musica = new Musica("mult/musicaIntro.wav");
@@ -219,6 +223,44 @@ public class PoobkemonGUI extends JFrame {
 
     public Poobkemon getPoobkemon() {
         return poobkemon;
+    }
+
+    public boolean isBattleWithMachine() {
+        return battleWithMachine;
+    }
+
+    public boolean isMachineVsMachine() {
+        return machineVsMachine;
+    }
+
+    public boolean isMachinePlayer1() {
+        return machineIsPlayer1;
+    }
+
+    /**
+     * Verifica si el jugador 2 es una máquina.
+     * @return true si el jugador 2 es una máquina
+     */
+    public boolean isMachinePlayer2() {
+        return battleWithMachine && !machineIsPlayer1 && !machineVsMachine;
+    }
+
+    // Estos métodos deben llamarse al configurar la batalla
+    public void configureBattleHumanVsMachine() {
+        battleWithMachine = true;
+        machineVsMachine = false;
+        machineIsPlayer1 = false;
+    }
+
+    public void configureBattleMachineVsHuman() {
+        battleWithMachine = true;
+        machineVsMachine = false;
+        machineIsPlayer1 = true;
+    }
+
+    public void configureBattleMachineVsMachine() {
+        battleWithMachine = true;
+        machineVsMachine = true;
     }
 
     public static void main(String[] args) {

@@ -213,4 +213,13 @@ public abstract class Machine extends Coach {
             return false;
         }
     }
-}
+    @Override
+    public String getName() {
+        return machineName;
+    }
+
+    @Override
+    public boolean isMachine() {
+        return true;
+    }
+}  // Fin de la clase Machine

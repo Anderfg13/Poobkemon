@@ -108,6 +108,9 @@ public class BattleArenaNormal extends BattleArena {
     
     // Establecer el turno inicial
     currentTurn = 0;  // El humano comienza
+
+    // Establecer al humano como oponente de la máquina
+    machine.setOpponent(humanCoach); 
 }
 
 /**
@@ -194,6 +197,9 @@ public void setupMachineVsHuman(String machineName, String humanName,
         
         // Establecer el turno inicial
         currentTurn = 0;  // La máquina comienza
+
+        // Establecer al humano como oponente de la máquina
+        machine.setOpponent(humanCoach); 
     }
 
     /**
