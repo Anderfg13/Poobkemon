@@ -427,9 +427,6 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
                             return; // No cambiar turno si ya terminó
                         }
                         
-                        // Cambiar al turno del humano pero sin volver a verificar si es turno de máquina
-                        // Esto evita la recursión que causa el error
-                        
                         // Detener temporizador actual
                         if (timer != null) {
                             timer.cancel();
@@ -447,10 +444,22 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
                         actualizarColoresBotones();
                         actualizarBarrasDeVida();
                         
-                        // Como ahora es turno del humano, mostramos los botones y activamos el temporizador
-                        mostrarPanelBotones();
-                        habilitarBotones(true);
-                        iniciarTemporizador();
+                        // IMPORTANTE: Verificar si estamos en modo máquina vs máquina
+                        if (isMachineVsMachine) {
+                            // Si es máquina vs máquina, continuar con el siguiente turno automáticamente
+                            // después de una pequeña pausa para que se vea el resultado
+                            new Timer().schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    SwingUtilities.invokeLater(() -> ejecutarTurnoMaquina());
+                                }
+                            }, 1000); // Esperar 1 segundo entre turnos
+                        } else {
+                            // Como ahora es turno del humano, mostramos los botones y activamos el temporizador
+                            mostrarPanelBotones();
+                            habilitarBotones(true);
+                            iniciarTemporizador();
+                        }
                         
                     } catch (Exception e) {
                         JOptionPane.showMessageDialog(
@@ -461,10 +470,20 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
                         );
                         Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Error en el turno de la máquina", e);
                         
-                        // En caso de error, habilitar los botones para el usuario
-                        mostrarPanelBotones();
-                        habilitarBotones(true);
-                        iniciarTemporizador();
+                        // En caso de error en modo máquina vs máquina, intentar continuar
+                        if (isMachineVsMachine) {
+                            new Timer().schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    SwingUtilities.invokeLater(() -> ejecutarTurnoMaquina());
+                                }
+                            }, 1000);
+                        } else {
+                            // En caso de error, habilitar los botones para el usuario humano
+                            mostrarPanelBotones();
+                            habilitarBotones(true);
+                            iniciarTemporizador();
+                        }
                     }
                 });
             }
