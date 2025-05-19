@@ -478,7 +478,7 @@ public class PoobkemonSeleccionPanel extends BackgroundPanel {
      * @return El tipo de máquina seleccionado
      */
     private String seleccionarTipoMaquina(String titulo) {
-        String[] tiposMaquina = {"Attacking", "Defensive", "Changing", "Expert"};
+        String[] tiposMaquina = {"Attacking", "Defensive", "Changing", "Expert", "Gemini"};
         
         // Crear descripciones para cada tipo
         Map<String, String> descripciones = new HashMap<>();
@@ -486,6 +486,7 @@ public class PoobkemonSeleccionPanel extends BackgroundPanel {
         descripciones.put("Defensive", "Enfocada en resistencia y recuperación");
         descripciones.put("Changing", "Cambia estrategias y Pokémon según la situación");
         descripciones.put("Expert", "Combina todas las estrategias de forma inteligente");
+        descripciones.put("Gemini", "IA avanzada utilizando Google Gemini 2 Flash");
         
         // Crear panel con botones de radio
         JPanel panel = new JPanel(new GridLayout(0, 1));

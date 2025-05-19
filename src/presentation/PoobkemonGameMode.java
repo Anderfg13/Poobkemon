@@ -1,12 +1,11 @@
 package presentation;
 
-import javax.swing.*;
+import domain.Poobkemon;
+import domain.PoobkemonException;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
-import domain.Poobkemon;
-import domain.PoobkemonException;
+import javax.swing.*;
 
 public class PoobkemonGameMode extends JPanel {
     public PoobkemonGameMode(PoobkemonGUI app, Musica musica) {
