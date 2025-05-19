@@ -11,15 +11,16 @@ public abstract class Attack {
     protected int precision;
     protected int powerPoint;
     private String attackType;
+    protected String effect; // Nuevo campo para el efecto del ataque
     
-
-    public Attack(String name, String type, int baseDamage, int powerPoint, int precision, String attackType) {
+    public Attack(String name, String type, int baseDamage, int powerPoint, int precision, String attackType, String effect) {
         this.name = name;
         this.type = type;
         this.baseDamage = baseDamage;
         this.powerPoint = powerPoint;
         this.precision = precision;
         this.attackType = attackType;
+        this.effect = effect;
     }
 
     public String getName() {
@@ -54,7 +55,32 @@ public abstract class Attack {
     public String getAttackType() {
         return this.attackType;
     }
-
+    
+    /**
+     * Obtiene el efecto especial del ataque.
+     * @return El efecto del ataque, o null si no tiene.
+     */
+    public String getEffect() {
+        return effect;
+    }
+    
+    /**
+     * Obtiene el máximo de puntos de poder del ataque.
+     * @return El máximo de PP del ataque.
+     */
+    public int getMaxPowerPoint() {
+        // Valores predeterminados según el tipo de ataque
+        // Puedes ajustar esto según tus necesidades
+        switch (attackType) {
+            case "Physical":
+            case "Special":
+                return 15;
+            case "Status":
+                return 20;
+            default:
+                return 10;
+        }
+    }
 
     public int calcDaño(Pokemon atacante, Pokemon defensor) {
         if (powerPoint <= 0) return 0;

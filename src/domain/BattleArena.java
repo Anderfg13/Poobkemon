@@ -1,15 +1,15 @@
 package domain;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.List;
 
 public abstract class BattleArena {
-    private int currentTurn = 0;
+    protected int currentTurn = 0;
     private static final int MAX_TIME_SECONDS = 20;
-    private Coach[] coaches = new Coach[2];
+    protected Coach[] coaches = new Coach[2];
     private boolean isPaused;
     private Timer turnTimer;
     private Random rand = new Random();
@@ -331,5 +331,70 @@ public abstract class BattleArena {
     public void eliminarItem(boolean esJugador1, String nombreItem) {
         coaches[esJugador1 ? 0 : 1].eliminarItem(nombreItem);
     }
+
+    /**
+     * Establece un entrenador en la posición especificada.
+     * @param index Índice del entrenador (0 para el primer jugador, 1 para el segundo)
+     * @param coach El entrenador a establecer
+     */
+    protected void setCoach(int index, Coach coach) {
+        if (index >= 0 && index < coaches.length) {
+            coaches[index] = coach;
+        }
+    }
+
+    /**
+     * Establece el turno actual.
+     * @param turn El número de turno a establecer
+     */
+    protected void setCurrentTurn(int turn) {
+        this.currentTurn = turn;
+    }
+
+    /**
+     * Configura una batalla entre un humano y una máquina.
+     * @param humanName Nombre del entrenador humano
+     * @param machineName Nombre de la máquina
+     * @param humanPokemon Lista de pokémon del humano
+     * @param machinePokemon Lista de pokémon de la máquina
+     * @param humanItems Lista de ítems del humano
+     * @param humanAttacks Matriz de ataques para los pokémon del humano
+     * @param machineType Tipo de máquina a crear
+     * @throws PoobkemonException Si ocurre un error al configurar la batalla
+     */
+    public abstract void setupHumanVsMachine(String humanName, String machineName, 
+                         ArrayList<String> humanPokemon, ArrayList<String> machinePokemon,
+                         ArrayList<String> humanItems, String[][] humanAttacks, 
+                         String machineType) throws PoobkemonException;
+
+    /**
+     * Configura una batalla entre una máquina y un humano (máquina como player 1).
+     * @param machineName Nombre de la máquina
+     * @param humanName Nombre del entrenador humano
+     * @param machinePokemon Lista de pokémon de la máquina
+     * @param humanPokemon Lista de pokémon del humano
+     * @param humanItems Lista de ítems del humano
+     * @param humanAttacks Matriz de ataques para los pokémon del humano
+     * @param machineType Tipo de máquina a crear
+     * @throws PoobkemonException Si ocurre un error al configurar la batalla
+     */
+    public abstract void setupMachineVsHuman(String machineName, String humanName, 
+                         ArrayList<String> machinePokemon, ArrayList<String> humanPokemon,
+                         ArrayList<String> humanItems, String[][] humanAttacks, 
+                         String machineType) throws PoobkemonException;
+
+    /**
+     * Configura una batalla entre dos máquinas.
+     * @param machine1Name Nombre de la primera máquina
+     * @param machine2Name Nombre de la segunda máquina
+     * @param machine1Pokemon Lista de pokémon de la primera máquina
+     * @param machine2Pokemon Lista de pokémon de la segunda máquina
+     * @param machine1Type Tipo de la primera máquina
+     * @param machine2Type Tipo de la segunda máquina
+     * @throws PoobkemonException Si ocurre un error al configurar la batalla
+     */
+    public abstract void setupMachineVsMachine(String machine1Name, String machine2Name, 
+                         ArrayList<String> machine1Pokemon, ArrayList<String> machine2Pokemon,
+                         String machine1Type, String machine2Type) throws PoobkemonException;
 }
 

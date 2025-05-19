@@ -164,4 +164,53 @@ public abstract class Machine extends Coach {
         
         return bestPokemonIndex;
     }
+    
+    @Override
+    public List<Item> getItems() {
+        // Llamar al método de la clase padre
+        return super.getItems();
+    }
+
+    /**
+     * Ejecuta un turno completo de la máquina basado en su estrategia
+     * @param battleArena La arena de batalla actual
+     * @return true si la acción fue exitosa, false en caso contrario
+     */
+    public boolean executeTurn(BattleArena battleArena) {
+        // Si el Pokémon activo está debilitado, seleccionar otro
+        if (getActivePokemon().getPs() <= 0) {
+            int bestPokemonIndex = selectBestPokemon();
+            try {
+                switchPokemon(bestPokemonIndex);
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
+        }
+        
+        // Verificar si debe usar un ítem
+        if (shouldUseItem() && !getItems().isEmpty()) {
+            int itemIndex = selectItem();
+            if (itemIndex >= 0 && itemIndex < getItems().size()) {
+                try {
+                    // Lógica para usar el ítem
+                    String itemName = getItems().get(itemIndex).getName();
+                    battleArena.useItem(itemName);
+                    return true;
+                } catch (Exception e) {
+                    // Si hay un error usando el ítem, continuar con un ataque
+                }
+            }
+        }
+        
+        // Seleccionar y realizar un ataque
+        try {
+            int moveIndex = selectMove();
+            String moveName = getActivePokemon().getAtaques().get(moveIndex).getName();
+            battleArena.attack(moveName, false, battleArena.getCurrentTurn() == 0);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

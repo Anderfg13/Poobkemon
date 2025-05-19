@@ -10,7 +10,7 @@ public class StatusAttack extends Attack {
     private int turnosDuracion;
     
     public StatusAttack(String name, String type, int damage, int powerPoints, int precision, String affects, int turnosDuracion, String attackType) {
-        super(name, type, damage, powerPoints, precision, attackType);
+        super(name, type, damage, powerPoints, precision, attackType, affects); // Pass affects as the effect
         this.affects = affects;
         this.turnosDuracion = turnosDuracion;
     }

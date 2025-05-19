@@ -10,7 +10,7 @@ public class BattleArenaSurvival extends BattleArena {
         super();
     }
 
-    @Override
+    
     public void attack(String moveName, String itself) throws PoobkemonException {
         Coach currentCoach = getCurrentCoach();
         Coach opponentCoach = getOpponentCoach();
@@ -89,5 +89,40 @@ public class BattleArenaSurvival extends BattleArena {
                 String.join(", ", pokemAttacks[i]));
         }
         return pokemAttacks;
+    }
+
+    /**
+     * Configura una batalla entre un humano y una máquina.
+     * En el modo supervivencia, este tipo de batalla no está soportada.
+     */
+    @Override
+    public void setupHumanVsMachine(String humanName, String machineName, 
+                             ArrayList<String> humanPokemon, ArrayList<String> machinePokemon,
+                             ArrayList<String> humanItems, String[][] humanAttacks, 
+                             String machineType) throws PoobkemonException {
+        throw new PoobkemonException("Las batallas Humano vs Máquina no están soportadas en el modo supervivencia.");
+    }
+
+    /**
+     * Configura una batalla entre una máquina y un humano.
+     * En el modo supervivencia, este tipo de batalla no está soportada.
+     */
+    @Override
+    public void setupMachineVsHuman(String machineName, String humanName, 
+                             ArrayList<String> machinePokemon, ArrayList<String> humanPokemon,
+                             ArrayList<String> humanItems, String[][] humanAttacks, 
+                             String machineType) throws PoobkemonException {
+        throw new PoobkemonException("Las batallas Máquina vs Humano no están soportadas en el modo supervivencia.");
+    }
+
+    /**
+     * Configura una batalla entre dos máquinas.
+     * En el modo supervivencia, este tipo de batalla no está soportada.
+     */
+    @Override
+    public void setupMachineVsMachine(String machine1Name, String machine2Name, 
+                             ArrayList<String> machine1Pokemon, ArrayList<String> machine2Pokemon,
+                             String machine1Type, String machine2Type) throws PoobkemonException {
+        throw new PoobkemonException("Las batallas Máquina vs Máquina no están soportadas en el modo supervivencia.");
     }
 }

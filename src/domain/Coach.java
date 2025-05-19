@@ -186,5 +186,27 @@ public abstract class Coach {
         items.removeIf(item -> item.getName().equals(nombreItem));
     }
 
+    public List<Item> getItems() {
+        return items;
+    }
     
+    /**
+     * Establece un Pokémon específico como el activo.
+     * @param pokemon El Pokémon que se establecerá como activo
+     */
+    public void setActivePokemon(Pokemon pokemon) {
+        if (pokemon == null) return;
+        
+        // Buscar el índice del pokemon en la lista
+        for (int i = 0; i < pokemons.size(); i++) {
+            if (pokemons.get(i) == pokemon) {
+                // Verificar que el Pokémon no esté debilitado
+                if (pokemons.get(i).getPs() > 0) {
+                    activePokemonIndex = i;
+                    System.out.println("El entrenador ha establecido a " + pokemon.getName() + " como Pokémon activo.");
+                }
+                break;
+            }
+        }
+    }
 }

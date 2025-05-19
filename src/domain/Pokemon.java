@@ -137,7 +137,13 @@ public class Pokemon {
         }
         return daño;
     }
-
+    /**
+    * Establece la lista de ataques del Pokémon.
+    * @param ataques Lista de ataques a asignar
+    */
+    public void setAtaques(ArrayList<Attack> ataques) {
+        this.ataques = new ArrayList<>(ataques); // Crear una copia para evitar modificaciones externas
+    }
     /**
      * Realiza un ataque a sí mismo o al oponente.
      * @param toItself si true, se ataca a sí mismo.

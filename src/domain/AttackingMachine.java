@@ -1,12 +1,19 @@
 package domain;
 
 import java.util.ArrayList;
-import java.util.List;
 
+/**
+ * Máquina con enfoque ofensivo.
+ * Prioriza ataques potentes y estadísticas de ataque.
+ */
 public class AttackingMachine extends Machine {
+    
+    private AttackingStrategy strategy;
     
     public AttackingMachine(String name, ArrayList<Pokemon> pokemons, ArrayList<String> items) {
         super(name, pokemons, items);
+        this.strategy = new AttackingStrategy();
+        this.machineType = "Attacking";
     }
     
     @Override
@@ -17,18 +24,17 @@ public class AttackingMachine extends Machine {
         int bestMoveIndex = 0;
         double bestDamage = 0;
         
-        List<Attack> attacks = currentPokemon.getAtaques();
-        for (int i = 0; i < attacks.size(); i++) {
-            Attack attack = attacks.get(i);
+        for (int i = 0; i < currentPokemon.getAtaques().size(); i++) {
+            Attack attack = currentPokemon.getAtaques().get(i);
             
-            // Ignorar ataques de estado, prefiere ataques físicos o especiales
-            if (attack.getCategory().equals("Status")) {
+            // Preferir ataques físicos o especiales sobre los de estado
+            if (attack instanceof StatusAttack) {
                 continue;
             }
             
             // Calcular daño potencial (potencia * efectividad)
             double effectiveness = calculateEffectiveness(attack, opponent.getActivePokemon());
-            double potentialDamage = attack.getPower() * effectiveness;
+            double potentialDamage = attack.getBaseDamage() * effectiveness;
             
             if (potentialDamage > bestDamage) {
                 bestDamage = potentialDamage;
@@ -36,7 +42,7 @@ public class AttackingMachine extends Machine {
             }
         }
         
-        // Si no se encontró un buen ataque, usa el más efectivo
+        // Si no encontró ningún buen ataque, usar el más efectivo
         if (bestDamage == 0) {
             return getBestEffectivenessMove();
         }
@@ -46,9 +52,8 @@ public class AttackingMachine extends Machine {
     
     @Override
     public int selectBestPokemon() {
-        // Elige el Pokémon con mejores estadísticas ofensivas
+        // Si el oponente tiene ventaja de tipo, buscar un Pokémon con ventaja
         if (opponentHasTypeAdvantage()) {
-            // Si el oponente tiene ventaja, buscar un Pokémon con ventaja de tipo
             int advantageIndex = getPokemonWithTypeAdvantage();
             if (advantageIndex != activePokemonIndex && pokemons.get(advantageIndex).getPs() > 0) {
                 return advantageIndex;
@@ -62,13 +67,13 @@ public class AttackingMachine extends Machine {
         for (int i = 0; i < pokemons.size(); i++) {
             Pokemon pokemon = pokemons.get(i);
             
-            // Saltar Pokémon debilitados
-            if (pokemon.getPs() <= 0) {
+            // Saltar Pokémon debilitados y el actual
+            if (i == activePokemonIndex || pokemon.getPs() <= 0) {
                 continue;
             }
             
             // Calcular ratio ofensivo (Ataque * Velocidad / 100)
-            double offensiveRatio = (pokemon.getAttack() * pokemon.getSpeed()) / 100.0;
+            double offensiveRatio = (pokemon.getPhysicalAttack() * pokemon.getSpeed()) / 100.0;
             
             if (offensiveRatio > bestOffensiveRatio) {
                 bestOffensiveRatio = offensiveRatio;
@@ -81,22 +86,22 @@ public class AttackingMachine extends Machine {
     
     @Override
     public boolean shouldUseItem() {
-        // Los atacantes raramente usan ítems, solo cuando están muy bajos de salud
+        // Usar item solo cuando el Pokémon tiene baja vida pero aún es viable
         Pokemon currentPokemon = getActivePokemon();
-        return currentPokemon.getPs() < currentPokemon.getTotalPs() * 0.2 && !items.isEmpty();
+        return currentPokemon.getPs() < currentPokemon.getTotalPs() * 0.3 && !items.isEmpty();
     }
     
     @Override
     public int selectItem() {
-        // Buscar X-Ataque o item que aumente estadísticas ofensivas
+        // Buscar X-Ataque o ítem que aumente estadísticas ofensivas
         for (int i = 0; i < items.size(); i++) {
             Item item = items.get(i);
-            if (item.getName().contains("X-Ataque") || item.getName().contains("Más Ataque")) {
+            if (item.getName().contains("X-Ataque") || item.getName().contains("Ataque")) {
                 return i;
             }
         }
         
-        // Si no hay items de ataque, usar curativos
+        // Si no hay ítems de ataque, usar curativos
         for (int i = 0; i < items.size(); i++) {
             Item item = items.get(i);
             if (item.getName().contains("Poción")) {
@@ -104,7 +109,7 @@ public class AttackingMachine extends Machine {
             }
         }
         
-        // Si no hay ítems específicos, usar cualquiera
+        // Si no hay ningún ítem específico, usar el primero disponible
         return !items.isEmpty() ? 0 : -1;
     }
 }

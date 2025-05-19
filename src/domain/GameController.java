@@ -29,8 +29,30 @@ public class GameController {
         // Crear entrenador humano
         humanTrainer = new HumanCoach(playerName, new ArrayList<>(), new ArrayList<>());
         
-        // Crear máquina con una lista vacía de pokémon y items (se poblarán después)
-        machineTrainer = MachineFactory.createMachine(machineType, "CPU " + machineType, new ArrayList<>(), new ArrayList<>());
+        // Convertir String a enum MachineType
+        MachineFactory.MachineType type;
+        switch(machineType.toLowerCase()) {
+            case "attacking":
+                type = MachineFactory.MachineType.ATTACKING;
+                break;
+            case "defensive":
+                type = MachineFactory.MachineType.DEFENSIVE;
+                break;
+            case "changing":
+                type = MachineFactory.MachineType.CHANGING;
+                break;
+            case "expert":
+                type = MachineFactory.MachineType.EXPERT;
+                break;
+            default:
+                type = MachineFactory.MachineType.ATTACKING; // Valor por defecto
+        }
+        
+        // Establecer una dificultad media por defecto
+        int difficulty = 2;
+        
+        // Crear máquina con la firma correcta
+        machineTrainer = MachineFactory.createMachine(type, "CPU " + machineType, difficulty);
         
         // Añadir Pokémon a cada entrenador
         setupPokemonTeams(playerPokemons, machinePokemons);
@@ -154,10 +176,12 @@ public class GameController {
                 machineTrainer.switchPokemon(bestPokemonIndex);
                 result = "La máquina cambió a " + machineTrainer.getActivePokemon().getName();
             } else {
-                // Seleccionar movimiento según la estrategia
-                String moveName = machine.selectMove();
-                result = "La máquina usó " + moveName;
-                
+             // Seleccionar movimiento según la estrategia
+              int moveIndex = machine.selectMove();
+    
+              // Obtener el nombre del ataque usando el índice
+               String moveName = machineTrainer.getActivePokemon().getAtaques().get(moveIndex).getName();
+               result = "La máquina usó " + moveName;    
                 // Aquí iría la lógica para aplicar el movimiento
             }
             
@@ -217,6 +241,40 @@ public class GameController {
         } else {
             return "Has perdido la batalla. Mejor suerte la próxima vez.";
         }
+    }
+    
+    /**
+     * Crea una máquina para una batalla contra el jugador.
+     */
+    public Machine createMachineOpponent(int difficulty, String name) {
+        MachineFactory.MachineType type;
+        
+        // La dificultad determina el tipo de máquina
+        switch (difficulty) {
+            case 1:
+                type = MachineFactory.MachineType.ATTACKING; // Enfoque ofensivo
+                break;
+            case 2:
+                type = MachineFactory.MachineType.DEFENSIVE; // Enfoque defensivo
+                break;
+            case 3:
+                type = MachineFactory.MachineType.CHANGING; // Enfoque adaptativo
+                break;
+            case 4:
+                type = MachineFactory.MachineType.EXPERT; // Enfoque experto
+                break;
+            default:
+                type = MachineFactory.MachineType.ATTACKING; // Por defecto
+        }
+        
+        return MachineFactory.createMachine(type, name, difficulty);
+    }
+
+    /**
+     * Ejecuta un turno de la máquina.
+     */
+    public boolean executeMachineTurn(Machine machine, BattleArena battleArena) {
+        return machine.executeTurn(battleArena);
     }
     
     // Getters adaptados para trabajar con Coach en lugar de Trainer

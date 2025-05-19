@@ -1,14 +1,20 @@
 package domain;
 
 import java.util.ArrayList;
-import java.util.List;
 
+/**
+ * Máquina con estrategia experta.
+ * Toma las mejores decisiones basadas en múltiples factores.
+ */
 public class ExpertMachine extends Machine {
     
+    private ExpertStrategy strategy;
     private int turnsInBattle = 0;
     
     public ExpertMachine(String name, ArrayList<Pokemon> pokemons, ArrayList<String> items) {
         super(name, pokemons, items);
+        this.strategy = new ExpertStrategy();
+        this.machineType = "Expert";
     }
     
     @Override
@@ -21,7 +27,7 @@ public class ExpertMachine extends Machine {
         if (turnsInBattle <= 2) {
             for (int i = 0; i < currentPokemon.getAtaques().size(); i++) {
                 Attack attack = currentPokemon.getAtaques().get(i);
-                if (attack.getCategory().equals("Status")) {
+                if (attack instanceof StatusAttack) {
                     return i;
                 }
             }
@@ -39,9 +45,9 @@ public class ExpertMachine extends Machine {
             for (int i = 0; i < currentPokemon.getAtaques().size(); i++) {
                 Attack attack = currentPokemon.getAtaques().get(i);
                 
-                if (!attack.getCategory().equals("Status")) {
+                if (!(attack instanceof StatusAttack)) {
                     double effectiveness = calculateEffectiveness(attack, opponentPokemon);
-                    double power = attack.getPower() * effectiveness;
+                    double power = attack.getBaseDamage() * effectiveness;
                     
                     if (power > bestPower) {
                         bestPower = power;
@@ -61,7 +67,7 @@ public class ExpertMachine extends Machine {
             // Buscar ataques que reduzcan estadísticas del oponente
             for (int i = 0; i < currentPokemon.getAtaques().size(); i++) {
                 Attack attack = currentPokemon.getAtaques().get(i);
-                if (attack.getCategory().equals("Status")) {
+                if (attack instanceof StatusAttack) {
                     return i;
                 }
             }
@@ -71,23 +77,17 @@ public class ExpertMachine extends Machine {
         int bestOverallIndex = 0;
         double bestOverallScore = 0;
         
-        List<Attack> attacks = currentPokemon.getAtaques();
-        for (int i = 0; i < attacks.size(); i++) {
-            Attack attack = attacks.get(i);
-            
-            // Saltar ataques sin PP
-            if (attack.getPp() <= 0) {
-                continue;
-            }
+        for (int i = 0; i < currentPokemon.getAtaques().size(); i++) {
+            Attack attack = currentPokemon.getAtaques().get(i);
             
             double effectiveness = calculateEffectiveness(attack, opponentPokemon);
-            double power = attack.getPower();
+            double power = attack.getBaseDamage();
             
             // Calcular una puntuación combinada
-            double overallScore = effectiveness * power * (attack.getAccuracy() / 100.0);
+            double overallScore = effectiveness * power * (attack.getPrecision() / 100.0);
             
             // Para ataques de estado, evaluar de forma diferente
-            if (attack.getCategory().equals("Status")) {
+            if (attack instanceof StatusAttack) {
                 overallScore = 50 * effectiveness;
             }
             
