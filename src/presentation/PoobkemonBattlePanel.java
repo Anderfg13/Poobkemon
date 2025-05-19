@@ -336,7 +336,32 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
             timer = null;
         }
         
-        // Actualizar turno en el dominio
+        // IMPORTANTE: Primero verificar si algún Pokémon necesita ser reemplazado
+        // antes de cambiar el turno
+        
+        // Verificar Pokémon del Jugador 1
+        int vidaActualJ1 = poobkemon.getActivePokemonCurrentHP(true);
+        if (vidaActualJ1 <= 0 && poobkemon.tienePokemonesVivos(true)) {
+            // Necesita cambiar Pokémon - jugador 1
+            manejarPokemonDerrotado(true);
+            // Si es jugador humano, no continuar automáticamente
+            if (!app.isMachinePlayer1()) {
+                return;
+            }
+        }
+        
+        // Verificar Pokémon del Jugador 2
+        int vidaActualJ2 = poobkemon.getActivePokemonCurrentHP(false);
+        if (vidaActualJ2 <= 0 && poobkemon.tienePokemonesVivos(false)) {
+            // Necesita cambiar Pokémon - jugador 2
+            manejarPokemonDerrotado(false);
+            // Si es jugador humano, no continuar automáticamente
+            if (!app.isMachinePlayer2()) {
+                return;
+            }
+        }
+        
+        // Ahora sí, cambiar el turno en el dominio
         poobkemon.changeTurn();
         
         // Actualizar turno en la interfaz
@@ -410,6 +435,10 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
                         // Procesar el turno de la máquina
                         String resultadoAccion = poobkemon.processMachineTurn();
                         
+                        // IMPORTANTE: Actualizar la interfaz INMEDIATAMENTE
+                        actualizarPokemonActivos();
+                        actualizarBarrasDeVida();
+                        
                         // Mostrar mensaje con la acción realizada
                         JOptionPane.showMessageDialog(
                             PoobkemonBattlePanel.this,
@@ -418,28 +447,21 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
                             JOptionPane.INFORMATION_MESSAGE
                         );
                         
-                        // Actualizar la interfaz
-                        actualizarPokemonActivos();
-                        actualizarBarrasDeVida();
-                        
                         // Verificar si hay un ganador
                         if (verificarFinJuego()) {
                             return; // No cambiar turno si ya terminó
                         }
                         
-                        // Detener temporizador actual
-                        if (timer != null) {
-                            timer.cancel();
-                            timer = null;
+                        // Verificar si el Pokémon del oponente quedó debilitado
+                        boolean jugadorHumano = app.isMachinePlayer1() ? false : true;
+                        int psOponente = poobkemon.getActivePokemonCurrentHP(jugadorHumano);
+                        if (psOponente <= 0 && poobkemon.tienePokemonesVivos(jugadorHumano)) {
+                            manejarPokemonDerrotado(jugadorHumano);
                         }
                         
-                        // Actualizar turno en el dominio
+                        // Cambio de turno (SOLO AQUÍ - eliminar el cambio de turno en cambiarTurno para máquinas)
                         poobkemon.changeTurn();
-                        
-                        // Actualizar turno en la interfaz
                         turnoJugador1 = !turnoJugador1;
-                        
-                        // Actualizar interfaz
                         actualizarPokemonActivos();
                         actualizarColoresBotones();
                         actualizarBarrasDeVida();
@@ -706,51 +728,85 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
         buttonsPanel.repaint();
     }
 
+    /**
+     * Maneja el cambio de Pokémon cuando uno es derrotado
+     * @param jugador true para jugador 1, false para jugador 2
+     */
     private void manejarPokemonDerrotado(boolean jugador) {
-        // Obtener nombres de pokémon vivos del jugador
-        java.util.List<String> pokemonsVivos = poobkemon.getPokemonsVivos(jugador);
-
-        // Crear panel con botones con imagen y nombre
-        JPanel panel = new JPanel(new GridLayout(0, 1, 8, 8));
-        ButtonGroup group = new ButtonGroup();
-        java.util.List<JRadioButton> botones = new java.util.ArrayList<>();
+        // Comprobar si el jugador es una máquina
+        boolean esMaquina = (jugador && app.isMachinePlayer1()) || (!jugador && app.isMachinePlayer2());
         
-        for (String nombre : pokemonsVivos) {
-            ImageIcon icon = new ImageIcon("mult/gifs/" + nombre + ".gif");
-            JRadioButton btn = new JRadioButton(nombre, icon, false);
-            btn.setHorizontalTextPosition(SwingConstants.RIGHT);
-            btn.setVerticalTextPosition(SwingConstants.CENTER);
-            group.add(btn);
-            panel.add(btn);
-            botones.add(btn);
-        }
+        if (esMaquina) {
+            // Si es una máquina, procesar automáticamente el cambio
+            try {
+                String resultado = poobkemon.processMachineTurn();
+                JOptionPane.showMessageDialog(
+                    this,
+                    resultado,
+                    "Cambio de Pokémon",
+                    JOptionPane.INFORMATION_MESSAGE
+                );
+                
+                // Actualizar interfaz después del cambio
+                nombrePokemon1 = app.getPokemonActivoJugador1();
+                nombrePokemon2 = app.getPokemonActivoJugador2();
+                pokemonGif1.setIcon(new ImageIcon("mult/gifs/" + nombrePokemon1 + ".gif"));
+                pokemonGif2.setIcon(new ImageIcon("mult/gifs/" + nombrePokemon2 + ".gif"));
+                actualizarBarrasDeVida();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(
+                    this,
+                    "Error al cambiar Pokémon de la máquina: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+                );
+            }
+        } else {
+            // Código existente para jugadores humanos - sin cambios
+            java.util.List<String> pokemonsVivos = poobkemon.getPokemonsVivos(jugador);
 
-        // Seleccionar el primer botón por defecto
-        if (!botones.isEmpty()) {
-            botones.get(0).setSelected(true);
-        }
+            // Crear panel con botones con imagen y nombre
+            JPanel panel = new JPanel(new GridLayout(0, 1, 8, 8));
+            ButtonGroup group = new ButtonGroup();
+            java.util.List<JRadioButton> botones = new java.util.ArrayList<>();
+            
+            for (String nombre : pokemonsVivos) {
+                ImageIcon icon = new ImageIcon("mult/gifs/" + nombre + ".gif");
+                JRadioButton btn = new JRadioButton(nombre, icon, false);
+                btn.setHorizontalTextPosition(SwingConstants.RIGHT);
+                btn.setVerticalTextPosition(SwingConstants.CENTER);
+                group.add(btn);
+                panel.add(btn);
+                botones.add(btn);
+            }
 
-        int result = JOptionPane.showConfirmDialog(
-            this,
-            panel,
-            "El pokémon actual ha sido derrotado. Selecciona otro:",
-            JOptionPane.OK_OPTION,
-            JOptionPane.PLAIN_MESSAGE
-        );
+            // Seleccionar el primer botón por defecto
+            if (!botones.isEmpty()) {
+                botones.get(0).setSelected(true);
+            }
 
-        if (result == JOptionPane.OK_OPTION) {
-            for (JRadioButton btn : botones) {
-                if (btn.isSelected()) {
-                    String nuevoPokemon = btn.getText();
-                    poobkemon.cambiarPokemonActivo(jugador, nuevoPokemon);
-                    
-                    // Actualiza nombres y gifs
-                    nombrePokemon1 = app.getPokemonActivoJugador1();
-                    nombrePokemon2 = app.getPokemonActivoJugador2();
-                    pokemonGif1.setIcon(new ImageIcon("mult/gifs/" + nombrePokemon1 + ".gif"));
-                    pokemonGif2.setIcon(new ImageIcon("mult/gifs/" + nombrePokemon2 + ".gif"));
-                    actualizarBarrasDeVida();
-                    break;
+            int result = JOptionPane.showConfirmDialog(
+                this,
+                panel,
+                "El pokémon actual ha sido derrotado. Selecciona otro:",
+                JOptionPane.OK_OPTION,
+                JOptionPane.PLAIN_MESSAGE
+            );
+
+            if (result == JOptionPane.OK_OPTION) {
+                for (JRadioButton btn : botones) {
+                    if (btn.isSelected()) {
+                        String nuevoPokemon = btn.getText();
+                        poobkemon.cambiarPokemonActivo(jugador, nuevoPokemon);
+                        
+                        // Actualiza nombres y gifs
+                        nombrePokemon1 = app.getPokemonActivoJugador1();
+                        nombrePokemon2 = app.getPokemonActivoJugador2();
+                        pokemonGif1.setIcon(new ImageIcon("mult/gifs/" + nombrePokemon1 + ".gif"));
+                        pokemonGif2.setIcon(new ImageIcon("mult/gifs/" + nombrePokemon2 + ".gif"));
+                        actualizarBarrasDeVida();
+                        break;
+                    }
                 }
             }
         }
