@@ -205,10 +205,21 @@ public class PoobkemonSeleccionPanel extends BackgroundPanel {
         });
         backButton.addActionListener(e -> app.cambiarPantalla("gamemode"));
         nextButton.addActionListener(e -> {
-            if (seleccionPokemones1.isEmpty() || seleccionPokemones2.isEmpty()) {
+            // Verificar solo los Pokémon de jugadores humanos
+            boolean pokemonesSuficientes = true;
+            
+            if (!app.isMachinePlayer1() && !app.isMachineVsMachine()) {
+                pokemonesSuficientes = pokemonesSuficientes && !seleccionPokemones1.isEmpty();
+            }
+            
+            if (!app.isMachinePlayer2() && !app.isMachineVsMachine()) {
+                pokemonesSuficientes = pokemonesSuficientes && !seleccionPokemones2.isEmpty();
+            }
+            
+            if (!pokemonesSuficientes) {
                 JOptionPane.showMessageDialog(
                     this,
-                    "¡Ambos jugadores deben escoger al menos un pokémon!",
+                    "¡Todos los jugadores humanos deben escoger al menos un pokémon!",
                     "Selección incompleta",
                     JOptionPane.WARNING_MESSAGE
                 );
@@ -216,7 +227,7 @@ public class PoobkemonSeleccionPanel extends BackgroundPanel {
             }
 
             // Mostrar selecciones en consola (para depuración)
-            System.out.println("Selección de " + player1Button.getText() + ":");
+            System.out.println("Selección de " + player1Label.getText() + ":");
             seleccionPokemones1.forEach((idx, cantidad) -> {
                 System.out.println("  Poobkemon: " + pokemones.get(idx) + " x" + cantidad);
             });
@@ -224,7 +235,7 @@ public class PoobkemonSeleccionPanel extends BackgroundPanel {
                 System.out.println("  Item: " + items.get(idx) + " x" + cantidad);
             });
 
-            System.out.println("Selección de " + player2Button.getText() + ":");
+            System.out.println("Selección de " + player2Label.getText() + ":");
             seleccionPokemones2.forEach((idx, cantidad) -> {
                 System.out.println("  Poobkemon: " + pokemones.get(idx) + " x" + cantidad);
             });
@@ -232,7 +243,7 @@ public class PoobkemonSeleccionPanel extends BackgroundPanel {
                 System.out.println("  Item: " + items.get(idx) + " x" + cantidad);
             });
 
-            // Iniciar batalla (nuevo método)
+            // Iniciar batalla
             iniciarBatalla();
         });
 
@@ -355,35 +366,50 @@ public class PoobkemonSeleccionPanel extends BackgroundPanel {
         items1.clear();
         items2.clear();
         
-        // Poblar pokemones1 y pokemones2
-        seleccionPokemones1.forEach((idx, cantidad) -> {
-            String pokemon = pokemones.get(idx);
-            for (int i = 0; i < cantidad; i++) {
-                pokemones1.add(pokemon);
-            }
-        });
+        // Solo poblar pokemones1 desde las selecciones si el jugador 1 es humano
+        if (!app.isMachinePlayer1() && !app.isMachineVsMachine()) {
+            seleccionPokemones1.forEach((idx, cantidad) -> {
+                String pokemon = pokemones.get(idx);
+                for (int i = 0; i < cantidad; i++) {
+                    pokemones1.add(pokemon);
+                }
+            });
+        } else {
+            // Si el jugador 1 es una máquina, generar Pokémon aleatorios
+            pokemones1.addAll(generarPokemonesAleatorios(4));
+        }
         
-        seleccionPokemones2.forEach((idx, cantidad) -> {
-            String pokemon = pokemones.get(idx);
-            for (int i = 0; i < cantidad; i++) {
-                pokemones2.add(pokemon);
-            }
-        });
+        // Solo poblar pokemones2 desde las selecciones si el jugador 2 es humano
+        if (!app.isMachinePlayer2() && !app.isMachineVsMachine()) {
+            seleccionPokemones2.forEach((idx, cantidad) -> {
+                String pokemon = pokemones.get(idx);
+                for (int i = 0; i < cantidad; i++) {
+                    pokemones2.add(pokemon);
+                }
+            });
+        } else {
+            // Si el jugador 2 es una máquina, generar Pokémon aleatorios
+            pokemones2.addAll(generarPokemonesAleatorios(4));
+        }
         
-        // Poblar items1 y items2
-        seleccionItems1.forEach((idx, cantidad) -> {
-            String item = items.get(idx);
-            for (int i = 0; i < cantidad; i++) {
-                items1.add(item);
-            }
-        });
+        // Poblar items solo para humanos
+        if (!app.isMachinePlayer1() && !app.isMachineVsMachine()) {
+            seleccionItems1.forEach((idx, cantidad) -> {
+                String item = items.get(idx);
+                for (int i = 0; i < cantidad; i++) {
+                    items1.add(item);
+                }
+            });
+        }
         
-        seleccionItems2.forEach((idx, cantidad) -> {
-            String item = items.get(idx);
-            for (int i = 0; i < cantidad; i++) {
-                items2.add(item);
-            }
-        });
+        if (!app.isMachinePlayer2() && !app.isMachineVsMachine()) {
+            seleccionItems2.forEach((idx, cantidad) -> {
+                String item = items.get(idx);
+                for (int i = 0; i < cantidad; i++) {
+                    items2.add(item);
+                }
+            });
+        }
         
         // Convertir a ArrayList para compatibilidad con el API
         ArrayList<String> pokes1 = new ArrayList<>(pokemones1);
@@ -495,6 +521,67 @@ public class PoobkemonSeleccionPanel extends BackgroundPanel {
         
         // Valor por defecto
         return "Attacking";
+    }
+
+    /**
+     * Genera una lista de Pokémon aleatorios para las máquinas
+     * @param cantidad Cantidad de Pokémon a generar
+     * @return Lista de nombres de Pokémon aleatorios
+     */
+    private List<String> generarPokemonesAleatorios(int cantidad) {
+        List<String> todosPokemons = new ArrayList<>(pokemones);
+        List<String> seleccionados = new ArrayList<>();
+        
+        // Si hay menos Pokémon disponibles que la cantidad solicitada
+        if (todosPokemons.size() <= cantidad) {
+            return todosPokemons;
+        }
+        
+        // Seleccionar Pokémon aleatorios sin repetición
+        Random random = new Random();
+        while (seleccionados.size() < cantidad && !todosPokemons.isEmpty()) {
+            int index = random.nextInt(todosPokemons.size());
+            seleccionados.add(todosPokemons.get(index));
+            todosPokemons.remove(index);
+        }
+        
+        return seleccionados;
+    }
+
+    /**
+     * Actualiza la interfaz según el jugador actual y si es una máquina
+     */
+    private void actualizarInterfazSeleccion() {
+        // Establecer el título y configuración según el jugador actual
+        if (jugadorActual == 1) {
+            // Ocultar selección si el jugador 1 es una máquina
+            boolean esMaquina = app.isMachinePlayer1() || app.isMachineVsMachine();
+            pokemonsGrid.setEnabled(!esMaquina);
+            itemsGrid.setEnabled(!esMaquina);
+            
+            if (esMaquina) {
+                JOptionPane.showMessageDialog(this, 
+                    "Los Pokémon para la máquina se seleccionarán automáticamente",
+                    "Selección automática", 
+                    JOptionPane.INFORMATION_MESSAGE);
+            }
+        } else {
+            // Ocultar selección si el jugador 2 es una máquina
+            boolean esMaquina = app.isMachinePlayer2() || app.isMachineVsMachine();
+            pokemonsGrid.setEnabled(!esMaquina);
+            itemsGrid.setEnabled(!esMaquina);
+            
+            if (esMaquina) {
+                JOptionPane.showMessageDialog(this, 
+                    "Los Pokémon para la máquina se seleccionarán automáticamente",
+                    "Selección automática", 
+                    JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+        
+        // Actualizar la visualización
+        refreshPokemons();
+        refreshItems();
     }
 }
 
