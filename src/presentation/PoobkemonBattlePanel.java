@@ -289,6 +289,10 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
         actualizarBarrasDeVida();
         // Actualizar los nombres iniciales
         actualizarPokemonActivos();
+        // Si el primer turno es de la máquina, ejecuta su turno automáticamente
+        if (!turnoJugador1 && app.isBattleWithMachine() && !app.isMachinePlayer1()) {
+            SwingUtilities.invokeLater(this::ejecutarTurnoMaquina);
+        }
     }
 
     private void actualizarColoresBotones() {
