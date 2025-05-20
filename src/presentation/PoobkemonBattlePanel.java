@@ -345,7 +345,7 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
             // Necesita cambiar Pokémon - jugador 1
             manejarPokemonDerrotado(true);
             // Si es jugador humano, no continuar automáticamente
-            if (!app.isMachinePlayer1()) {
+            if (!app.isMachinePlayer1() && !isMachineVsMachine) {
                 return;
             }
         }
@@ -356,7 +356,7 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
             // Necesita cambiar Pokémon - jugador 2
             manejarPokemonDerrotado(false);
             // Si es jugador humano, no continuar automáticamente
-            if (!app.isMachinePlayer2()) {
+            if (!app.isMachinePlayer2() && !isMachineVsMachine) {
                 return;
             }
         }
@@ -535,6 +535,9 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
                 ejecutarTurnoMaquina();
             }
         });
+        
+        // Actualizar interfaz para mostrar nombres de máquinas
+        actualizarPokemonActivos();
         
         // Iniciar la simulación
         ejecutarTurnoMaquina();
@@ -734,7 +737,9 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
      */
     private void manejarPokemonDerrotado(boolean jugador) {
         // Comprobar si el jugador es una máquina
-        boolean esMaquina = (jugador && app.isMachinePlayer1()) || (!jugador && app.isMachinePlayer2());
+        boolean esMaquina = isMachineVsMachine || 
+                           (jugador && app.isMachinePlayer1()) || 
+                           (!jugador && app.isMachinePlayer2());
         
         if (esMaquina) {
             // Si es una máquina, procesar automáticamente el cambio
