@@ -2,6 +2,7 @@ package domain;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -139,7 +140,14 @@ public class Poobkemon {
                                String machineType) throws PoobkemonException {
         // Crear una arena de batalla apropiada
         battleArenaNormal = new BattleArenaNormal();
-        
+
+        // Si la lista de pokémon de la máquina está vacía, genera 6 aleatorios
+        if (machinePokemon == null || machinePokemon.isEmpty()) {
+            ArrayList<String> disponibles = new ArrayList<>(getAvailablePokemon());
+            Collections.shuffle(disponibles);
+            machinePokemon = new ArrayList<>(disponibles.subList(0, Math.min(6, disponibles.size())));
+        }
+
         // Configurar los entrenadores (humano y máquina)
         // La máquina necesita una configuración especial basada en su tipo
         battleArenaNormal.setupHumanVsMachine(humanName, machineName, 

@@ -132,7 +132,10 @@ public class PoobkemonGameMode extends JPanel {
 
         pvmButton.addActionListener(e -> {
             app.configureBattleHumanVsMachine(); // Configura tipo de batalla
-            app.cambiarPantalla("selection");    // Navega a selección de Pokémon
+
+            // Crea el panel de selección para un jugador y lo muestra
+            PoobkemonSeleccion1PPanel seleccionPanel = new PoobkemonSeleccion1PPanel(app, app.getNombreJugador1());
+            app.cambiarPantallaConPanel(seleccionPanel, "selection1P");
         });
 
         JPanel pvmRow = new JPanel(new BorderLayout());

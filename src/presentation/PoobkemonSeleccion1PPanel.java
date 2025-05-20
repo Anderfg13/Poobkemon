@@ -175,7 +175,11 @@ public class PoobkemonSeleccion1PPanel extends BackgroundPanel {
             seleccionPokemones.forEach((idx, cantidad) -> {
                 for (int i = 0; i < cantidad; i++) pokes.add(pokemones.get(idx));
             });
-            PoobkemonMovimientos1PPanel movPanel = new PoobkemonMovimientos1PPanel(app, nombreJugador, pokes);
+            List<String> itemsSeleccionados = new ArrayList<>();
+            seleccionItems.forEach((idx, cantidad) -> {
+                for (int i = 0; i < cantidad; i++) itemsSeleccionados.add(items.get(idx));
+            });
+            PoobkemonMovimientos1PPanel movPanel = new PoobkemonMovimientos1PPanel(app, nombreJugador, pokes, itemsSeleccionados);
             app.cambiarPantallaConPanel(movPanel, "movimientos1p");
         });
 

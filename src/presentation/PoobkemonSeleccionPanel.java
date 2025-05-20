@@ -25,10 +25,10 @@ public class PoobkemonSeleccionPanel extends BackgroundPanel {
     private final int POKES_POR_PAG = 6;
     private final int ITEMS_POR_PAG = 4;
 
-    private final JPanel pokemonsGrid = new JPanel(new GridLayout(2, 3, 18, 18));
+    protected JPanel pokemonsGrid = new JPanel(new GridLayout(2, 3, 18, 18));
     private final JPanel itemsGrid = new JPanel(new GridLayout(1, 4, 18, 18));
     private final JLabel player1Label;
-    private final JLabel player2Label;
+    protected JLabel player2Label;
     private final PoobkemonGUI app;
 
     private List<String> pokemones1 = new ArrayList<>();

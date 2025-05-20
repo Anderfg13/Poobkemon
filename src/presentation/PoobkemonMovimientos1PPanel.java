@@ -9,15 +9,17 @@ import java.util.List;
 public class PoobkemonMovimientos1PPanel extends BackgroundPanel {
     private final String nombreJugador;
     private final List<String> pokemonesJugador;
+    private final List<String> itemsJugador; // <-- Agrega esto
     private final Map<String, List<String>> movimientosSeleccionados = new HashMap<>();
     private final PoobkemonGUI app;
     private JPanel centerPanel;
 
-    public PoobkemonMovimientos1PPanel(PoobkemonGUI app, String nombreJugador, List<String> pokemonesJugador) {
+    public PoobkemonMovimientos1PPanel(PoobkemonGUI app, String nombreJugador, List<String> pokemonesJugador, List<String> itemsJugador) {
         super("mult/Fondos/Pokemon_NormalSelection.jpg");
         this.app = app;
         this.nombreJugador = nombreJugador;
         this.pokemonesJugador = pokemonesJugador;
+        this.itemsJugador = itemsJugador; // <-- Guarda la lista
 
         setLayout(new BorderLayout());
 
@@ -50,17 +52,44 @@ public class PoobkemonMovimientos1PPanel extends BackgroundPanel {
                 JOptionPane.showMessageDialog(this, "Todos los pokemones deben tener 4 movimientos.", "Faltan movimientos", JOptionPane.WARNING_MESSAGE);
                 return;
             }
-            // Aquí puedes continuar al siguiente paso del juego
-            System.out.println("Movimientos seleccionados por " + nombreJugador + ":");
-            for (String poke : pokemonesJugador) {
-                System.out.println("  " + poke + ": " + movimientosSeleccionados.get(poke));
+
+            // Preguntar contra qué tipo de máquina quiere pelear
+            String tipoMaquina = PoobkemonSeleccionPanel.seleccionarTipoMaquinaStatic(this, "Seleccionar tipo de Máquina");
+
+            // Prepara los movimientos en el formato adecuado
+            String[][] movimientosPorPokemon = new String[pokemonesJugador.size()][4];
+            for (int i = 0; i < pokemonesJugador.size(); i++) {
+                List<String> movs = movimientosSeleccionados.get(pokemonesJugador.get(i));
+                for (int j = 0; j < 4; j++) {
+                    movimientosPorPokemon[i][j] = movs.get(j);
+                }
             }
-            // app.cambiarPantalla("siguientePaso"); // Cambia esto por tu flujo real
+
+            try {
+                app.getPoobkemon().startBattleHumanVsMachine(
+                    nombreJugador,
+                    "CPU " + tipoMaquina,
+                    new ArrayList<>(pokemonesJugador),
+                    new ArrayList<>(), // pokemones de la máquina se generan en el dominio
+                    new ArrayList<>(itemsJugador), // <-- Aquí pasas los ítems seleccionados
+                    movimientosPorPokemon,
+                    tipoMaquina
+                );
+                boolean jugador1Empieza = app.getPoobkemon().whoStarts();
+                PoobkemonBattlePanel battlePanel = new PoobkemonBattlePanel(
+                    app.getPoobkemon(), app,
+                    app.getColorJugador1(), app.getColorJugador2(), jugador1Empieza
+                );
+                app.cambiarPantallaConPanel(battlePanel, "battle");
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Error al iniciar la batalla: " + ex.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            }
         });
 
         JButton volver = new GradientButton("Volver");
         volver.setFont(new Font("Times New Roman", Font.BOLD, 20));
-        volver.addActionListener(e -> app.cambiarPantalla("selection1p"));
+        volver.addActionListener(e -> app.cambiarPantallaConPanel(new PoobkemonSeleccion1PPanel(app, nombreJugador), "selection1p"));
 
         JPanel bottomPanel = new JPanel();
         bottomPanel.setOpaque(false);
