@@ -421,8 +421,8 @@ public class PoobkemonSeleccionPanel extends BackgroundPanel {
             if (app.isBattleWithMachine()) {
                 if (app.isMachineVsMachine()) {
                     // Código para batallas máquina vs máquina
-                    String tipoMaquina1 = seleccionarTipoMaquina("Seleccionar tipo para Máquina 1");
-                    String tipoMaquina2 = seleccionarTipoMaquina("Seleccionar tipo para Máquina 2");
+                    String tipoMaquina1 = seleccionarTipoMaquinaStatic(this, "Seleccionar tipo para Máquina 1");
+                    String tipoMaquina2 = seleccionarTipoMaquinaStatic(this, "Seleccionar tipo para Máquina 2");
                     
                     // Iniciar directamente la batalla máquina vs máquina
                     app.getPoobkemon().startBattleMachineVsMachine(
@@ -437,7 +437,7 @@ public class PoobkemonSeleccionPanel extends BackgroundPanel {
                 } 
                 else if (app.isMachinePlayer1()) {
                     // Batalla máquina vs humano
-                    String tipoMaquina = seleccionarTipoMaquina("Seleccionar tipo de Máquina");
+                    String tipoMaquina = seleccionarTipoMaquinaStatic(this, "Seleccionar tipo de Máquina");
                     
                     // Ir a la pantalla de selección de movimientos
                     PoobkemonMovimientosPanel movimientosPanel = new PoobkemonMovimientosPanel(
@@ -448,7 +448,7 @@ public class PoobkemonSeleccionPanel extends BackgroundPanel {
                 } 
                 else {
                     // Batalla humano vs máquina
-                    String tipoMaquina = seleccionarTipoMaquina("Seleccionar tipo de Máquina");
+                    String tipoMaquina = seleccionarTipoMaquinaStatic(this, "Seleccionar tipo de Máquina");
                     
                     // Ir a la pantalla de selección de movimientos
                     PoobkemonMovimientosPanel movimientosPanel = new PoobkemonMovimientosPanel(
@@ -583,6 +583,45 @@ public class PoobkemonSeleccionPanel extends BackgroundPanel {
         // Actualizar la visualización
         refreshPokemons();
         refreshItems();
+    }
+
+    public static String seleccionarTipoMaquinaStatic(Component parent, String titulo) {
+        String[] tiposMaquina = {"Attacking", "Defensive", "Changing", "Expert", "Gemini"};
+        Map<String, String> descripciones = new HashMap<>();
+        descripciones.put("Attacking", "Prioriza ataques potentes y estadísticas ofensivas");
+        descripciones.put("Defensive", "Enfocada en resistencia y recuperación");
+        descripciones.put("Changing", "Cambia estrategias y Pokémon según la situación");
+        descripciones.put("Expert", "Combina todas las estrategias de forma inteligente");
+        descripciones.put("Gemini", "IA avanzada utilizando Google Gemini 2 Flash");
+    
+        JPanel panel = new JPanel(new GridLayout(0, 1));
+        ButtonGroup group = new ButtonGroup();
+        JRadioButton[] buttons = new JRadioButton[tiposMaquina.length];
+    
+        for (int i = 0; i < tiposMaquina.length; i++) {
+            String tipo = tiposMaquina[i];
+            buttons[i] = new JRadioButton("<html><b>" + tipo + "</b>: " + descripciones.get(tipo) + "</html>");
+            group.add(buttons[i]);
+            panel.add(buttons[i]);
+        }
+        buttons[0].setSelected(true);
+    
+        int result = JOptionPane.showConfirmDialog(
+            parent,
+            panel,
+            titulo,
+            JOptionPane.OK_CANCEL_OPTION,
+            JOptionPane.PLAIN_MESSAGE
+        );
+    
+        if (result == JOptionPane.OK_OPTION) {
+            for (int i = 0; i < buttons.length; i++) {
+                if (buttons[i].isSelected()) {
+                    return tiposMaquina[i];
+                }
+            }
+        }
+        return "Attacking";
     }
 }
 

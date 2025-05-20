@@ -147,7 +147,33 @@ public class PoobkemonGameMode extends JPanel {
 
         mvmButton.addActionListener(e -> {
             app.configureBattleMachineVsMachine(); // Configura tipo de batalla
-            app.cambiarPantalla("selection");      // Navega a selección de Pokémon
+
+            // Usa el mismo método de selección de tipo de máquina que tienes en PoobkemonSeleccionPanel
+            String tipoMaquina1 = PoobkemonSeleccionPanel.seleccionarTipoMaquinaStatic(this, "Seleccionar tipo para Máquina 1");
+            String tipoMaquina2 = PoobkemonSeleccionPanel.seleccionarTipoMaquinaStatic(this, "Seleccionar tipo para Máquina 2");
+
+            // Genera 6 pokémon aleatorios para cada máquina
+            ArrayList<String> pokemonesDisponibles = new ArrayList<>(Poobkemon.getAvailablePokemon());
+            Collections.shuffle(pokemonesDisponibles);
+            ArrayList<String> pokemonesAleatorios1 = new ArrayList<>(pokemonesDisponibles.subList(0, 6));
+            Collections.shuffle(pokemonesDisponibles);
+            ArrayList<String> pokemonesAleatorios2 = new ArrayList<>(pokemonesDisponibles.subList(0, 6));
+
+            try {
+                app.getPoobkemon().startBattleMachineVsMachine(
+                    "CPU " + tipoMaquina1, "CPU " + tipoMaquina2,
+                    pokemonesAleatorios1, pokemonesAleatorios2,
+                    tipoMaquina1, tipoMaquina2
+                );
+                boolean jugador1Empieza = app.getPoobkemon().whoStarts();
+                PoobkemonBattlePanel battlePanel = new PoobkemonBattlePanel(
+                    app.getPoobkemon(), app, app.getColorJugador1(), app.getColorJugador2(), jugador1Empieza
+                );
+                app.cambiarPantallaConPanel(battlePanel, "battle");
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Error al iniciar la batalla: " + ex.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            }
         });
 
         JPanel mvmRow = new JPanel(new BorderLayout());
