@@ -68,7 +68,7 @@ public class PoobkemonSeleccionPanel extends BackgroundPanel {
         player1Button.setBackground(new Color(220, 230, 255));
         player2Button.setBackground(new Color(255, 230, 220));
 
-        player1Button.addActionListener(_ -> {
+        player1Button.addActionListener(e -> {
             jugadorActual = 1;
             refreshPokemons();
             refreshItems();

@@ -89,12 +89,12 @@ public class PoobkemonMovimientosPanel extends BackgroundPanel {
 
         JButton volver = new GradientButton("Volver");
         volver.setFont(new Font("Times New Roman", Font.BOLD, 20));
-        volver.addActionListener(_ -> {
+        volver.addActionListener(e -> {
             // Regresa a la pantalla anterior
             app.cambiarPantalla("selection");
         });
 
-        finalizar.addActionListener(_ -> {
+        finalizar.addActionListener(e -> {
             if (vsMachine) {
                 iniciarBatalla();
             } else {
@@ -180,7 +180,7 @@ public class PoobkemonMovimientosPanel extends BackgroundPanel {
                 pokeBtn.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
             }
 
-            pokeBtn.addActionListener(_ -> {
+            pokeBtn.addActionListener(e -> {
                 SeleccionarMovimientosDialog dialog = new SeleccionarMovimientosDialog(
                     (JFrame) SwingUtilities.getWindowAncestor(this),
                     nombreJugador, poke

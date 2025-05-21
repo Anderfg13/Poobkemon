@@ -173,15 +173,15 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
         iniciarTemporizador();
 
         // Ejemplo: Cambiar de turno al presionar pausa
-        pauseButton.addActionListener(_ -> cambiarTurno());
+        pauseButton.addActionListener(e -> cambiarTurno());
 
         // En el constructor, después de crear los botones:
-        fightBtn.addActionListener(_ -> {
+        fightBtn.addActionListener(e -> {
             List<String> ataques = poobkemon.getActivePokemonMoves(turnoJugador1);
             mostrarPanelAtaques(ataques.toArray(String[]::new)); // Optimizado
         });
 
-        itemsBtn.addActionListener(_ -> {
+        itemsBtn.addActionListener(e -> {
             boolean esJugador1 = turnoJugador1;
             java.util.List<String> items = poobkemon.getItemsJugador(esJugador1);
             if (items == null || items.isEmpty()) {
@@ -191,7 +191,7 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
             }
         });
 
-        fleeBtn.addActionListener(_ -> {
+        fleeBtn.addActionListener(e -> {
             String jugador = turnoJugador1 ? app.getNombreJugador1() : app.getNombreJugador2();
             String rival = turnoJugador1 ? app.getNombreJugador2() : app.getNombreJugador1();
             int opcion = JOptionPane.showConfirmDialog(
@@ -220,7 +220,7 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
             }
         });
 
-        pokemonsBtn.addActionListener(_ -> {
+        pokemonsBtn.addActionListener(e -> {
             boolean esJugador1 = turnoJugador1;
             String pokemonActual = esJugador1 ? nombrePokemon1 : nombrePokemon2;
             java.util.List<String> pokemonsVivos = poobkemon.getPokemonsVivos(esJugador1);
@@ -532,7 +532,7 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
         
         // Reconfigurar botón de pausa
         pauseButton.removeActionListener(pauseButton.getActionListeners()[0]);
-        pauseButton.addActionListener(_ -> {
+        pauseButton.addActionListener(e -> {
             pausado[0] = !pausado[0];
             if (!pausado[0]) {
                 // Si se reanuda, continuar con la simulación
@@ -671,7 +671,7 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
             ataqueBtn.setBackground(color);
             ataqueBtn.setForeground(Color.WHITE);
 
-            ataqueBtn.addActionListener(_ -> {
+            ataqueBtn.addActionListener(e -> {
                 try {
                     boolean toItself = poobkemon.esAtaqueSobreSiMismo(nombreAtaque);
                     int damage = poobkemon.attack(nombreAtaque, toItself, turnoJugador1);
@@ -839,7 +839,7 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
             itemBtn.setBackground(color);
             itemBtn.setForeground(Color.WHITE);
 
-            itemBtn.addActionListener(_ -> {
+            itemBtn.addActionListener(e -> {
                 try {
                     if (item.equalsIgnoreCase("Revivir")) {
                         mostrarDialogoRevivir();
