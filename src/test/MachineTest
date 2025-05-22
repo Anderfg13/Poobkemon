@@ -1,0 +1,163 @@
+package test;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.*;
+
+class MachineTest {
+    private AttackingMachine attackingMachine;
+    private DefensiveMachine defensiveMachine;
+    private ChangingMachine changingMachine;
+    private ExpertMachine expertMachine;
+    private GeminiMachine geminiMachine;
+    private ArrayList<Pokemon> pokemons;
+    private ArrayList<String> items;
+
+    static class DummyAttack extends Attack {
+        public DummyAttack(String name, String type, int baseDamage, int precision) {
+            super(name, type, baseDamage, precision);
+        }
+    }
+    static class DummyPokemon extends Pokemon {
+        private List<Attack> ataques;
+        public DummyPokemon(String name, String type, int ps, int totalPs) {
+            super(name, type, ps, totalPs);
+            ataques = new ArrayList<>();
+        }
+        @Override
+        public List<Attack> getAtaques() { return ataques; }
+        public void addAtaque(Attack a) { ataques.add(a); }
+    }
+
+    @BeforeEach
+    void setUp() {
+        pokemons = new ArrayList<>();
+        items = new ArrayList<>();
+        DummyPokemon p1 = new DummyPokemon("Pikachu", "Electrico", 100, 100);
+        DummyPokemon p2 = new DummyPokemon("Bulbasaur", "Planta", 100, 100);
+        DummyPokemon p3 = new DummyPokemon("Charmander", "Fuego", 100, 100);
+
+        p1.addAtaque(new DummyAttack("Impactrueno", "Electrico", 40, 100));
+        p1.addAtaque(new DummyAttack("Placaje", "Normal", 35, 95));
+        p2.addAtaque(new DummyAttack("Látigo Cepa", "Planta", 45, 100));
+        p2.addAtaque(new DummyAttack("Gruñido", "Normal", 0, 100));
+        p3.addAtaque(new DummyAttack("Ascuas", "Fuego", 40, 100));
+        p3.addAtaque(new DummyAttack("Arañazo", "Normal", 40, 100));
+
+        pokemons.add(p1);
+        pokemons.add(p2);
+        pokemons.add(p3);
+
+        items.add("Poción");
+        items.add("Antídoto");
+
+        attackingMachine = new AttackingMachine("Attacker", pokemons, items);
+        defensiveMachine = new DefensiveMachine("Defender", pokemons, items);
+        changingMachine = new ChangingMachine("Changer", pokemons, items);
+        expertMachine = new ExpertMachine("Expert", pokemons, items);
+        geminiMachine = new GeminiMachine("Gemini", pokemons, items);
+
+        attackingMachine.setOpponent(defensiveMachine);
+        defensiveMachine.setOpponent(attackingMachine);
+        changingMachine.setOpponent(attackingMachine);
+        expertMachine.setOpponent(defensiveMachine);
+        geminiMachine.setOpponent(attackingMachine);
+    }
+
+    @Test void testAttackingMachineSelectMove() {
+        int idx = attackingMachine.selectMove();
+        assertTrue(idx >= 0 && idx < pokemons.get(0).getAtaques().size());
+    }
+
+    @Test void testDefensiveMachineSelectMove() {
+        int idx = defensiveMachine.selectMove();
+        assertTrue(idx >= 0 && idx < pokemons.get(0).getAtaques().size());
+    }
+
+    @Test void testChangingMachineSelectMove() {
+        int idx = changingMachine.selectMove();
+        assertTrue(idx >= 0 && idx < pokemons.get(0).getAtaques().size());
+    }
+
+    @Test void testExpertMachineSelectMove() {
+        int idx = expertMachine.selectMove();
+        assertTrue(idx >= 0 && idx < pokemons.get(0).getAtaques().size());
+    }
+
+    @Test void testGeminiMachineSelectMove() {
+        int idx = geminiMachine.selectMove();
+        assertTrue(idx >= 0 && idx < pokemons.get(0).getAtaques().size());
+    }
+
+    @Test void testAttackingMachineSelectBestPokemon() {
+        int idx = attackingMachine.selectBestPokemon();
+        assertTrue(idx >= 0 && idx < pokemons.size());
+    }
+
+    @Test void testDefensiveMachineSelectBestPokemon() {
+        int idx = defensiveMachine.selectBestPokemon();
+        assertTrue(idx >= 0 && idx < pokemons.size());
+    }
+
+    @Test void testChangingMachineSelectBestPokemon() {
+        int idx = changingMachine.selectBestPokemon();
+        assertTrue(idx >= 0 && idx < pokemons.size());
+    }
+
+    @Test void testExpertMachineSelectBestPokemon() {
+        int idx = expertMachine.selectBestPokemon();
+        assertTrue(idx >= 0 && idx < pokemons.size());
+    }
+
+    @Test void testGeminiMachineSelectBestPokemon() {
+        int idx = geminiMachine.selectBestPokemon();
+        assertTrue(idx >= 0 && idx < pokemons.size());
+    }
+
+    @Test void testAttackingMachineShouldUseItem() {
+        assertDoesNotThrow(() -> attackingMachine.shouldUseItem());
+    }
+
+    @Test void testDefensiveMachineShouldUseItem() {
+        assertDoesNotThrow(() -> defensiveMachine.shouldUseItem());
+    }
+
+    @Test void testChangingMachineShouldUseItem() {
+        assertDoesNotThrow(() -> changingMachine.shouldUseItem());
+    }
+
+    @Test void testExpertMachineShouldUseItem() {
+        assertDoesNotThrow(() -> expertMachine.shouldUseItem());
+    }
+
+    @Test void testGeminiMachineShouldUseItem() {
+        assertDoesNotThrow(() -> geminiMachine.shouldUseItem());
+    }
+
+    @Test void testAttackingMachineSelectItem() {
+        int idx = attackingMachine.selectItem();
+        assertTrue(idx >= -1 && idx < items.size());
+    }
+
+    @Test void testDefensiveMachineSelectItem() {
+        int idx = defensiveMachine.selectItem();
+        assertTrue(idx >= -1 && idx < items.size());
+    }
+
+    @Test void testChangingMachineSelectItem() {
+        int idx = changingMachine.selectItem();
+        assertTrue(idx >= -1 && idx < items.size());
+    }
+
+    @Test void testExpertMachineSelectItem() {
+        int idx = expertMachine.selectItem();
+        assertTrue(idx >= -1 && idx < items.size());
+    }
+
+    @Test void testGeminiMachineSelectItem() {
+        int idx = geminiMachine.selectItem();
+        assertTrue(idx >= -1 && idx < items.size());
+    }
+}
