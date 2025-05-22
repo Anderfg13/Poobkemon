@@ -113,4 +113,8 @@ public class AttackFactory {
     public static Map<String, Attack> getAllAttacks() {
         return ATTACK_REGISTRY;
     }
+
+    public static Attack getAttack(String name) {
+        return ATTACK_REGISTRY.get(name);
+    }
 }
