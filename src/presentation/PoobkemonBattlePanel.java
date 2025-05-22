@@ -118,7 +118,7 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
 
         // Etiqueta para el nombre del pokémon/entrenador 1
         player1Label = new JLabel();
-        player1Label.setBounds(80, -15, 200, 20);
+        player1Label.setBounds(80, 30, 200, 20);
         player1Label.setHorizontalAlignment(SwingConstants.CENTER);
         player1Label.setForeground(Color.WHITE);
         centerPanel.add(player1Label);

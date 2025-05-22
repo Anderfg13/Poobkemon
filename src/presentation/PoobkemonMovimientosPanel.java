@@ -308,7 +308,7 @@ public class PoobkemonMovimientosPanel extends BackgroundPanel {
             PoobkemonBattlePanel battlePanel = new PoobkemonBattlePanel(
                 app.getPoobkemon(), app, 
                 app.getColorJugador1(), app.getColorJugador2(),
-                jugador1Empieza);
+                !jugador1Empieza);
             
             app.cambiarPantallaConPanel(battlePanel, "battle");
             
