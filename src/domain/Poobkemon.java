@@ -341,6 +341,26 @@ public class Poobkemon {
             return new AttackingMachine(name, pokemons, items);
         }
     }
+
+    public int getPokemonHP(boolean esJugador1, String nombrePokemon) {
+        // Busca el Pokémon por nombre en el coach correspondiente y retorna su vida actual
+        for (Pokemon p : battleArenaNormal.getCoach(esJugador1 ? 0 : 1).getPokemons()) {
+            if (p.getName().equals(nombrePokemon)) {
+                return p.getPs();
+            }
+        }
+        return 0; // O lanza una excepción si prefieres
+    }
+
+    public int getPokemonMaxHP(boolean esJugador1, String nombrePokemon) {
+        // Busca el Pokémon por nombre en el coach correspondiente y retorna su vida máxima
+        for (Pokemon p : battleArenaNormal.getCoach(esJugador1 ? 0 : 1).getPokemons()) {
+            if (p.getName().equals(nombrePokemon)) {
+                return p.getTotalPs();
+            }
+        }
+        return 0; // O lanza una excepción si prefieres
+    }
 }
 
 

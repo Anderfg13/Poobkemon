@@ -16,7 +16,7 @@ public abstract class BattleArena {
     private long timeRemaining = MAX_TIME_SECONDS * 1000L; // Tiempo restante en milisegundos
     private long pauseStartTime; // Momento en que se pausó el juego
     protected boolean battleFinished;
-    protected boolean isPlayer1Turn;
+    protected boolean isPlayer1Turn = false;
 
 
     public BattleArena() {
@@ -251,7 +251,7 @@ public abstract class BattleArena {
     }
 
     public boolean whoStarts(){
-        this.isPlayer1Turn = rand.nextBoolean();
+        this.isPlayer1Turn = !this.isPlayer1Turn;
         return this.isPlayer1Turn;
     }
 
