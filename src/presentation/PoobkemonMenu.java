@@ -1,8 +1,7 @@
 package presentation;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import javax.swing.*;
 
 public class PoobkemonMenu extends JPanel {
     public PoobkemonMenu(PoobkemonGUI app, Musica musica) {
@@ -18,7 +17,7 @@ public class PoobkemonMenu extends JPanel {
 
         JButton newGameButton = new GradientButton("New Game");
         JButton oldGameButton = new GradientButton("Old Game");
-        JButton optionsButton = new GradientButton("Options");
+        JButton optionsButton = new GradientButton("Instructions");
         JButton backButton = new GradientButton("Back");
 
         newGameButton.setPreferredSize(new Dimension(220, 36));
@@ -28,6 +27,7 @@ public class PoobkemonMenu extends JPanel {
 
         newGameButton.addActionListener(e -> app.cambiarPantalla("gamemode"));
         backButton.addActionListener(e -> app.cambiarPantalla("inicio"));
+        optionsButton.addActionListener(e -> app.cambiarPantallaConPanel(new InstructionsPanel(app), "instructions"));
 
         buttonPanel.add(newGameButton);
         buttonPanel.add(oldGameButton);
