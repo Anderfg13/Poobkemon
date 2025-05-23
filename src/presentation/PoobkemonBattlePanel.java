@@ -60,6 +60,8 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
     // Añadir estas declaraciones junto a los otros campos de clase
     private JLabel player1Label, player2Label;
 
+    private volatile boolean pausaActiva = false;
+
     /**
      * Constructor del panel de batalla de Poobkemon.
      * Inicializa la interfaz, los botones, temporizador y detecta el tipo de batalla.
@@ -204,7 +206,33 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
         iniciarTemporizador();
 
         // Ejemplo: Cambiar de turno al presionar pausa
-        pauseButton.addActionListener(e -> cambiarTurno());
+        pauseButton.addActionListener(e -> {
+            pausaActiva = true; // Activar pausa
+            if (timer != null) {
+                timer.cancel();
+                timer = null;
+            }
+            PauseDialog dialog = new PauseDialog(
+                (JFrame) SwingUtilities.getWindowAncestor(this),
+                poobkemon,
+                app,
+                () -> {
+                    pausaActiva = false; // Desactivar pausa al continuar
+                    if (isMachineVsMachine) {
+                        ejecutarTurnoMaquina();
+                    } else {
+                        iniciarTemporizador();
+                    }
+                },
+                () -> {
+                    pausaActiva = false; // Desactivar pausa al terminar
+                    app.pausarMusicaBatalla();
+                    app.reanudarMusicaGlobal();
+                    app.mostrarMenuPrincipal();
+                }
+            );
+            dialog.setVisible(true);
+        });
 
         // En el constructor, después de crear los botones:
         fightBtn.addActionListener(e -> {
@@ -433,6 +461,8 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
      * Actualiza la interfaz y gestiona el flujo de la batalla para batallas máquina vs máquina o humano vs máquina.
      */
     private void ejecutarTurnoMaquina() {
+        if (pausaActiva) return; // No ejecutar nada si está en pausa
+
         // Desactivar botones durante el turno de la máquina
         habilitarBotones(false);
         
@@ -546,27 +576,15 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
     private void iniciarBatallaMaquinaVsMaquina() {
         // En batalla máquina vs máquina, desactivar botones permanentemente
         habilitarBotones(false);
-        
-        // Botón para pausar/continuar la simulación
+
+        // NO cambies el listener del botón de pausa aquí.
+        // Solo asegúrate de que el botón esté habilitado y con el texto adecuado si lo deseas.
         pauseButton.setText("▶/II");
         pauseButton.setEnabled(true);
-        
-        // Variable para controlar si la simulación está pausada
-        final boolean[] pausado = {false};
-        
-        // Reconfigurar botón de pausa
-        pauseButton.removeActionListener(pauseButton.getActionListeners()[0]);
-        pauseButton.addActionListener(e -> {
-            pausado[0] = !pausado[0];
-            if (!pausado[0]) {
-                // Si se reanuda, continuar con la simulación
-                ejecutarTurnoMaquina();
-            }
-        });
-        
+
         // Actualizar interfaz para mostrar nombres de máquinas
         actualizarPokemonActivos();
-        
+
         // Iniciar la simulación
         ejecutarTurnoMaquina();
     }
