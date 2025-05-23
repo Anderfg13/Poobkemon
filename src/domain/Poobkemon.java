@@ -318,6 +318,14 @@ public class Poobkemon {
         battleArenaNormal.eliminarItem(esJugador1, nombreItem);
     }
 
+    public int getPokemonHP(boolean esJugador1, String nombrePokemon) {
+        return battleArenaNormal.getPokemonHP(esJugador1, nombrePokemon);
+    }
+
+    public int getPokemonMaxHP(boolean esJugador1, String nombrePokemon) {
+        return battleArenaNormal.getPokemonMaxHP(esJugador1, nombrePokemon);
+    }
+
     private Coach createMachineCoach(String name, String machineType, ArrayList<String> pokemonNames, ArrayList<String> items) {
         // Convertir nombres de pokémon a objetos Pokemon
         ArrayList<Pokemon> pokemons = new ArrayList<>();

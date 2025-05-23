@@ -343,6 +343,18 @@ public abstract class BattleArena {
         coaches[esJugador1 ? 0 : 1].eliminarItem(nombreItem);
     }
 
+    public int getPokemonHP(boolean esJugador1, String nombrePokemon) {
+        Coach coach = getCoach(esJugador1 ? 0 : 1);
+        Pokemon pokemon = coach.getPokemonByName(nombrePokemon);
+        return pokemon != null ? pokemon.getPs() : 0;
+    }
+
+    public int getPokemonMaxHP(boolean esJugador1, String nombrePokemon) {
+        Coach coach = getCoach(esJugador1 ? 0 : 1);
+        Pokemon pokemon = coach.getPokemonByName(nombrePokemon);
+        return pokemon != null ? pokemon.getTotalPs() : 0;
+    }
+
     /**
      * Establece un entrenador en la posición especificada.
      * @param index Índice del entrenador (0 para el primer jugador, 1 para el segundo)

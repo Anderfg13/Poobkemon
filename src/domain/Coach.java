@@ -217,4 +217,13 @@ public abstract class Coach {
     public boolean isMachine() {
         return false;
     }
+
+    public Pokemon getPokemonByName(String nombrePokemon) {
+        for (Pokemon pokemon : pokemons) { // Asumiendo que tienes una lista llamada 'pokemons' en Coach
+            if (pokemon.getName().equalsIgnoreCase(nombrePokemon)) {
+                return pokemon;
+            }
+        }
+        return null; // Retorna null si no se encuentra el Pokémon
+    }
 }

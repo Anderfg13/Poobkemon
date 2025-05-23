@@ -227,7 +227,7 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
             String pokemonActual = esJugador1 ? nombrePokemon1 : nombrePokemon2;
             java.util.List<String> pokemonsVivos = poobkemon.getPokemonsVivos(esJugador1);
 
-            // Elimina el pokémon actual de la lista para evitar que lo seleccione de nuevo (opcional)
+            // Elimina el Pokémon actual de la lista para evitar que lo seleccione de nuevo (opcional)
             pokemonsVivos.remove(pokemonActual);
 
             if (pokemonsVivos.isEmpty()) {
@@ -235,24 +235,42 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
                 return;
             }
 
-            // Panel con imágenes y nombres
+            // Panel con imágenes, nombres y barras de vida
             JPanel panel = new JPanel(new GridLayout(0, 1, 8, 8));
             ButtonGroup group = new ButtonGroup();
             java.util.List<JRadioButton> botones = new java.util.ArrayList<>();
+
             for (String nombre : pokemonsVivos) {
+                // Crear un panel para cada Pokémon con su imagen, nombre y barra de vida
+                JPanel pokemonPanel = new JPanel(new BorderLayout());
+                pokemonPanel.setOpaque(false);
+
+                // Imagen y nombre del Pokémon
                 ImageIcon icon = new ImageIcon("mult/gifs/" + nombre + ".gif");
                 JRadioButton btn = new JRadioButton(nombre, icon, false);
                 btn.setHorizontalTextPosition(SwingConstants.RIGHT);
                 btn.setVerticalTextPosition(SwingConstants.CENTER);
                 group.add(btn);
-                panel.add(btn);
                 botones.add(btn);
+                pokemonPanel.add(btn, BorderLayout.NORTH);
+
+                // Barra de vida del Pokémon
+                int vidaActual = poobkemon.getPokemonHP(esJugador1, nombre);
+                int vidaMaxima = poobkemon.getPokemonMaxHP(esJugador1, nombre);
+                JProgressBar hpBar = new JProgressBar(0, vidaMaxima);
+                hpBar.setValue(vidaActual);
+                hpBar.setString(vidaActual + " / " + vidaMaxima);
+                hpBar.setStringPainted(true);
+                hpBar.setForeground(new Color(0, 200, 0));
+                pokemonPanel.add(hpBar, BorderLayout.SOUTH);
+
+                panel.add(pokemonPanel);
             }
 
             int result = JOptionPane.showConfirmDialog(
                 this,
                 panel,
-                "Selecciona el pokémon al que deseas cambiar:",
+                "Selecciona el Pokémon al que deseas cambiar:",
                 JOptionPane.OK_CANCEL_OPTION,
                 JOptionPane.PLAIN_MESSAGE
             );
@@ -262,14 +280,15 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
                     if (btn.isSelected()) {
                         String nuevoPokemon = btn.getText();
                         poobkemon.cambiarPokemonActivo(esJugador1, nuevoPokemon);
-                        // Actualiza nombres y gifs
+
+                        // Actualiza nombres y GIFs
                         nombrePokemon1 = app.getPokemonActivoJugador1();
                         nombrePokemon2 = app.getPokemonActivoJugador2();
                         pokemonGif1.setIcon(new ImageIcon("mult/gifs/" + nombrePokemon1 + ".gif"));
                         pokemonGif2.setIcon(new ImageIcon("mult/gifs/" + nombrePokemon2 + ".gif"));
                         actualizarBarrasDeVida();
                         mostrarPanelBotones();
-                        cambiarTurno(); // Termina el turno tras cambiar de pokémon
+                        cambiarTurno(); // Termina el turno tras cambiar de Pokémon
                         break;
                     }
                 }
@@ -742,82 +761,66 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
      * @param jugador true para jugador 1, false para jugador 2
      */
     private void manejarPokemonDerrotado(boolean jugador) {
-        // Comprobar si el jugador es una máquina
-        boolean esMaquina = isMachineVsMachine || 
-                           (jugador && app.isMachinePlayer1()) || 
-                           (!jugador && app.isMachinePlayer2());
-        
-        if (esMaquina) {
-            // Si es una máquina, procesar automáticamente el cambio
-            try {
-                String resultado = poobkemon.processMachineTurn();
-                JOptionPane.showMessageDialog(
-                    this,
-                    resultado,
-                    "Cambio de Pokémon",
-                    JOptionPane.INFORMATION_MESSAGE
-                );
-                
-                // Actualizar interfaz después del cambio
-                nombrePokemon1 = app.getPokemonActivoJugador1();
-                nombrePokemon2 = app.getPokemonActivoJugador2();
-                pokemonGif1.setIcon(new ImageIcon("mult/gifs/" + nombrePokemon1 + ".gif"));
-                pokemonGif2.setIcon(new ImageIcon("mult/gifs/" + nombrePokemon2 + ".gif"));
-                actualizarBarrasDeVida();
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(
-                    this,
-                    "Error al cambiar Pokémon de la máquina: " + e.getMessage(),
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE
-                );
-            }
-        } else {
-            // Código existente para jugadores humanos - sin cambios
-            java.util.List<String> pokemonsVivos = poobkemon.getPokemonsVivos(jugador);
+        java.util.List<String> pokemonsVivos = poobkemon.getPokemonsVivos(jugador);
 
-            // Crear panel con botones con imagen y nombre
-            JPanel panel = new JPanel(new GridLayout(0, 1, 8, 8));
-            ButtonGroup group = new ButtonGroup();
-            java.util.List<JRadioButton> botones = new java.util.ArrayList<>();
-            
-            for (String nombre : pokemonsVivos) {
-                ImageIcon icon = new ImageIcon("mult/gifs/" + nombre + ".gif");
-                JRadioButton btn = new JRadioButton(nombre, icon, false);
-                btn.setHorizontalTextPosition(SwingConstants.RIGHT);
-                btn.setVerticalTextPosition(SwingConstants.CENTER);
-                group.add(btn);
-                panel.add(btn);
-                botones.add(btn);
-            }
+        if (pokemonsVivos.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No tienes otros pokémon vivos para cambiar.", "Cambio de Pokémon", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
 
-            // Seleccionar el primer botón por defecto
-            if (!botones.isEmpty()) {
-                botones.get(0).setSelected(true);
-            }
+        // Panel con imágenes, nombres y barras de vida
+        JPanel panel = new JPanel(new GridLayout(0, 1, 8, 8));
+        ButtonGroup group = new ButtonGroup();
+        java.util.List<JRadioButton> botones = new java.util.ArrayList<>();
 
-            int result = JOptionPane.showConfirmDialog(
-                this,
-                panel,
-                "El pokémon actual ha sido derrotado. Selecciona otro:",
-                JOptionPane.OK_OPTION,
-                JOptionPane.PLAIN_MESSAGE
-            );
+        for (String nombre : pokemonsVivos) {
+            // Crear un panel para cada Pokémon con su imagen, nombre y barra de vida
+            JPanel pokemonPanel = new JPanel(new BorderLayout());
+            pokemonPanel.setOpaque(false);
 
-            if (result == JOptionPane.OK_OPTION) {
-                for (JRadioButton btn : botones) {
-                    if (btn.isSelected()) {
-                        String nuevoPokemon = btn.getText();
-                        poobkemon.cambiarPokemonActivo(jugador, nuevoPokemon);
-                        
-                        // Actualiza nombres y gifs
-                        nombrePokemon1 = app.getPokemonActivoJugador1();
-                        nombrePokemon2 = app.getPokemonActivoJugador2();
-                        pokemonGif1.setIcon(new ImageIcon("mult/gifs/" + nombrePokemon1 + ".gif"));
-                        pokemonGif2.setIcon(new ImageIcon("mult/gifs/" + nombrePokemon2 + ".gif"));
-                        actualizarBarrasDeVida();
-                        break;
-                    }
+            // Imagen y nombre del Pokémon
+            ImageIcon icon = new ImageIcon("mult/gifs/" + nombre + ".gif");
+            JRadioButton btn = new JRadioButton(nombre, icon, false);
+            btn.setHorizontalTextPosition(SwingConstants.RIGHT);
+            btn.setVerticalTextPosition(SwingConstants.CENTER);
+            group.add(btn);
+            botones.add(btn);
+            pokemonPanel.add(btn, BorderLayout.NORTH);
+
+            // Barra de vida del Pokémon
+            int vidaActual = poobkemon.getPokemonHP(jugador, nombre);
+            int vidaMaxima = poobkemon.getPokemonMaxHP(jugador, nombre);
+            JProgressBar hpBar = new JProgressBar(0, vidaMaxima);
+            hpBar.setValue(vidaActual);
+            hpBar.setString(vidaActual + " / " + vidaMaxima);
+            hpBar.setStringPainted(true);
+            hpBar.setForeground(new Color(0, 200, 0));
+            pokemonPanel.add(hpBar, BorderLayout.SOUTH);
+
+            panel.add(pokemonPanel);
+        }
+
+        int result = JOptionPane.showConfirmDialog(
+            this,
+            panel,
+            "El Pokémon actual ha sido derrotado. Selecciona otro:",
+            JOptionPane.OK_CANCEL_OPTION,
+            JOptionPane.PLAIN_MESSAGE
+        );
+
+        if (result == JOptionPane.OK_OPTION) {
+            for (JRadioButton btn : botones) {
+                if (btn.isSelected()) {
+                    String nuevoPokemon = btn.getText();
+                    poobkemon.cambiarPokemonActivo(jugador, nuevoPokemon);
+
+                    // Actualiza nombres y GIFs
+                    nombrePokemon1 = app.getPokemonActivoJugador1();
+                    nombrePokemon2 = app.getPokemonActivoJugador2();
+                    pokemonGif1.setIcon(new ImageIcon("mult/gifs/" + nombrePokemon1 + ".gif"));
+                    pokemonGif2.setIcon(new ImageIcon("mult/gifs/" + nombrePokemon2 + ".gif"));
+                    actualizarBarrasDeVida();
+                    break;
                 }
             }
         }
