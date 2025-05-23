@@ -7,7 +7,32 @@ import java.util.ArrayList;
 import java.util.Collections;
 import javax.swing.*;
 
+/**
+ * PoobkemonGameMode es un panel de selección de modo de juego para Poobkemon.
+ * Permite al usuario elegir entre los modos Player vs Player, Player vs Machine y Machine vs Machine,
+ * así como regresar al menú principal. Gestiona la configuración inicial de la batalla, la selección de equipos,
+ * ataques y el lanzamiento de moneda para determinar el turno inicial.
+ *
+ * <p>Características principales:
+ * <ul>
+ *   <li>Permite seleccionar el modo de juego y configura la batalla según la opción elegida.</li>
+ *   <li>Gestiona el lanzamiento de moneda para determinar qué jugador inicia en modos competitivos.</li>
+ *   <li>Asigna equipos y ataques aleatorios a los jugadores o máquinas según el modo seleccionado.</li>
+ *   <li>Integra la transición entre pantallas y paneles de la interfaz gráfica.</li>
+ *   <li>Incluye botones personalizados con imágenes y estilos para mejorar la experiencia visual.</li>
+ * </ul>
+ *
+ * @author  Anderson Fabian Garcia Nieto
+ * @author  Christian Alfonso Romero Martinez
+ * @version 1.0
+ */
 public class PoobkemonGameMode extends JPanel {
+    /**
+     * Crea el panel de selección de modo de juego, inicializando los botones y la lógica de transición.
+     *
+     * @param app Referencia a la interfaz gráfica principal de Poobkemon.
+     * @param musica Instancia de la clase Musica para controlar la música de fondo.
+     */
     public PoobkemonGameMode(PoobkemonGUI app, Musica musica) {
         setLayout(new BorderLayout());
 

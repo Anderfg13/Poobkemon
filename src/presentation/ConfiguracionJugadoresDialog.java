@@ -1,8 +1,26 @@
 package presentation;
 
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
 
+/**
+ * ConfiguracionJugadoresDialog es un cuadro de diálogo personalizado para configurar los datos de los jugadores antes de iniciar una partida de Poobkemon.
+ * Permite ingresar los nombres, seleccionar los colores de cada jugador y elegir entre "Cara" o "Sello" para el sorteo inicial.
+ *
+ * <p>Características principales:
+ * <ul>
+ *   <li>Permite al usuario ingresar el nombre de cada jugador mediante campos de texto.</li>
+ *   <li>Incluye botones para seleccionar el color de cada jugador usando un selector de color.</li>
+ *   <li>Ofrece la opción de elegir entre "Cara" o "Sello" mediante botones de radio.</li>
+ *   <li>Valida que todos los campos estén completos antes de aceptar la configuración.</li>
+ *   <li>Almacena los valores seleccionados en atributos públicos para su posterior uso.</li>
+ * </ul>
+ *
+ *
+ * @author  Anderson Fabian Garcia Nieto
+ * @author  Christian Alfonso Romero Martinez
+ * @version 1.0
+ */
 public class ConfiguracionJugadoresDialog extends JDialog {
     public String nombre1, nombre2;
     public Color color1, color2;

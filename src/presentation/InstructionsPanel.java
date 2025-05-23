@@ -4,7 +4,7 @@ import java.awt.*;
 import javax.swing.*;
 
 /**
- * esta clase muestra una pantalla de instrucciones detalladas para el juego Poobkemon.
+ * InstructionsPanel esta clase muestra una pantalla de instrucciones detalladas para el juego Poobkemon.
  * Incluye un fondo personalizado, un área de texto deslizable con fuente de estilo antiguo,
  * y un botón estilizado para regresar al menú principal.
  *

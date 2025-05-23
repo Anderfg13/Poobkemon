@@ -1,19 +1,44 @@
 package presentation;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 import java.util.*;
 import java.util.List;
+import javax.swing.*;
 
+/**
+ * PoobkemonMovimientos1PPanel es un panel de selección de movimientos para el modo 1 jugador en Poobkemon.
+ * Permite al usuario asignar 4 movimientos a cada uno de sus Pokémon antes de iniciar la batalla contra la máquina.
+ * Gestiona la validación de la selección, la transición a la batalla y la integración con la interfaz principal.
+ *
+ * <p>Características principales:
+ * <ul>
+ *   <li>Muestra los Pokémon del jugador y permite seleccionar sus movimientos individualmente.</li>
+ *   <li>Valida que cada Pokémon tenga exactamente 4 movimientos antes de continuar.</li>
+ *   <li>Permite regresar a la pantalla anterior o finalizar la configuración para iniciar la batalla.</li>
+ *   <li>Integra la selección del tipo de máquina rival y la configuración de la batalla en el dominio.</li>
+ *   <li>Actualiza visualmente el estado de selección de movimientos para cada Pokémon.</li>
+ * </ul>
+ *
+ * @author  Anderson Fabian Garcia Nieto
+ * @author  Christian Alfonso Romero Martinez
+ * @version 1.0
+ */
 public class PoobkemonMovimientos1PPanel extends BackgroundPanel {
     private final String nombreJugador;
     private final List<String> pokemonesJugador;
-    private final List<String> itemsJugador; // <-- Agrega esto
+    private final List<String> itemsJugador;
     private final Map<String, List<String>> movimientosSeleccionados = new HashMap<>();
     private final PoobkemonGUI app;
     private JPanel centerPanel;
 
+    /**
+     * Constructor del panel de selección de movimientos para el modo 1 jugador.
+     *
+     * @param app Referencia a la interfaz gráfica principal de Poobkemon.
+     * @param nombreJugador Nombre del jugador humano.
+     * @param pokemonesJugador Lista de nombres de los Pokémon seleccionados por el jugador.
+     * @param itemsJugador Lista de nombres de los ítems seleccionados por el jugador.
+     */
     public PoobkemonMovimientos1PPanel(PoobkemonGUI app, String nombreJugador, List<String> pokemonesJugador, List<String> itemsJugador) {
         super("mult/Fondos/Pokemon_NormalSelection.jpg");
         this.app = app;
@@ -109,6 +134,15 @@ public class PoobkemonMovimientos1PPanel extends BackgroundPanel {
         add(bottomPanel, BorderLayout.SOUTH);
     }
 
+    /**
+     * Crea un panel con los botones de los Pokémon del jugador, permitiendo seleccionar sus movimientos.
+     * Actualiza el borde del botón según si el Pokémon tiene 4 movimientos asignados.
+     *
+     * @param nombreJugador Nombre del jugador.
+     * @param pokemones Lista de nombres de los Pokémon del jugador.
+     * @param movimientosSeleccionados Mapa de movimientos seleccionados por Pokémon.
+     * @return JPanel con los botones de selección de movimientos para cada Pokémon.
+     */
     private JPanel crearFilaPokemones(String nombreJugador, List<String> pokemones, Map<String, List<String>> movimientosSeleccionados) {
         JPanel gridPanel = new JPanel(new GridLayout(2, 3, 18, 18));
         gridPanel.setOpaque(false);

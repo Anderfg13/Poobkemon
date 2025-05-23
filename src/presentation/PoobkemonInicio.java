@@ -1,17 +1,39 @@
 package presentation;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.io.File;
 import javax.sound.sampled.*;
+import javax.swing.*;
 
-
+/**
+ * PoobkemonInicio es el panel de inicio de la interfaz gráfica de Poobkemon.
+ * Muestra el fondo animado, los botones principales para iniciar o salir del juego y un menú de opciones para abrir, guardar, pausar música y salir.
+ * Permite controlar la música de fondo y gestiona la navegación inicial hacia el menú principal del juego.
+ *
+ * <p>Características principales:
+ * <ul>
+ *   <li>Muestra un fondo GIF escalable y botones personalizados para "Play" y "Exit".</li>
+ *   <li>Incluye un menú superior con opciones para abrir, guardar, pausar/reanudar música y salir del juego.</li>
+ *   <li>Permite pausar y reanudar la música de fondo mediante un checkbox en el menú.</li>
+ *   <li>Gestiona la confirmación de salida tanto desde el menú como desde el botón "Exit".</li>
+ *   <li>Integra la transición al menú principal del juego al presionar "Play".</li>
+ * </ul>
+ *
+ * @author  Anderson Fabian Garcia Nieto
+ * @author  Christian Alfonso Romero Martinez
+ * @version 1.0
+ */
 public class PoobkemonInicio extends JPanel {
     private Clip musicaClip;
     private int musicFramePosition = 0;
     private Musica musica;
 
+    /**
+     * Constructor del panel de inicio de Poobkemon.
+     * Inicializa el fondo animado, los botones principales y el menú de opciones.
+     *
+     * @param app Referencia a la interfaz gráfica principal de Poobkemon.
+     * @param musica Instancia de la clase Musica para controlar la música de fondo.
+     */
     public PoobkemonInicio(PoobkemonGUI app, Musica musica) {
         this.musica = musica;
         setLayout(new BorderLayout());
