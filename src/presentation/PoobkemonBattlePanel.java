@@ -9,6 +9,8 @@ import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class PoobkemonBattlePanel extends BackgroundPanel {
     private JLabel timerLabel;
@@ -841,7 +843,7 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
 
             itemBtn.addActionListener(e -> {
                 try {
-                    if (item.equalsIgnoreCase("Revivir")) {
+                    if (item.equalsIgnoreCase("Revive")) {
                         mostrarDialogoRevivir();
                     } else {
                         // Ítems curativos: solo si el pokémon activo no tiene la vida completa
