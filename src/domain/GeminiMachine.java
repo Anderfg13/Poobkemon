@@ -25,14 +25,14 @@ import java.util.Random;
  *   <li>Permite la integración de IA generativa avanzada en la lógica de combate de Poobkemon.</li>
  * </ul>
  *
- * <p>Esta clase extiende {@link Machine} y debe ser utilizada para batallas donde se desee experimentar con IA generativa externa.
+ * <p>Esta clase extiende Machine y debe ser utilizada para batallas donde se desee experimentar con IA generativa externa.
  *
  * @author  Anderson Fabian Garcia Nieto
  * @author  Christian Alfonso Romero Martinez
  * @version 1.0
  */
 public class GeminiMachine extends Machine {
-    private static final String API_KEY = "AIzaSyCs_ggcWvYmpzYi7HgdlinmG4RhCJG-kbQ"; 
+    private static final String API_KEY = domain.EnvLoader.loadEnv(".env").get("GEMINI_API_KEY");    
     private static final String API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
     private static final HttpClient httpClient = HttpClient.newBuilder()
             .connectTimeout(Duration.ofSeconds(10))
