@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.io.*;
+import java.awt.Color;
 
 /**
  * Poobkemon es la clase principal que gestiona la lógica central del juego Poobkemon.
@@ -28,7 +30,8 @@ import java.util.stream.Collectors;
  * @author  Christian Alfonso Romero Martinez
  * @version 1.0
  */
-public class Poobkemon {
+public class Poobkemon implements Serializable {
+    private static final long serialVersionUID = 1L;
     private BattleArena battleArenaNormal;
     private ArrayList<BattleArena> battleArenas;
     private Map<String, String[][]> survivalMoves = new HashMap<>();
@@ -95,9 +98,9 @@ public class Poobkemon {
      */
     public void startBattleNormal(String coachName1, String coachName2, ArrayList<String> pokemons1,
                             ArrayList<String> pokemons2, ArrayList<String> items1, ArrayList<String> items2,
-                            String[][] pokemAttacks1, String[][] pokemAttacks2) throws PoobkemonException {
+                            String[][] pokemAttacks1, String[][] pokemAttacks2, Color player1Color, Color player2Color) throws PoobkemonException {
         battleArenaNormal = new BattleArenaNormal(); // Crear la arena de batalla
-        battleArenaNormal.setupCoaches(coachName1, coachName2, pokemons1, pokemons2, items1, items2, pokemAttacks1, pokemAttacks2);
+        battleArenaNormal.setupCoaches(coachName1, coachName2, pokemons1, pokemons2, items1, items2, pokemAttacks1, pokemAttacks2, player1Color, player2Color);
     }
 
     /**
@@ -106,9 +109,9 @@ public class Poobkemon {
      */
     public void startBattleSurvival( ArrayList<String> pokemons1,
                             ArrayList<String> pokemons2,
-                            String[][] pokemAttacks1, String[][] pokemAttacks2) throws PoobkemonException {
+                            String[][] pokemAttacks1, String[][] pokemAttacks2, Color player1Color, Color player2Color) throws PoobkemonException {
         battleArenaNormal = new BattleArenaNormal(); // Crear la arena de batalla
-        battleArenaNormal.setupCoaches("Player 1", "Player 2", pokemons1, pokemons2, new ArrayList<>(),  new ArrayList<>() , pokemAttacks1, pokemAttacks2);
+        battleArenaNormal.setupCoaches("Player 1", "Player 2", pokemons1, pokemons2, new ArrayList<>(),  new ArrayList<>() , pokemAttacks1, pokemAttacks2, player1Color, player2Color);
 
         // Guardar los movimientos asignados para cada jugador
         survivalMoves.put("Player 1", pokemAttacks1);
@@ -196,14 +199,14 @@ public class Poobkemon {
      */
     public void startBattleMachineVsMachine(String machine1Name, String machine2Name, 
                                 ArrayList<String> machine1Pokemon, ArrayList<String> machine2Pokemon,
-                                String machine1Type, String machine2Type) throws PoobkemonException {
+                                String machine1Type, String machine2Type, Color player1Color, Color player2Color) throws PoobkemonException {
         // Crear una arena de batalla apropiada
         battleArenaNormal = new BattleArenaNormal();
         
         // Configurar las dos máquinas
         battleArenaNormal.setupMachineVsMachine(machine1Name, machine2Name, 
             machine1Pokemon, machine2Pokemon, 
-            machine1Type, machine2Type);
+            machine1Type, machine2Type, player1Color, player2Color);
     }
 
     public boolean whoStarts(){
@@ -397,6 +400,49 @@ public class Poobkemon {
         }
         return nombres;
     }
+
+    public void guardarPartida(File archivo) throws Exception {
+        // Puedes cambiar la extensión a ".poob" o ".dat" si lo prefieres
+        if (!archivo.getName().endsWith(".poob")) {
+            throw new Exception("El archivo debe tener extensión .poob");
+        }
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(archivo))) {
+            oos.writeObject(this); // Serializa el objeto Poobkemon completo
+        } catch (Exception e) {
+            throw new Exception("Error al guardar la partida: " + e.getMessage());
+
+        }    
+    }        
+
+    public static Poobkemon open(File archivo) throws Exception {
+        if (!archivo.getName().endsWith(".poob")) {
+            throw new Exception("El archivo debe tener extensión .poob");
+        }
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo))) {
+            return (Poobkemon) ois.readObject(); // Deserializa el objeto Poobkemon
+        } catch (Exception e) {
+            throw new Exception("Error al abrir la partida: " + e.getMessage());
+        }
+    }
+
+    public Color getColorJugador1() {
+        return battleArenaNormal.getCoach(0).getColorCoach();
+    }
+
+    public Color getColorJugador2() {
+        return battleArenaNormal.getCoach(1).getColorCoach();
+    }
+
+    public boolean jugador1Empieza() {
+    // Ejemplo: si tienes una variable booleana
+    // return jugador1Empieza;
+    // O si tienes un método en battleArenaNormal:
+    // return battleArenaNormal.jugador1Empieza();
+    // Si no tienes nada, puedes devolver true por defecto:
+    return true;
 }
+}
+
+
 
 

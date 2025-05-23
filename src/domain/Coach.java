@@ -1,7 +1,9 @@
 package domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.awt.Color;
 
 /**
  * Coach es una clase abstracta que representa a un entrenador en el juego Poobkemon.
@@ -22,7 +24,8 @@ import java.util.List;
  * @author  Christian Alfonso Romero Martinez
  * @version 1.0
  */
-public abstract class Coach {
+public abstract class Coach implements Serializable {
+    private static final long serialVersionUID = 1L;
     /** Número máximo de Pokémon permitidos en el equipo. */
     public static final int MAX_CANT_POKEMON = 6;
     //private String name; // Nombre del entrenador
@@ -36,6 +39,8 @@ public abstract class Coach {
     private int score;
     /** Indica si el entrenador ha huido de la batalla. */
     private boolean fled = false;
+    private Color colorCoach;
+
 
     /**
      * Crea un nuevo entrenador con una lista de Pokémon y una lista de nombres de ítems.
@@ -336,5 +341,13 @@ public abstract class Coach {
      */
     public boolean isMachine() {
         return false;
+    }
+
+    public Color getColorCoach() {
+        return colorCoach;
+    }
+
+    public void setColor(Color colorCoach) {
+        this.colorCoach = colorCoach;
     }
 }

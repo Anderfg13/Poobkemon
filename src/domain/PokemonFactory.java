@@ -1,5 +1,6 @@
 package domain;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -22,7 +23,8 @@ import java.util.function.Supplier;
  * @author  Christian Alfonso Romero Martinez
  * @version 1.0
  */
-public class PokemonFactory {
+public class PokemonFactory implements Serializable {
+    private static final long serialVersionUID = 1L;
     // Mapa que asocia nombres de Pokémon con sus constructores
     public static final Map<String, Supplier<Pokemon>> POKEMON_REGISTRY = new HashMap<>();
 

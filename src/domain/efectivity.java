@@ -1,5 +1,6 @@
 package domain;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
@@ -20,7 +21,8 @@ import java.util.HashMap;
  * @author  Christian Alfonso Romero Martinez
  * @version 1.0
  */
-public class efectivity {
+public class efectivity implements Serializable {
+    private static final long serialVersionUID = 1L;
     /** Matriz de efectividad de ataques entre tipos. */
     private static double[][] matriz = new double[18][18];
     /**

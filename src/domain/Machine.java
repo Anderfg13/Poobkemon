@@ -1,5 +1,6 @@
 package domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -22,7 +23,8 @@ import java.util.Random;
  * @author  Christian Alfonso Romero Martinez
  * @version 1.0
  */
-public abstract class Machine extends Coach {
+public abstract class Machine extends Coach implements Serializable {
+    private static final long serialVersionUID = 1L;
     protected String machineName;
     protected String machineType;
     protected Random random = new Random();

@@ -1,7 +1,9 @@
 package domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.awt.Color;
 
 /**
  * Pokemon representa una criatura jugable en el mundo de Poobkemon.
@@ -23,7 +25,8 @@ import java.util.List;
  * @author  Christian Alfonso Romero Martinez
  * @version 1.0
  */
-public class Pokemon {
+public class Pokemon implements Serializable {
+    private static final long serialVersionUID = 1L;
     protected String name;
     protected int id;
     protected int total_ps;

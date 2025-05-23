@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * @version 1.0
  */
 public class DefensiveMachine extends Machine {
-    
+    private static final long serialVersionUID = 1L;
     private DefensiveStrategy strategy;
     
     /**

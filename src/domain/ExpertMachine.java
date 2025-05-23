@@ -21,7 +21,7 @@ import java.util.ArrayList;
  * @version 1.0
  */
 public class ExpertMachine extends Machine {
-    
+    private static final long serialVersionUID = 1L;
     private ExpertStrategy strategy;
     private int turnsInBattle = 0;
     

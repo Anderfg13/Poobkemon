@@ -1,5 +1,6 @@
 package domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +25,8 @@ import java.util.Map;
  * @version 1.0
  */
 
-public class AttackFactory {
+public class AttackFactory implements Serializable {
+    private static final long serialVersionUID = 1L;
     private static final Map<String, Attack> ATTACK_REGISTRY = new HashMap<>();
 
     static {

@@ -1,5 +1,6 @@
 package domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random; 
@@ -32,8 +33,8 @@ import java.util.Random;
  * @author  Christian Alfonso Romero Martinez
  * @version 1.0
  */
-public class MachineFactory {
-    
+public class MachineFactory implements Serializable {
+    private static final long serialVersionUID = 1L;
     private static final Random random = new Random();
     
     /**

@@ -1,5 +1,6 @@
 package domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -17,8 +18,8 @@ import java.util.ArrayList;
  * @author  Christian Alfonso Romero Martinez
  * @version 1.0
  */
-public class AttackingMachine extends Machine {
-    
+public class AttackingMachine extends Machine implements Serializable{
+    private static final long serialVersionUID = 1L;
     private AttackingStrategy strategy;
     
     /**

@@ -1,10 +1,12 @@
 package domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.awt.Color;
 
 /**
  * BattleArena es una clase abstracta que representa el campo de batalla donde se desarrollan los combates de Poobkemon.
@@ -27,7 +29,8 @@ import java.util.TimerTask;
  * @author  Christian Alfonso Romero Martinez
  * @version 1.0
  */
-public abstract class BattleArena {
+public abstract class BattleArena implements Serializable {
+    private static final long serialVersionUID = 1L;
     /** Número de turno actual. */
     protected int currentTurn = 0;
     /** Tiempo máximo por turno en segundos. */
@@ -73,7 +76,7 @@ public abstract class BattleArena {
      */
     public void setupCoaches(String coachName1, String coachName2, ArrayList<String> pokemons1,
                              ArrayList<String> pokemons2, ArrayList<String> items1, ArrayList<String> items2,
-                             String[][] pokemAttacks1, String[][] pokemAttacks2) throws PoobkemonException {
+                             String[][] pokemAttacks1, String[][] pokemAttacks2, Color player1Color, Color player2Color) throws PoobkemonException {
         boolean firstStarts = rand.nextBoolean();
 
         // Crear y asignar entrenadores
@@ -84,6 +87,8 @@ public abstract class BattleArena {
             coaches[0] = new HumanCoach(coachName2, createPokemonList(pokemons2, pokemAttacks2), items2);
             coaches[1] = new HumanCoach(coachName1, createPokemonList(pokemons1, pokemAttacks1), items1);
         }
+        coaches[0].setColor(player1Color);
+        coaches[1].setColor(player2Color);
 
         currentTurn = 0;
     }
@@ -614,6 +619,6 @@ public abstract class BattleArena {
      */
     public abstract void setupMachineVsMachine(String machine1Name, String machine2Name,
                      ArrayList<String> machine1Pokemon, ArrayList<String> machine2Pokemon,
-                     String machine1Type, String machine2Type) throws PoobkemonException;
+                     String machine1Type, String machine2Type, Color player1Color, Color player2Color) throws PoobkemonException;
 }
 

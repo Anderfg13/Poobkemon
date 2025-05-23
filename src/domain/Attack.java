@@ -1,5 +1,6 @@
 package domain;
 
+import java.io.Serializable;
 import java.util.Random;
 /**
  * Attack representa un ataque que puede ser utilizado por un Poobkemon durante una batalla.
@@ -15,7 +16,8 @@ import java.util.Random;
  * @author  Christian Alfonso Romero Martinez
  * @version 1.0
  */
-public abstract class Attack {
+public abstract class Attack implements Serializable {
+    private static final long serialVersionUID = 1L;
     protected String name;
     protected String type;
     protected int baseDamage;

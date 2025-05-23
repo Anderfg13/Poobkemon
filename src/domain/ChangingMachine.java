@@ -20,6 +20,7 @@ import java.util.ArrayList;
  * @version 1.0
  */
 public class ChangingMachine extends Machine {
+    private static final long serialVersionUID = 1L;
     
     private ChangingStrategy strategy;
     private int turnCounter = 0;

@@ -5,6 +5,7 @@ import domain.PoobkemonException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +48,8 @@ public class PoobkemonTest {
                 moves2[i][j] = attacks.get((i + j + 1) % attacks.size());
             }
         }
-        poobkemon.startBattleNormal("Ash", "Gary", pokemons1, pokemons2, items1, items2, moves1, moves2);
+        // Si tu método requiere colores, pásalos aquí:
+        poobkemon.startBattleNormal("Ash", "Gary", pokemons1, pokemons2, items1, items2, moves1, moves2, Color.GREEN, Color.BLUE);
         assertNotNull(poobkemon.getBattleArena());
     }
 
@@ -64,7 +66,7 @@ public class PoobkemonTest {
                 moves2[i][j] = attacks.get((i + j + 1) % attacks.size());
             }
         }
-        poobkemon.startBattleNormal("Ash", "Gary", pokemons1, pokemons2, new ArrayList<>(), new ArrayList<>(), moves1, moves2);
+        poobkemon.startBattleNormal("Ash", "Gary", pokemons1, pokemons2, new ArrayList<>(), new ArrayList<>(), moves1, moves2, Color.GREEN, Color.BLUE);
         assertTrue(poobkemon.tienePokemonesVivos(true));
         assertTrue(poobkemon.tienePokemonesVivos(false));
     }
@@ -82,7 +84,7 @@ public class PoobkemonTest {
                 moves2[i][j] = attacks.get((i + j + 1) % attacks.size());
             }
         }
-        poobkemon.startBattleNormal("Ash", "Gary", pokemons1, pokemons2, new ArrayList<>(), new ArrayList<>(), moves1, moves2);
+        poobkemon.startBattleNormal("Ash", "Gary", pokemons1, pokemons2, new ArrayList<>(), new ArrayList<>(), moves1, moves2, Color.GREEN, Color.BLUE);
         assertThrows(PoobkemonException.class, () -> poobkemon.useItem("NoExiste", true));
     }
 
@@ -99,7 +101,7 @@ public class PoobkemonTest {
                 moves2[i][j] = attacks.get((i + j + 1) % attacks.size());
             }
         }
-        poobkemon.startBattleNormal("Ash", "Gary", pokemons1, pokemons2, new ArrayList<>(), new ArrayList<>(), moves1, moves2);
+        poobkemon.startBattleNormal("Ash", "Gary", pokemons1, pokemons2, new ArrayList<>(), new ArrayList<>(), moves1, moves2, Color.GREEN, Color.BLUE);
         assertEquals(6, poobkemon.getPokemonsVivos(true).size());
         assertEquals(6, poobkemon.getPokemonsVivos(false).size());
         assertEquals(0, poobkemon.getPokemonsMuertos(true).size());

@@ -1,7 +1,9 @@
 package domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.awt.Color;
 
 /**
  * BattleArenaNormal implementa una arena de batalla estándar para el juego Poobkemon.
@@ -23,6 +25,7 @@ import java.util.List;
  * @version 1.0
  */
 public class BattleArenaNormal extends BattleArena {
+    private static final long serialVersionUID = 1L;
 
     public BattleArenaNormal() {
         super();
@@ -231,9 +234,13 @@ public class BattleArenaNormal extends BattleArena {
      * @param machine2Type    Tipo de la segunda máquina.
      * @throws PoobkemonException Si ocurre un error al configurar la batalla.
      */
-    public void setupMachineVsMachine(String machine1Name, String machine2Name, 
-                             ArrayList<String> machine1Pokemon, ArrayList<String> machine2Pokemon,
-                             String machine1Type, String machine2Type) throws PoobkemonException {
+    @Override
+    public void setupMachineVsMachine(
+        String machine1Name, String machine2Name,
+        ArrayList<String> machine1Pokemon, ArrayList<String> machine2Pokemon,
+        String machine1Type, String machine2Type,
+        Color player1Color, Color player2Color
+    ) throws PoobkemonException {
     
     // Crear los pokémon para la primera máquina
     ArrayList<Pokemon> machine1PokemonList = new ArrayList<>();
@@ -302,6 +309,10 @@ public class BattleArenaNormal extends BattleArena {
     // Asignar las máquinas al array de coaches
     coaches[0] = machine1;
     coaches[1] = machine2;
+
+    // ASIGNA LOS COLORES AQUÍ
+    coaches[0].setColor(player1Color);
+    coaches[1].setColor(player2Color);
     
     // Establecer el Pokémon activo para cada máquina
     if (!machine1PokemonList.isEmpty()) {

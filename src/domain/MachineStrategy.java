@@ -20,7 +20,7 @@ package domain;
  * @author  Christian Alfonso Romero Martinez
  * @version 1.0
  */
-public interface MachineStrategy {
+public interface MachineStrategy{
     
     /**
      * Decide qué acción tomar en el turno actual.

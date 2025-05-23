@@ -380,6 +380,17 @@ public class PoobkemonGUI extends JFrame {
     }
 
     /**
+     * Muestra el panel de batalla con la partida dada.
+     * @param partida Instancia de la partida Poobkemon.
+     */
+    public void mostrarPanelBatallaConPartida(Poobkemon partida) {
+        PoobkemonBattlePanel battlePanel = new PoobkemonBattlePanel(
+            partida, this, partida.getColorJugador1(), partida.getColorJugador2(), partida.jugador1Empieza()
+        );
+        cambiarPantallaConPanel(battlePanel, "battle");
+    }
+
+    /**
      * Método principal para iniciar la aplicación Poobkemon.
      * @param args Argumentos de línea de comandos (no utilizados).
      */
@@ -387,4 +398,12 @@ public class PoobkemonGUI extends JFrame {
         SwingUtilities.invokeLater(PoobkemonGUI::new);
         
     }
+
+    public void setPoobkemon(Poobkemon poobkemon) {
+        this.poobkemon = poobkemon;
+    }
+
+    public void setColorJugador1(Color c) { colorJugador1 = c; }
+    public void setColorJugador2(Color c) { colorJugador2 = c; }
+    
 }

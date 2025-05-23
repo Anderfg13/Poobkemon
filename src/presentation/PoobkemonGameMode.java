@@ -131,7 +131,8 @@ public class PoobkemonGameMode extends JPanel {
                         nombreJugador1, nombreJugador2,
                         pokemonesAleatoriosJ1, pokemonesAleatoriosJ2,
                         new ArrayList<>(), new ArrayList<>(),
-                        ataquesPorPokemonJ1, ataquesPorPokemonJ2
+                        ataquesPorPokemonJ1, ataquesPorPokemonJ2,
+                        app.getColorJugador1(), app.getColorJugador2()
                     );
                     // Crea el panel de batalla y cámbialo
                     PoobkemonBattlePanel battlePanel = new PoobkemonBattlePanel(
@@ -191,7 +192,7 @@ public class PoobkemonGameMode extends JPanel {
                 app.getPoobkemon().startBattleMachineVsMachine(
                     "CPU " + tipoMaquina1, "CPU " + tipoMaquina2,
                     pokemonesAleatorios1, pokemonesAleatorios2,
-                    tipoMaquina1, tipoMaquina2
+                    tipoMaquina1, tipoMaquina2, app.getColorJugador1(), app.getColorJugador2()
                 );
                 boolean jugador1Empieza = app.getPoobkemon().whoStarts();
                 PoobkemonBattlePanel battlePanel = new PoobkemonBattlePanel(

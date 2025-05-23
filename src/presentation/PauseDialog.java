@@ -42,6 +42,20 @@ public class PauseDialog extends JDialog {
             dispose();
         });
 
+        btnGuardar.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            int result = fileChooser.showSaveDialog(this);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                java.io.File selectedFile = fileChooser.getSelectedFile();
+                try {
+                    poobkemon.guardarPartida(selectedFile); // Debes implementar este método en tu clase Poobkemon
+                    JOptionPane.showMessageDialog(this, "Partida guardada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
         btnTerminar.addActionListener(e -> {
             int res = JOptionPane.showConfirmDialog(this, "¿Seguro que quieres terminar la partida?", "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
             if (res == JOptionPane.YES_OPTION) {

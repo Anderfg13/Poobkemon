@@ -476,7 +476,7 @@ public class PoobkemonSeleccionPanel extends BackgroundPanel {
                     // Iniciar directamente la batalla máquina vs máquina
                     app.getPoobkemon().startBattleMachineVsMachine(
                         "CPU " + tipoMaquina1, "CPU " + tipoMaquina2,
-                        pokes1, pokes2, tipoMaquina1, tipoMaquina2);
+                        pokes1, pokes2, tipoMaquina1, tipoMaquina2, app.getColorJugador1(), app.getColorJugador2());
                         
                     // Crear y mostrar el panel de batalla
                     boolean jugador1Empieza = app.getPoobkemon().whoStarts();

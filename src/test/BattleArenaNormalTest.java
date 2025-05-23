@@ -5,7 +5,7 @@ import domain.Poobkemon;
 import domain.PoobkemonException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +36,7 @@ public class BattleArenaNormalTest {
                 moves2[i][j] = attacks.get((i + j + 1) % attacks.size());
             }
         }
-        arena.setupCoaches("Ash", "Gary", pokemons1, pokemons2, items1, items2, moves1, moves2);
+        arena.setupCoaches("Ash", "Gary", pokemons1, pokemons2, items1, items2, moves1, moves2, Color.GREEN, Color.BLUE);
     }
 
     //Los nombres estan invertidos

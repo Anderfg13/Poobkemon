@@ -156,7 +156,8 @@ public class PoobkemonMovimientosPanel extends BackgroundPanel {
                         new ArrayList<>(items1),
                         new ArrayList<>(items2),
                         pokemAttacks1,
-                        pokemAttacks2
+                        pokemAttacks2,
+                        app.getColorJugador1(), app.getColorJugador2()
                     );
 
                     // 3. Lanzamiento de moneda antes de la batalla
@@ -351,7 +352,8 @@ public class PoobkemonMovimientosPanel extends BackgroundPanel {
                     new ArrayList<>(items1), 
                     new ArrayList<>(items2),
                     getMovesMatrix(),
-                    new String[pokemones2.size()][4]
+                    new String[pokemones2.size()][4],
+                    app.getColorJugador1(), app.getColorJugador2()
                 );
             }
 

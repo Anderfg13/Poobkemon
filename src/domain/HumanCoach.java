@@ -24,7 +24,8 @@ import java.util.function.Consumer;
  * @version 1.0
  */
 public class HumanCoach extends Coach {
-    private Map<Integer, Consumer<HumanCoach>> actionMap = new HashMap<>();
+    private static final long serialVersionUID = 1L;
+    private transient Map<Integer, Consumer<HumanCoach>> actionMap = new HashMap<>();
     private String name;
     private Coach opponent;
 

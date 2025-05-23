@@ -23,6 +23,7 @@ import java.util.Random;
  * @version 1.0
  */
 public class ChangingStrategy implements MachineStrategy {
+    private static final long serialVersionUID = 1L;
     
     private final Random random = new Random();
     private int turnCounter = 0;

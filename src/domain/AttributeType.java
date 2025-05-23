@@ -1,5 +1,6 @@
 package domain;
 
+import java.io.Serializable;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
@@ -19,7 +20,7 @@ import java.util.function.Predicate;
  * @author  Christian Alfonso Romero Martinez
  * @version 1.0
  */
-public enum AttributeType {
+public enum AttributeType implements Serializable {
     HP((p, v) -> p.setPs(Math.min(p.getPs() + v, p.getTotalPs())), p -> p.getPs() > 0),
     PHYSICAL_ATTACK((p, v) -> p.setPhysicalAttack(p.getPhysicalAttack() + v), p -> true),
     PHYSICAL_DEFENSE((p, v) -> p.setPhysicalDefense(p.getPhysicalDefense() + v), p -> true),

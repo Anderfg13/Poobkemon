@@ -2,6 +2,8 @@ package presentation;
 
 import java.awt.*;
 import javax.swing.*;
+import java.io.File;
+import domain.Poobkemon;
 
 /**
  * PoobkemonMenu es el panel principal del menú de Poobkemon.
@@ -53,6 +55,28 @@ public class PoobkemonMenu extends JPanel {
         newGameButton.addActionListener(e -> app.cambiarPantalla("gamemode"));
         backButton.addActionListener(e -> app.cambiarPantalla("inicio"));
         optionsButton.addActionListener(e -> app.cambiarPantallaConPanel(new InstructionsPanel(app), "instructions"));
+        oldGameButton.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            int result = fileChooser.showOpenDialog(this);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+                try {
+                    Poobkemon partidaCargada = Poobkemon.open(selectedFile); // Carga la partida
+                    app.setPoobkemon(partidaCargada); // Actualiza la instancia en la GUI (debes tener este método)
+                    app.setColorJugador1(partidaCargada.getColorJugador1());
+                    app.setColorJugador2(partidaCargada.getColorJugador2());
+                    JOptionPane.showMessageDialog(this, "Partida cargada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    // Cambia a la arena de batalla con la partida cargada
+                    PoobkemonBattlePanel battlePanel = new PoobkemonBattlePanel(
+                        app.getPoobkemon(), app,
+                        app.getColorJugador1(), app.getColorJugador2(), partidaCargada.jugador1Empieza()
+                    );
+                    app.cambiarPantallaConPanel(battlePanel, "battle");
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
 
         buttonPanel.add(newGameButton);
         buttonPanel.add(oldGameButton);

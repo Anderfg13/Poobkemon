@@ -3,6 +3,7 @@ package domain;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.awt.Color;
 
 /**
  * BattleArenaSurvival implementa el modo de batalla "Supervivencia" para el juego Poobkemon.
@@ -23,6 +24,7 @@ import java.util.List;
  * @version 1.0
  */
 public class BattleArenaSurvival extends BattleArena {
+    private static final long serialVersionUID = 1L;
     
     /**
      * Crea una nueva instancia de la arena de batalla en modo supervivencia.
@@ -73,7 +75,7 @@ public class BattleArenaSurvival extends BattleArena {
      * @param coachName2 Nombre del segundo entrenador.
      * @throws PoobkemonException Si no hay suficientes Pokémon o movimientos disponibles.
      */
-    public void setupSurvivalBattle(String coachName1, String coachName2) throws PoobkemonException {
+    public void setupSurvivalBattle(String coachName1, String coachName2, Color player1Color, Color player2Color) throws PoobkemonException {
         // Obtener todos los Pokémon disponibles
         List<String> allPokemon = Poobkemon.getAvailablePokemon();
         
@@ -95,7 +97,7 @@ public class BattleArenaSurvival extends BattleArena {
         
         // Configurar los entrenadores con los Pokémon y movimientos asignados
         setupCoaches(coachName1, coachName2, pokemons1, pokemons2, 
-                    new ArrayList<>(), new ArrayList<>(), pokemAttacks1, pokemAttacks2);
+                    new ArrayList<>(), new ArrayList<>(), pokemAttacks1, pokemAttacks2, player1Color, player2Color);
     }
 
     /**
@@ -186,9 +188,12 @@ public class BattleArenaSurvival extends BattleArena {
      * @throws PoobkemonException Siempre, ya que este modo no soporta esta configuración.
      */
     @Override
-    public void setupMachineVsMachine(String machine1Name, String machine2Name, 
-                             ArrayList<String> machine1Pokemon, ArrayList<String> machine2Pokemon,
-                             String machine1Type, String machine2Type) throws PoobkemonException {
+    public void setupMachineVsMachine(
+        String machine1Name, String machine2Name,
+        ArrayList<String> machine1Pokemon, ArrayList<String> machine2Pokemon,
+        String machine1Type, String machine2Type,
+        Color player1Color, Color player2Color
+    ) throws PoobkemonException {
         throw new PoobkemonException("Las batallas Máquina vs Máquina no están soportadas en el modo supervivencia.");
     }
 }
