@@ -61,6 +61,7 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
     private JLabel player1Label, player2Label;
 
     private volatile boolean pausaActiva = false;
+    private volatile boolean batallaFinalizada = false;
 
     /**
      * Constructor del panel de batalla de Poobkemon.
@@ -216,6 +217,8 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
                 (JFrame) SwingUtilities.getWindowAncestor(this),
                 poobkemon,
                 app,
+                colorJugador1, // Color del jugador 1
+                colorJugador2, // Color del jugador 2
                 () -> {
                     pausaActiva = false; // Desactivar pausa al continuar
                     if (isMachineVsMachine) {
@@ -225,7 +228,8 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
                     }
                 },
                 () -> {
-                    pausaActiva = false; // Desactivar pausa al terminar
+                    batallaFinalizada = true; // <- Detener la batalla
+                    pausaActiva = false;
                     app.pausarMusicaBatalla();
                     app.reanudarMusicaGlobal();
                     app.mostrarMenuPrincipal();
@@ -461,7 +465,7 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
      * Actualiza la interfaz y gestiona el flujo de la batalla para batallas máquina vs máquina o humano vs máquina.
      */
     private void ejecutarTurnoMaquina() {
-        if (pausaActiva) return; // No ejecutar nada si está en pausa
+        if (pausaActiva || batallaFinalizada) return; // No ejecutar si está en pausa o finalizada
 
         // Desactivar botones durante el turno de la máquina
         habilitarBotones(false);

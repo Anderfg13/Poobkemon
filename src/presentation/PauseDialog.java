@@ -8,7 +8,9 @@ import java.awt.event.WindowEvent;
 import java.util.List;
 
 public class PauseDialog extends JDialog {
-    public PauseDialog(JFrame parent, Poobkemon poobkemon, PoobkemonGUI app, Runnable continuarCallback, Runnable terminarCallback) {
+    public PauseDialog(JFrame parent, Poobkemon poobkemon, PoobkemonGUI app,
+                      Color colorJugador1, Color colorJugador2,
+                      Runnable continuarCallback, Runnable terminarCallback) {
         super(parent, "Pausa", true);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setSize(800, 500);
@@ -16,8 +18,8 @@ public class PauseDialog extends JDialog {
         setLayout(new BorderLayout(10, 10));
 
         JPanel mainPanel = new JPanel(new GridLayout(1, 2, 10, 10));
-        mainPanel.add(crearPanelJugador(poobkemon, true));
-        mainPanel.add(crearPanelJugador(poobkemon, false));
+        mainPanel.add(crearPanelJugador(poobkemon, true, colorJugador1));
+        mainPanel.add(crearPanelJugador(poobkemon, false, colorJugador2));
         add(mainPanel, BorderLayout.CENTER);
 
         // Panel central con los botones
@@ -57,12 +59,13 @@ public class PauseDialog extends JDialog {
         });
     }
 
-    private JPanel crearPanelJugador(Poobkemon poobkemon, boolean esJugador1) {
+    private JPanel crearPanelJugador(Poobkemon poobkemon, boolean esJugador1, Color colorNombre) {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout(5, 5));
         String nombre = esJugador1 ? poobkemon.getNombreJugador1() : poobkemon.getNombreJugador2();
         JLabel nombreLabel = new JLabel(nombre, SwingConstants.CENTER);
         nombreLabel.setFont(new Font("Times New Roman", Font.BOLD, 18));
+        nombreLabel.setForeground(colorNombre); // <-- Color personalizado
         panel.add(nombreLabel, BorderLayout.NORTH);
 
         // Pokemones
@@ -71,7 +74,7 @@ public class PauseDialog extends JDialog {
         for (String poke : pokemons) {
             JPanel pokePanel = new JPanel(new BorderLayout());
             pokePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-            pokePanel.setBackground(Color.WHITE);
+            pokePanel.setBackground(colorNombre);
             pokePanel.setOpaque(true);
 
             JLabel pokeImg = new JLabel(new ImageIcon("mult/gifs/" + poke + ".gif"));
