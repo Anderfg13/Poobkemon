@@ -6,7 +6,31 @@ import java.util.Random;
 
 
 /**
- * Fábrica para crear diferentes tipos de máquinas con sus respectivas estrategias.
+ * {@code MachineFactory} es una fábrica para crear diferentes tipos de máquinas (jugadores automáticos)
+ * con estrategias variadas para el juego Poobkemon.
+ * 
+ * <p>Permite generar instancias de máquinas con equipos y objetos aleatorios, 
+ * asignando ataques y objetos de forma automática según el tipo y dificultad seleccionados.
+ * 
+ * <p>Tipos de máquina soportados:
+ * <ul>
+ *   <li>{@link MachineType#ATTACKING} - Máquina enfocada en el ataque.</li>
+ *   <li>{@link MachineType#DEFENSIVE} - Máquina enfocada en la defensa.</li>
+ *   <li>{@link MachineType#CHANGING} - Máquina que cambia de estrategia según el rival.</li>
+ *   <li>{@link MachineType#EXPERT} - Máquina experta que combina todas las estrategias.</li>
+ *   <li>{@link MachineType#GEMINI} - Máquina que utiliza la IA generativa Gemini.</li>
+ * </ul>
+ * 
+ * <p>La fábrica se encarga de:
+ * <ul>
+ *   <li>Seleccionar pokémon aleatorios y asignarles ataques aleatorios.</li>
+ *   <li>Seleccionar ítems aleatorios para el equipo de la máquina.</li>
+ *   <li>Instanciar la subclase de {@code Machine} correspondiente al tipo solicitado.</li>
+ * </ul>
+ *
+ * @author  Anderson Fabian Garcia Nieto
+ * @author  Christian Alfonso Romero Martinez
+ * @version 1.0
  */
 public class MachineFactory {
     
@@ -19,7 +43,8 @@ public class MachineFactory {
         ATTACKING,    // Enfocado en el ataque
         DEFENSIVE,    // Enfocado en la defensa
         CHANGING,     // Cambia según el Pokémon rival
-        EXPERT        // Versión experta que combina todas las estrategias
+        EXPERT,        // Versión experta que combina todas las estrategias
+        GEMINI      // Version que nos permite jugar contra Google Gemini IA generativa
     }
     
     /**
@@ -48,13 +73,18 @@ public class MachineFactory {
                 return new ChangingMachine(name, pokemons, items);
             case EXPERT:
                 return new ExpertMachine(name, pokemons, items);
+            case GEMINI:
+                return new GeminiMachine(name, pokemons, items);
             default:
                 return new AttackingMachine(name, pokemons, items);
         }
     }
     
-    /**
-     * Crea una lista de pokémon aleatorios.
+     /**
+     * Crea una lista de pokémon aleatorios para la máquina.
+     *
+     * @param count Número de pokémon a seleccionar.
+     * @return Lista con los ataques asignados.
      */
     private static ArrayList<Pokemon> createRandomPokemons(int count) {
         ArrayList<Pokemon> result = new ArrayList<>();
@@ -78,7 +108,10 @@ public class MachineFactory {
     
     /**
      * Asigna ataques aleatorios a un pokémon.
+     *
+     * @param pokemon a los que se les asignaran los ataques.
      */
+  
     private static void assignRandomAttacks(Pokemon pokemon) {
         // Obtener ataques disponibles
         List<String> allAttacks = new ArrayList<>();
@@ -98,8 +131,12 @@ public class MachineFactory {
     }
     
     /**
-     * Crea una lista de ítems aleatorios.
+     * Crea una lista de ítems aleatorios para la máquina.
+     *
+     * @param count Número de ítems a seleccionar.
+     * @return Lista Item.
      */
+   
     private static ArrayList<Item> createRandomItems(int count) {
         ArrayList<Item> result = new ArrayList<>();
         List<String> availableItems = ItemFactory.getItemNames();
