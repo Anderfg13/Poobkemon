@@ -1,6 +1,7 @@
 package presentation;
 
 import domain.Coach;
+import domain.Log;
 import domain.Poobkemon;
 import java.awt.*;
 import java.util.ArrayList;
@@ -550,6 +551,7 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
                         }
                         
                     } catch (Exception e) {
+                        Log.record(e);
                         JOptionPane.showMessageDialog(
                             PoobkemonBattlePanel.this,
                             "Error en el turno de la máquina: " + e.getMessage(),
@@ -724,6 +726,7 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
                 int ppActual = poobkemon.getPPDeAtaqueActual(turnoJugador1, nombreAtaque);
                 ataqueBtn.setToolTipText("PP: " + ppActual);
             } catch (Exception e) {
+                Log.record(e);
                 // Si no se pueden obtener los PP, no mostrar tooltip
             }
 
@@ -777,6 +780,7 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
 
                     cambiarTurno();
                 } catch (Exception ex) {
+                    Log.record(ex);
                     JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             });
@@ -823,6 +827,7 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
                 pokemonGif2.setIcon(new ImageIcon("mult/gifs/" + nombrePokemon2 + ".gif"));
                 actualizarBarrasDeVida();
             } catch (Exception e) {
+                Log.record(e);
                 JOptionPane.showMessageDialog(
                     this,
                     "Error al cambiar Pokémon de la máquina: " + e.getMessage(),
@@ -899,6 +904,7 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
                         cambiarTurno();
                     }
                 } catch (Exception ex) {
+                    Log.record(ex);
                     JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             });
@@ -961,6 +967,7 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
                         mostrarPanelBotones();
                         cambiarTurno();
                     } catch (Exception e) {
+                        Log.record(e);
                         JOptionPane.showMessageDialog(this, 
                             "Error al revivir: " + e.getMessage(),
                             "Error", JOptionPane.ERROR_MESSAGE);

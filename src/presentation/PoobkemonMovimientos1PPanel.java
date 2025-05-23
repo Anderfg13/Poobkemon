@@ -5,6 +5,8 @@ import java.util.*;
 import java.util.List;
 import javax.swing.*;
 
+import domain.Log;
+
 /**
  * PoobkemonMovimientos1PPanel es un panel de selección de movimientos para el modo 1 jugador en Poobkemon.
  * Permite al usuario asignar 4 movimientos a cada uno de sus Pokémon antes de iniciar la batalla contra la máquina.
@@ -120,6 +122,7 @@ public class PoobkemonMovimientos1PPanel extends BackgroundPanel {
                 );
                 app.cambiarPantallaConPanel(battlePanel, "battle");
             } catch (Exception ex) {
+                Log.record(ex);
                 JOptionPane.showMessageDialog(this, "Error al iniciar la batalla: " + ex.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);
             }

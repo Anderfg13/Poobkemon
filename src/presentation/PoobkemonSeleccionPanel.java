@@ -1,5 +1,6 @@
 package presentation;
 
+import domain.Log;
 import domain.Poobkemon;
 import java.awt.*;
 import java.util.*;
@@ -515,6 +516,7 @@ public class PoobkemonSeleccionPanel extends BackgroundPanel {
                 app.cambiarPantallaConPanel(movimientosPanel, "movimientos");
             }
         } catch (Exception e) {
+            Log.record(e);
             JOptionPane.showMessageDialog(this, "Error al iniciar la batalla: " + e.getMessage(), 
                                          "Error", JOptionPane.ERROR_MESSAGE);
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Error al iniciar batalla", e);

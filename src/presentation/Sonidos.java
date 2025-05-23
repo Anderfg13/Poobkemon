@@ -3,6 +3,8 @@ package presentation;
 import java.io.File;
 import javax.sound.sampled.*;
 
+import domain.Log;
+
 /**
  * Sonidos es una clase utilitaria para gestionar la reproducción de efectos de sonido en la interfaz de Poobkemon.
  * Permite reproducir sonidos específicos, como el clic de botones, para mejorar la experiencia de usuario.
@@ -32,6 +34,7 @@ public class Sonidos {
             clip.open(audioIn);
             clip.start();
         } catch (Exception e) {
+            Log.record(e);
             System.out.println("No se pudo reproducir el sonido: " + e.getMessage());
         }
     }

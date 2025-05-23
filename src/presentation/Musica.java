@@ -3,6 +3,8 @@ package presentation;
 import java.io.File;
 import javax.sound.sampled.*;
 
+import domain.Log;
+
 /**
  * Musica es una clase utilitaria para gestionar la reproducción de música de fondo en la interfaz de Poobkemon.
  * Permite cargar, reproducir, pausar y ajustar el volumen de archivos de audio en formato compatible con {@link Clip}.
@@ -32,6 +34,7 @@ public class Musica {
             clip.open(audioIn);
             setVolumenPorDefecto(0.8f); // Volumen por defecto (70%)
         } catch (Exception e) {
+            Log.record(e);
             System.out.println("No se pudo cargar la música: " + e.getMessage());
         }
     }
@@ -45,7 +48,7 @@ public class Musica {
                 float dB = min + (max - min) * volumen;
                 control.setValue(dB);
             } catch (Exception e) {
-                // Puede que el sistema no soporte el control de volumen
+                Log.record(e);
             }
         }
     }

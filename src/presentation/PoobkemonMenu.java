@@ -3,6 +3,8 @@ package presentation;
 import java.awt.*;
 import javax.swing.*;
 import java.io.File;
+
+import domain.Log;
 import domain.Poobkemon;
 
 /**
@@ -72,6 +74,7 @@ public class PoobkemonMenu extends JPanel {
                     app.cargarPartida(partidaCargada);
                     app.mostrarPanelBatallaConPartida(partidaCargada);
                 } catch (Exception ex) {
+                    Log.record(ex);
                     JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }

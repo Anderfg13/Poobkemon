@@ -1,5 +1,6 @@
 package presentation;
 
+import domain.Log;
 import domain.Poobkemon;
 import javax.swing.*;
 import java.awt.*;
@@ -51,6 +52,7 @@ public class PauseDialog extends JDialog {
                     poobkemon.guardarPartida(selectedFile); // Debes implementar este método en tu clase Poobkemon
                     JOptionPane.showMessageDialog(this, "Partida guardada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                 } catch (Exception ex) {
+                    Log.record(ex);
                     JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
