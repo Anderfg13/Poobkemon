@@ -1,5 +1,6 @@
 package domain;
 
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
@@ -38,6 +39,18 @@ public class Item {
         }
         System.out.println("Aplicando " + name + " a " + pokemon.getName());
         applyTo.apply(pokemon, effectValue);
+    }
+
+    public boolean canUse(Pokemon target, List<Pokemon> pokemonsMuertos) {
+        if (name.equalsIgnoreCase("Revivir")) {
+            // Revivir solo puede usarse si hay pokémon muertos
+            return !pokemonsMuertos.isEmpty();
+        } else if (applyTo == AttributeType.HP) {
+            // Pociones solo pueden usarse si el Pokémon no tiene la vida completa
+            return target.getPs() < target.getTotalPs();
+        }
+        // Otros ítems pueden tener reglas adicionales
+        return true;
     }
 
     public enum AttributeType {

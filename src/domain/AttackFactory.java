@@ -70,28 +70,23 @@ public class AttackFactory {
         ATTACK_REGISTRY.put("Aerochorro", new SpecialAttack("Aerochorro", "Volador", 100, 5, 95, "Special"));
 
         // Registrar ataques de estado
-        ATTACK_REGISTRY.put("Defensa férrea", new StatusAttack("Defensa férrea", "Acero", 0, 5, 100, "PhysicalDefense", 3, "Status"));
-        ATTACK_REGISTRY.put("Eco metálico", new StatusAttack("Eco metálico", "Acero", 0, 5, 85, "SpecialAttack", 3, "Status"));
-        ATTACK_REGISTRY.put("Hidrochorro", new StatusAttack("Hidrochorro", "Agua", 0, 5, 100, "Speed", 2, "Status"));
-        ATTACK_REGISTRY.put("Danza dragón", new StatusAttack("Danza dragón", "Dragon", 0, 5, 100, "PhysicalAttack+Speed", 3, "Status"));
-        ATTACK_REGISTRY.put("Levitón", new StatusAttack("Levitón", "Electrico", 0, 5, 100, "Evasion", 4, "Status"));
-        ATTACK_REGISTRY.put("Maldición", new StatusAttack("Maldición", "Fantasma", 0, 5, 100, "PS", 3, "Status"));
-        ATTACK_REGISTRY.put("Pesadilla", new StatusAttack("Pesadilla", "Fantasma", 0, 5, 100, "PS", 2, "Status"));
-        ATTACK_REGISTRY.put("Fuego fatuo", new StatusAttack("Fuego fatuo", "Fuego", 0, 5, 85, "Burn", 5, "Status"));
-        ATTACK_REGISTRY.put("Danza flores", new StatusAttack("Danza flores", "Hada", 0, 5, 100, "SpecialAttack", 3, "Status"));
-        ATTACK_REGISTRY.put("Neblina", new StatusAttack("Neblina", "Hielo", 0, 5, 100, "SpecialDefense", 5, "Status"));
-        ATTACK_REGISTRY.put("Niebla", new StatusAttack("Niebla", "Hielo", 0, 5, 100, "Evasion", 4, "Status"));
-        ATTACK_REGISTRY.put("Detección", new StatusAttack("Detección", "Lucha", 0, 5, 100, "Evasion", 3, "Status"));
-        ATTACK_REGISTRY.put("Corpulencia", new StatusAttack("Corpulencia", "Lucha", 0, 5, 100, "PhysicalDefense", 3, "Status"));
-        ATTACK_REGISTRY.put("Alivio", new StatusAttack("Alivio", "Normal", 0, 5, 100, "Status", 0, "Status"));
-        ATTACK_REGISTRY.put("Reserva", new StatusAttack("Reserva", "Normal", 0, 5, 100, "SpecialDefense", 4, "Status"));
-        ATTACK_REGISTRY.put("Aromaterapia", new StatusAttack("Aromaterapia", "Planta", 0, 5, 100, "Status", 0, "Status"));
-        ATTACK_REGISTRY.put("Silbato", new StatusAttack("Silbato", "Planta", 0, 5, 55, "PhysicalAttack", 3, "Status"));
-        ATTACK_REGISTRY.put("Chapoteo lodo", new StatusAttack("Chapoteo lodo", "Tierra", 0, 5, 100, "Accuracy", 3, "Status"));
-        ATTACK_REGISTRY.put("Púas", new StatusAttack("Púas", "Tierra", 0, 5, 100, "PhysicalDefense", 4, "Status"));
-        ATTACK_REGISTRY.put("Bilis", new StatusAttack("Bilis", "Veneno", 0, 5, 100, "PS", 5, "Status"));
-        ATTACK_REGISTRY.put("Viento afín", new StatusAttack("Viento afín", "Volador", 0, 5, 100, "Speed", 3, "Status"));
-        ATTACK_REGISTRY.put("Respiro", new StatusAttack("Respiro", "Volador", 0, 5, 100, "PS", 0, "Status"));
+        ATTACK_REGISTRY.put("Defensa férrea", new StatusAttack("Defensa férrea", "Acero", 0, 5, 100, AttributeType.PHYSICAL_DEFENSE, 3, "Status"));
+        ATTACK_REGISTRY.put("Eco metálico", new StatusAttack("Eco metálico", "Acero", 0, 5, 85, AttributeType.SPECIAL_ATTACK, 3, "Status"));
+        ATTACK_REGISTRY.put("Hidrochorro", new StatusAttack("Hidrochorro", "Agua", 0, 5, 100, AttributeType.SPEED, 2, "Status"));
+        ATTACK_REGISTRY.put("Danza dragón", new StatusAttack("Danza dragón", "Dragon", 0, 5, 100, AttributeType.PHYSICAL_ATTACK, 3, "Status"));
+        ATTACK_REGISTRY.put("Levitón", new StatusAttack("Levitón", "Electrico", 0, 5, 100, AttributeType.EVASION, 4, "Status"));
+        ATTACK_REGISTRY.put("Maldición", new StatusAttack("Maldición", "Fantasma", 0, 5, 100, AttributeType.HP, 3, "Status"));
+        ATTACK_REGISTRY.put("Pesadilla", new StatusAttack("Pesadilla", "Fantasma", 0, 5, 100, AttributeType.HP, 2, "Status"));
+        ATTACK_REGISTRY.put("Danza flores", new StatusAttack("Danza flores", "Hada", 0, 5, 100, AttributeType.SPECIAL_ATTACK, 3, "Status"));
+        ATTACK_REGISTRY.put("Neblina", new StatusAttack("Neblina", "Hielo", 0, 5, 100, AttributeType.SPECIAL_DEFENSE, 5, "Status"));
+        ATTACK_REGISTRY.put("Niebla", new StatusAttack("Niebla", "Hielo", 0, 5, 100, AttributeType.EVASION, 4, "Status"));
+        ATTACK_REGISTRY.put("Detección", new StatusAttack("Detección", "Lucha", 0, 5, 100, AttributeType.EVASION, 3, "Status"));
+        ATTACK_REGISTRY.put("Corpulencia", new StatusAttack("Corpulencia", "Lucha", 0, 5, 100, AttributeType.PHYSICAL_DEFENSE, 3, "Status"));
+        ATTACK_REGISTRY.put("Reserva", new StatusAttack("Reserva", "Normal", 0, 5, 100, AttributeType.SPECIAL_DEFENSE, 4, "Status"));
+        ATTACK_REGISTRY.put("Silbato", new StatusAttack("Silbato", "Planta", 0, 5, 55, AttributeType.PHYSICAL_ATTACK, 3, "Status"));
+        ATTACK_REGISTRY.put("Púas", new StatusAttack("Púas", "Tierra", 0, 5, 100, AttributeType.PHYSICAL_DEFENSE, 4, "Status"));
+        ATTACK_REGISTRY.put("Viento afín", new StatusAttack("Viento afín", "Volador", 0, 5, 100, AttributeType.SPEED, 3, "Status"));
+        ATTACK_REGISTRY.put("Respiro", new StatusAttack("Respiro", "Volador", 0, 5, 100, AttributeType.HP, 0, "Status"));
     }
 
     public static Attack createAttack(String name) {

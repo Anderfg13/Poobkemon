@@ -218,9 +218,8 @@ public class Poobkemon {
     }
 
     public boolean esAtaqueSobreSiMismo(String nombreAtaque) {
-        // Puedes mejorar esto usando el dominio o una propiedad del ataque
-        List<String> ataquesSelf = List.of("Curación", "Reflejo", "Danza Espada"); // Ejemplo
-        return ataquesSelf.contains(nombreAtaque);
+        List<String> ataquesEstado = getStatusAttacks();
+        return ataquesEstado.contains(nombreAtaque);
     }
 
     /**
@@ -317,6 +316,14 @@ public class Poobkemon {
 
     public void eliminarItem(boolean esJugador1, String nombreItem) {
         battleArenaNormal.eliminarItem(esJugador1, nombreItem);
+    }
+
+    public int getPokemonHP(boolean esJugador1, String nombrePokemon) {
+        return battleArenaNormal.getPokemonHP(esJugador1, nombrePokemon);
+    }
+
+    public int getPokemonMaxHP(boolean esJugador1, String nombrePokemon) {
+        return battleArenaNormal.getPokemonMaxHP(esJugador1, nombrePokemon);
     }
 
     private Coach createMachineCoach(String name, String machineType, ArrayList<String> pokemonNames, ArrayList<String> items) {
