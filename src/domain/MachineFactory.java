@@ -6,7 +6,7 @@ import java.util.Random;
 
 
 /**
- * {@code MachineFactory} es una fábrica para crear diferentes tipos de máquinas (jugadores automáticos)
+ * MachineFactory es una fábrica para crear diferentes tipos de máquinas (jugadores automáticos)
  * con estrategias variadas para el juego Poobkemon.
  * 
  * <p>Permite generar instancias de máquinas con equipos y objetos aleatorios, 

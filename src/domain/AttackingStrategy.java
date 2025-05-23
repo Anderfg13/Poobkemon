@@ -4,12 +4,34 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Estrategia agresiva que prioriza ataques con alto daño.
+ * AttackingStrategy implementa una estrategia agresiva para máquinas en el juego Poobkemon.
+ * Esta estrategia prioriza el uso de ataques con alto daño y la ofensiva directa sobre el oponente.
+ *
+ * <p>Características principales:
+ * <ul>
+ *   <li>Prioriza atacar en la mayoría de los turnos, salvo que la vida esté baja.</li>
+ *   <li>Selecciona el ataque físico o especial más fuerte disponible, evitando ataques de estado si es posible.</li>
+ *   <li>Considera cambiar de Pokémon o usar ítems si el Pokémon activo tiene poca vida.</li>
+ *   <li>Prioriza ítems de curación cuando la vida está por debajo del 50%.</li>
+ *   <li>Nunca huye de la batalla.</li>
+ * </ul>
+ *
+ * @author  Anderson Fabian Garcia Nieto
+ * @author  Christian Alfonso Romero Martinez
+ * @version 1.0
  */
 public class AttackingStrategy implements MachineStrategy {
     
     private final Random random = new Random();
     
+    /**
+     * Decide la acción a tomar en el turno actual.
+     * Prioriza atacar, pero puede cambiar de Pokémon o usar ítem si la vida está baja.
+     *
+     * @param machine      Instancia de la máquina que toma la decisión.
+     * @param battleArena  Contexto de la batalla actual.
+     * @return Código de acción: 1 (atacar), 2 (usar ítem), 3 (cambiar Pokémon).
+     */
     @Override
     public int decideAction(Machine machine, BattleArena battleArena) {
         // Prioriza atacar (80% probabilidad)
@@ -36,6 +58,14 @@ public class AttackingStrategy implements MachineStrategy {
         return 1;
     }
     
+    /**
+     * Selecciona el nombre del ataque a usar.
+     * Prefiere ataques físicos o especiales con mayor daño y PP disponibles.
+     *
+     * @param machine      Instancia de la máquina.
+     * @param battleArena  Contexto de la batalla.
+     * @return Nombre del ataque seleccionado, o null si no hay ataques disponibles.
+     */
     @Override
     public String selectAttack(Machine machine, BattleArena battleArena) {
         Pokemon active = machine.getActivePokemon();
@@ -75,6 +105,14 @@ public class AttackingStrategy implements MachineStrategy {
         return bestAttack != null ? bestAttack.getName() : null;
     }
     
+    /**
+     * Selecciona el nombre del ítem a usar.
+     * Prioriza ítems de curación si la vida está por debajo del 50%.
+     *
+     * @param machine      Instancia de la máquina.
+     * @param battleArena  Contexto de la batalla.
+     * @return Nombre del ítem seleccionado, o  null si no hay ítems disponibles.
+     */
     @Override
     public String selectItem(Machine machine, BattleArena battleArena) {
         List<Item> items = machine.getItems();
@@ -100,6 +138,14 @@ public class AttackingStrategy implements MachineStrategy {
         return items.get(random.nextInt(items.size())).getName();
     }
     
+    /**
+     * Selecciona el índice del mejor Pokémon ofensivo disponible para cambiar.
+     * Busca el Pokémon con mayor suma de ataque físico y especial que no esté debilitado.
+     *
+     * @param machine      Instancia de la máquina.
+     * @param battleArena  Contexto de la batalla.
+     * @return Índice del Pokémon seleccionado.
+     */
     @Override
     public int selectPokemon(Machine machine, BattleArena battleArena) {
         List<Pokemon> pokemons = machine.getPokemons();
@@ -128,6 +174,14 @@ public class AttackingStrategy implements MachineStrategy {
         return bestIndex;
     }
     
+    /**
+     * Determina si la máquina debe huir de la batalla.
+     * Esta estrategia nunca huye.
+     *
+     * @param machine      Instancia de la máquina.
+     * @param battleArena  Contexto de la batalla.
+     * @return Boolean  siempre, ya que esta estrategia nunca huye.
+     */
     @Override
     public boolean shouldFlee(Machine machine, BattleArena battleArena) {
         // Esta estrategia nunca huye

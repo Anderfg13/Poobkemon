@@ -1,12 +1,29 @@
 package presentation;
 
 import domain.Poobkemon;
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 import java.util.*;
 import java.util.List;
+import javax.swing.*;
 
+/**
+ * PoobkemonSeleccion1PPanel es un panel de selección de Pokémon e ítems para el modo 1 jugador en Poobkemon.
+ * Permite al usuario elegir hasta 6 Pokémon y 4 ítems antes de iniciar la batalla contra la máquina.
+ * Gestiona la navegación entre páginas de selección, la validación de la selección y la transición al panel de movimientos.
+ *
+ * <p>Características principales:
+ * <ul>
+ *   <li>Muestra los Pokémon e ítems disponibles en formato paginado, permitiendo seleccionar múltiples unidades de cada uno.</li>
+ *   <li>Valida que el usuario seleccione al menos un Pokémon antes de continuar.</li>
+ *   <li>Permite reiniciar la selección y regresar al menú anterior.</li>
+ *   <li>Integra la transición al panel de selección de movimientos tras confirmar la selección.</li>
+ *   <li>Actualiza visualmente la cantidad seleccionada de cada Pokémon e ítem.</li>
+ * </ul>
+ *
+ * @author  Anderson Fabian Garcia Nieto
+ * @author  Christian Alfonso Romero Martinez
+ * @version 1.0
+ */
 public class PoobkemonSeleccion1PPanel extends BackgroundPanel {
     private final List<String> pokemones = Poobkemon.getAvailablePokemon();
     private final List<String> items = Poobkemon.getAvailableItems();
@@ -23,6 +40,12 @@ public class PoobkemonSeleccion1PPanel extends BackgroundPanel {
     private final PoobkemonGUI app;
     private final String nombreJugador;
 
+    /**
+     * Constructor del panel de selección de Pokémon e ítems para el modo 1 jugador.
+     *
+     * @param app Referencia a la interfaz gráfica principal de Poobkemon.
+     * @param nombreJugador Nombre del jugador humano.
+     */
     public PoobkemonSeleccion1PPanel(PoobkemonGUI app, String nombreJugador) {
         super("mult/Fondos/Pokemon_NormalSelection.jpg");
         this.app = app;
@@ -194,6 +217,12 @@ public class PoobkemonSeleccion1PPanel extends BackgroundPanel {
         refreshItems();
     }
 
+    /**
+     * Decora un panel interno con borde y relleno personalizados.
+     *
+     * @param inner Panel interno a decorar.
+     * @return Panel decorado listo para agregar a la interfaz.
+     */
     private JPanel decoratePanel(JPanel inner) {
         JPanel outer = new JPanel(new BorderLayout());
         outer.setOpaque(false);
@@ -205,6 +234,11 @@ public class PoobkemonSeleccion1PPanel extends BackgroundPanel {
         return outer;
     }
 
+    /**
+     * Aplica el estilo visual a los botones de navegación (< y >) para paginación.
+     *
+     * @param btn Botón de navegación a estilizar.
+     */
     private void styleNavButton(JButton btn) {
         btn.setFont(new Font("Times New Roman", Font.BOLD, 18));
         btn.setBackground(new Color(220, 220, 255));
@@ -214,6 +248,10 @@ public class PoobkemonSeleccion1PPanel extends BackgroundPanel {
         btn.setPreferredSize(new Dimension(40, 40));
     }
 
+    /**
+     * Refresca la grilla de selección de Pokémon, mostrando los disponibles en la página actual
+     * y actualizando visualmente la cantidad seleccionada de cada uno.
+     */
     private void refreshPokemons() {
         pokemonsGrid.removeAll();
         int totalSeleccionados = seleccionPokemones.values().stream().mapToInt(Integer::intValue).sum();
@@ -253,6 +291,10 @@ public class PoobkemonSeleccion1PPanel extends BackgroundPanel {
         pokemonsGrid.repaint();
     }
 
+    /**
+     * Refresca la grilla de selección de ítems, mostrando los disponibles en la página actual
+     * y actualizando visualmente la cantidad seleccionada de cada uno.
+     */
     private void refreshItems() {
         itemsGrid.removeAll();
         int totalSeleccionados = seleccionItems.values().stream().mapToInt(Integer::intValue).sum();

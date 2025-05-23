@@ -4,6 +4,24 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
+/**
+ * {@code PokemonFactory} es una clase de utilidad que gestiona la creación de instancias de Pokémon en el juego Poobkemon.
+ * Permite instanciar objetos {@link Pokemon} a partir de su nombre, centralizando la definición de sus estadísticas y atributos base.
+ *
+ * <p>Características principales:
+ * <ul>
+ *   <li>Registra todos los Pokémon disponibles en el juego, asociando su nombre con un constructor parametrizado.</li>
+ *   <li>Permite crear instancias de {@link Pokemon} de forma sencilla a partir de su nombre.</li>
+ *   <li>Facilita la extensión y mantenimiento del catálogo de Pokémon del juego.</li>
+ *   <li>Incluye validación para evitar la creación de Pokémon no registrados.</li>
+ * </ul>
+ *
+
+ *
+ * @author  Anderson Fabian Garcia Nieto
+ * @author  Christian Alfonso Romero Martinez
+ * @version 1.0
+ */
 public class PokemonFactory {
     // Mapa que asocia nombres de Pokémon con sus constructores
     public static final Map<String, Supplier<Pokemon>> POKEMON_REGISTRY = new HashMap<>();

@@ -1,9 +1,20 @@
 package domain;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Random;
-
+/**
+ * Attack representa un ataque que puede ser utilizado por un Poobkemon durante una batalla.
+ * Esta clase es abstracta y debe ser extendida para definir ataques concretos.
+ * 
+ * <p>Cada ataque tiene un nombre, tipo elemental, daño base, precisión, puntos de poder (PP), 
+ * tipo de ataque (físico, especial o de estado) y un posible efecto especial.
+ * 
+ * <p>Proporciona métodos para calcular el daño, usar el ataque, obtener información relevante
+ * y clonar el ataque.
+ *
+ * @author  Anderson Fabian Garcia Nieto
+ * @author  Christian Alfonso Romero Martinez
+ * @version 1.0
+ */
 public abstract class Attack {
     protected String name;
     protected String type;
@@ -12,7 +23,17 @@ public abstract class Attack {
     protected int powerPoint;
     private String attackType;
     protected String effect; // Nuevo campo para el efecto del ataque
-    
+    /**
+     * Crea un nuevo ataque con los parámetros especificados.
+     *
+     * @param name        Nombre del ataque.
+     * @param type        Tipo elemental del ataque.
+     * @param baseDamage  Daño base del ataque.
+     * @param powerPoint  Puntos de poder iniciales del ataque.
+     * @param precision   Precisión del ataque (0-100).
+     * @param attackType  Tipo de ataque (Physical, Special, Status).
+     * @param effect      Efecto especial del ataque.
+     */
     public Attack(String name, String type, int baseDamage, int powerPoint, int precision, String attackType, String effect) {
         this.name = name;
         this.type = type;
@@ -22,36 +43,59 @@ public abstract class Attack {
         this.attackType = attackType;
         this.effect = effect;
     }
-
+    /**
+     * Obtiene el nombre del ataque.
+     * @return Nombre del ataque.
+     */
     public String getName() {
         return name;
     }
 
-    
+    /**
+     * Obtiene el daño base del ataque.
+     * @return Daño base.
+     */
     public int getBaseDamage() {
         return baseDamage;
     }
-
+    /**
+     * Obtiene el tipo elemental del ataque.
+     * @return Tipo elemental.
+     */
     public String getType() {
         return type;
     }
-
+    /**
+     * Obtiene el tipo elemental del ataque.
+     * @return Tipo elemental.
+     */
     public int getPrecision() {
         return precision;
     }
-    
+    /**
+     * Establece los puntos de poder (PP) del ataque.
+     * @param pp Nuevo valor de PP.
+     */    
     public void setPowerPoint(int pp) {
     	this.powerPoint = pp;
     }
-
+    /**
+     * Obtiene los puntos de poder (PP) actuales del ataque.
+     * @return Puntos de poder restantes.
+     */
     public int getPowerPoint() {
         return powerPoint;
     }
-
+    /**
+     * Reduce en 1 los puntos de poder (PP) del ataque, sin bajar de 0.
+     */
     public void usarAtaque() {
         this.powerPoint = Math.max(this.powerPoint - 1, 0);
     }
-
+    /**
+     * Obtiene el tipo de ataque (Physical, Special, Status).
+     * @return Tipo de ataque.
+     */
     public String getAttackType() {
         return this.attackType;
     }
@@ -81,7 +125,14 @@ public abstract class Attack {
                 return 10;
         }
     }
-
+    /**
+     * Calcula el daño infligido por este ataque de un atacante a un defensor.
+     * Considera la precisión, la efectividad de tipos y las estadísticas de los Poobkemon.
+     *
+     * @param atacante Poobkemon que realiza el ataque.
+     * @param defensor Poobkemon que recibe el ataque.
+     * @return Daño infligido (0 si falla o no quedan PP).
+     */
     public int calcDaño(Pokemon atacante, Pokemon defensor) {
         if (powerPoint <= 0) return 0;
 
@@ -107,7 +158,12 @@ public abstract class Attack {
         usarAtaque();
         return danioBase;
     }
-
+    /**
+     * Crea y retorna una copia profunda de este ataque.
+     * Debe ser implementado por las subclases.
+     * 
+     * @return Una nueva Attack con los mismos valores.
+     */
     @Override
     public abstract Attack clone();
 }

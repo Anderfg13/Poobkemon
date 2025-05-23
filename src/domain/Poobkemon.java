@@ -8,6 +8,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Poobkemon es la clase principal que gestiona la lógica central del juego Poobkemon.
+ * Permite la inicialización de batallas, la gestión de entrenadores, Pokémon, ataques, ítems y el flujo de turnos.
+ * Sirve como punto de entrada para la interacción entre la interfaz gráfica y la lógica de juego.
+ *
+ * <p>Características principales:
+ * <ul>
+ *   <li>Permite iniciar batallas en modo normal, supervivencia, humano vs máquina y máquina vs máquina.</li>
+ *   <li>Gestiona la asignación de equipos, ataques y objetos para cada entrenador.</li>
+ *   <li>Incluye métodos para procesar ataques, cambios de Pokémon, uso de ítems y efectos de estado.</li>
+ *   <li>Proporciona utilidades para consultar información de los Pokémon, ataques e ítems disponibles.</li>
+ *   <li>Permite consultar el estado actual de la batalla, los equipos y los movimientos asignados.</li>
+ *   <li>Facilita la integración con la interfaz gráfica mediante métodos de consulta y actualización de estado.</li>
+ *   <li>Incluye lógica para determinar el turno, el resultado de la batalla y la gestión de eventos especiales.</li>
+ * </ul>
+ *
+ * @author  Anderson Fabian Garcia Nieto
+ * @author  Christian Alfonso Romero Martinez
+ * @version 1.0
+ */
 public class Poobkemon {
     private BattleArena battleArenaNormal;
     private ArrayList<BattleArena> battleArenas;

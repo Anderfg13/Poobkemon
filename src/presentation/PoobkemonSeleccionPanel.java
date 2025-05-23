@@ -8,6 +8,25 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 
+/**
+ * PoobkemonSeleccionPanel es un panel de selección de Pokémon e ítems para el modo multijugador o humano vs máquina en Poobkemon.
+ * Permite a cada jugador elegir hasta 6 Pokémon y 4 ítems antes de iniciar la batalla.
+ * Gestiona la navegación entre páginas de selección, la validación de la selección y la transición al panel de movimientos.
+ *
+ * <p>Características principales:
+ * <ul>
+ *   <li>Muestra los Pokémon e ítems disponibles en formato paginado, permitiendo seleccionar múltiples unidades de cada uno.</li>
+ *   <li>Permite alternar entre la selección de cada jugador y visualizar sus selecciones.</li>
+ *   <li>Valida que cada jugador humano seleccione al menos un Pokémon antes de continuar.</li>
+ *   <li>Permite reiniciar la selección y regresar al menú anterior.</li>
+ *   <li>Integra la transición al panel de selección de movimientos tras confirmar la selección.</li>
+ *   <li>Actualiza visualmente la cantidad seleccionada de cada Pokémon e ítem.</li>
+ * </ul>
+ *
+ * @author  Anderson Fabian Garcia Nieto
+ * @author  Christian Alfonso Romero Martinez
+ * @version 1.0
+ */
 public class PoobkemonSeleccionPanel extends BackgroundPanel {
     private final List<String> pokemones = Poobkemon.getAvailablePokemon();
     private final List<String> items = Poobkemon.getAvailableItems();
@@ -36,6 +55,13 @@ public class PoobkemonSeleccionPanel extends BackgroundPanel {
     private List<String> items1 = new ArrayList<>();
     private List<String> items2 = new ArrayList<>();
 
+    /**
+     * Constructor del panel de selección de Pokémon e ítems para el modo multijugador o humano vs máquina.
+     *
+     * @param app Referencia a la interfaz gráfica principal de Poobkemon.
+     * @param nombreJugador1 Nombre del primer jugador.
+     * @param nombreJugador2 Nombre del segundo jugador.
+     */
     public PoobkemonSeleccionPanel(PoobkemonGUI app, String nombreJugador1, String nombreJugador2) {
         super("mult/Fondos/Pokemon_NormalSelection.jpg"); // Llama al constructor del fondo
         this.app = app;
@@ -258,6 +284,12 @@ public class PoobkemonSeleccionPanel extends BackgroundPanel {
         refreshItems();
     }
 
+    /**
+     * Decora un panel interno con borde y relleno personalizados.
+     *
+     * @param inner Panel interno a decorar.
+     * @return Panel decorado listo para agregar a la interfaz.
+     */
     private JPanel decoratePanel(JPanel inner) {
         JPanel outer = new JPanel(new BorderLayout());
         outer.setOpaque(false);
@@ -270,6 +302,11 @@ public class PoobkemonSeleccionPanel extends BackgroundPanel {
         return outer;
     }
 
+    /**
+     * Aplica el estilo visual a los botones de navegación (< y >) para paginación.
+     *
+     * @param btn Botón de navegación a estilizar.
+     */
     private void styleNavButton(JButton btn) {
         btn.setFont(new Font("Times New Roman", Font.BOLD, 18));
         btn.setBackground(new Color(220, 220, 255));
@@ -279,6 +316,10 @@ public class PoobkemonSeleccionPanel extends BackgroundPanel {
         btn.setPreferredSize(new Dimension(40, 40));
     }
 
+    /**
+     * Refresca la grilla de selección de Pokémon, mostrando los disponibles en la página actual
+     * y actualizando visualmente la cantidad seleccionada de cada uno para el jugador actual.
+     */
     private void refreshPokemons() {
         pokemonsGrid.removeAll();
         Map<Integer, Integer> seleccionPokemonesActual = (jugadorActual == 1) ? seleccionPokemones1 : seleccionPokemones2;
@@ -319,6 +360,10 @@ public class PoobkemonSeleccionPanel extends BackgroundPanel {
         pokemonsGrid.repaint();
     }
 
+    /**
+     * Refresca la grilla de selección de ítems, mostrando los disponibles en la página actual
+     * y actualizando visualmente la cantidad seleccionada de cada uno para el jugador actual.
+     */
     private void refreshItems() {
         itemsGrid.removeAll();
         Map<Integer, Integer> seleccionItemsActual = (jugadorActual == 1) ? seleccionItems1 : seleccionItems2;
@@ -359,6 +404,10 @@ public class PoobkemonSeleccionPanel extends BackgroundPanel {
         itemsGrid.repaint();
     }
 
+    /**
+     * Inicia la batalla, convierte las selecciones de ambos jugadores en listas y navega al panel de movimientos.
+     * Valida que los jugadores humanos hayan seleccionado al menos un Pokémon.
+     */
     private void iniciarBatalla() {
         // Convertir los mapas de selecciones a listas
         pokemones1.clear();
@@ -551,6 +600,7 @@ public class PoobkemonSeleccionPanel extends BackgroundPanel {
 
     /**
      * Actualiza la interfaz según el jugador actual y si es una máquina
+     * Muestra mensajes informativos si corresponde
      */
     private void actualizarInterfazSeleccion() {
         // Establecer el título y configuración según el jugador actual

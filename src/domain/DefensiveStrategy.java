@@ -1,16 +1,38 @@
 package domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.ArrayList;
 
 /**
- * Estrategia defensiva que prioriza la supervivencia y uso de ítems.
+ * DefensiveStrategy implementa una estrategia defensiva para máquinas en el juego Poobkemon.
+ * Esta estrategia prioriza la supervivencia, el uso de ítems curativos o defensivos y la selección de ataques de estado.
+ *
+ * <p>Características principales:
+ * <ul>
+ *   <li>Si la vida del Pokémon activo es baja, prioriza el uso de ítems o el cambio de Pokémon.</li>
+ *   <li>Prefiere ataques de estado para debilitar al oponente o fortalecer la defensa propia.</li>
+ *   <li>Selecciona ataques basados en la efectividad de tipo cuando no hay ataques de estado disponibles.</li>
+ *   <li>Elige ítems de curación o defensa antes que otros tipos de ítems.</li>
+ *   <li>Puede huir de la batalla si la situación es muy desfavorable (baja probabilidad).</li>
+ * </ul>
+ *
+ * @author  Anderson Fabian Garcia Nieto
+ * @author  Christian Alfonso Romero Martinez
+ * @version 1.0
  */
 public class DefensiveStrategy implements MachineStrategy {
     
     private final Random random = new Random();
     
+    /**
+     * Decide la acción a tomar en el turno actual.
+     * Puede atacar, usar ítem o cambiar de Pokémon según la vida y los recursos disponibles.
+     *
+     * @param machine      Instancia de la máquina que toma la decisión.
+     * @param battleArena  Contexto de la batalla actual.
+     * @return Código de acción: 1 (atacar), 2 (usar ítem), 3 (cambiar Pokémon).
+     */
     @Override
     public int decideAction(Machine machine, BattleArena battleArena) {
         Pokemon active = machine.getActivePokemon();
@@ -36,6 +58,15 @@ public class DefensiveStrategy implements MachineStrategy {
         return 1;
     }
     
+    /**
+     * Selecciona el nombre del ataque a usar.
+     * Prioriza ataques de estado, luego ataques efectivos según el tipo del oponente,
+     * y finalmente uno aleatorio si no hay opciones claras.
+     *
+     * @param machine      Instancia de la máquina.
+     * @param battleArena  Contexto de la batalla.
+     * @return Nombre del ataque seleccionado, o {@code null} si no hay ataques disponibles.
+     */
     @Override
     public String selectAttack(Machine machine, BattleArena battleArena) {
         Pokemon active = machine.getActivePokemon();
@@ -99,6 +130,14 @@ public class DefensiveStrategy implements MachineStrategy {
         return null;
     }
     
+    /**
+     * Selecciona el nombre del ítem a usar.
+     * Prioriza ítems de curación o defensa, y si no hay, elige uno al azar.
+     *
+     * @param machine      Instancia de la máquina.
+     * @param battleArena  Contexto de la batalla.
+     * @return Nombre del ítem seleccionado, o {@code null} si no hay ítems disponibles.
+     */
     @Override
     public String selectItem(Machine machine, BattleArena battleArena) {
         List<Item> items = machine.getItems();
@@ -119,6 +158,14 @@ public class DefensiveStrategy implements MachineStrategy {
         return items.get(random.nextInt(items.size())).getName();
     }
     
+    /**
+     * Selecciona el índice del mejor Pokémon defensivo disponible para cambiar.
+     * Busca el Pokémon con mayor suma de defensa física y especial que no esté debilitado.
+     *
+     * @param machine      Instancia de la máquina.
+     * @param battleArena  Contexto de la batalla.
+     * @return Índice del Pokémon seleccionado.
+     */
     @Override
     public int selectPokemon(Machine machine, BattleArena battleArena) {
         List<Pokemon> pokemons = machine.getPokemons();
@@ -147,6 +194,14 @@ public class DefensiveStrategy implements MachineStrategy {
         return bestIndex;
     }
     
+    /**
+     * Determina si la máquina debe huir de la batalla.
+     * Puede huir con baja probabilidad si la vida del Pokémon activo es muy baja.
+     *
+     * @param machine      Instancia de la máquina.
+     * @param battleArena  Contexto de la batalla.
+     * @return {@code true} si decide huir, {@code false} en caso contrario.
+     */
     @Override
     public boolean shouldFlee(Machine machine, BattleArena battleArena) {
         // 5% de probabilidad de huir si la situación es muy desfavorable

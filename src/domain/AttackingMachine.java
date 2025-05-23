@@ -3,19 +3,43 @@ package domain;
 import java.util.ArrayList;
 
 /**
- * Máquina con enfoque ofensivo.
- * Prioriza ataques potentes y estadísticas de ataque.
+ * AttackingMachine representa una máquina controlada por IA con enfoque ofensivo.
+ * Esta máquina prioriza el uso de ataques potentes y selecciona movimientos que maximicen el daño al oponente.
+ * 
+ * <p>Características principales:
+ * <ul>
+ *   <li>Selecciona el ataque más poderoso y efectivo disponible, evitando ataques de estado si es posible.</li>
+ *   <li>Cambia de Pokémon buscando siempre el que tenga mejores estadísticas ofensivas o ventaja de tipo.</li>
+ *   <li>Utiliza ítems ofensivos o curativos cuando el Pokémon activo tiene poca vida.</li>
+ * </ul>
+ *
+ * @author  Anderson Fabian Garcia Nieto
+ * @author  Christian Alfonso Romero Martinez
+ * @version 1.0
  */
 public class AttackingMachine extends Machine {
     
     private AttackingStrategy strategy;
     
+    /**
+     * Crea una nueva instancia de {@code AttackingMachine} con el nombre, equipo y objetos dados.
+     *
+     * @param name     Nombre de la máquina.
+     * @param pokemons Lista de Pokémon que forman el equipo de la máquina.
+     * @param items    Lista de nombres de ítems disponibles para la máquina.
+     */
     public AttackingMachine(String name, ArrayList<Pokemon> pokemons, ArrayList<String> items) {
         super(name, pokemons, items);
         this.strategy = new AttackingStrategy();
         this.machineType = "Attacking";
     }
     
+    /**
+     * Selecciona el índice del mejor movimiento ofensivo disponible para el Pokémon activo.
+     * Prefiere ataques físicos o especiales sobre los de estado y maximiza el daño potencial.
+     *
+     * @return Índice del movimiento seleccionado.
+     */
     @Override
     public int selectMove() {
         Pokemon currentPokemon = getActivePokemon();
@@ -50,6 +74,12 @@ public class AttackingMachine extends Machine {
         return bestMoveIndex;
     }
     
+    /**
+     * Selecciona el índice del mejor Pokémon ofensivo disponible para cambiar.
+     * Busca ventaja de tipo o mejores estadísticas de ataque y velocidad.
+     *
+     * @return Índice del Pokémon seleccionado.
+     */
     @Override
     public int selectBestPokemon() {
         // Si el oponente tiene ventaja de tipo, buscar un Pokémon con ventaja
@@ -84,6 +114,12 @@ public class AttackingMachine extends Machine {
         return bestOffensiveIndex;
     }
     
+    /**
+     * Determina si la máquina debe usar un ítem en el turno actual.
+     * Usará un ítem si el Pokémon activo tiene menos del 30% de su vida total y hay ítems disponibles.
+     *
+     * @return {@code true} si debe usar un ítem, {@code false} en caso contrario.
+     */
     @Override
     public boolean shouldUseItem() {
         // Usar item solo cuando el Pokémon tiene baja vida pero aún es viable
@@ -91,6 +127,13 @@ public class AttackingMachine extends Machine {
         return currentPokemon.getPs() < currentPokemon.getTotalPs() * 0.3 && !items.isEmpty();
     }
     
+    /**
+     * Selecciona el índice del ítem a usar.
+     * Prioriza ítems que aumentan el ataque ("X-Ataque") y luego curativos ("Poción").
+     * Si no hay ítems específicos, usa el primero disponible.
+     *
+     * @return Índice del ítem seleccionado, o -1 si no hay ítems.
+     */
     @Override
     public int selectItem() {
         // Buscar X-Ataque o ítem que aumente estadísticas ofensivas

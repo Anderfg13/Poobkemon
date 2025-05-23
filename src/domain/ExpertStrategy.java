@@ -1,11 +1,28 @@
 package domain;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 /**
- * Estrategia experta que combina análisis de situación y toma de decisiones avanzadas.
+ * ExpertStrategy implementa una estrategia avanzada y adaptable para máquinas en el juego Poobkemon.
+ * Esta estrategia toma decisiones considerando múltiples factores como vida, ventaja de tipo, estado del oponente,
+ * potencia y precisión de los ataques, y uso estratégico de ítems, adaptando su comportamiento a lo largo de la batalla.
+ *
+ * <p>Características principales:
+ * <ul>
+ *   <li>Evalúa el mejor ataque considerando efectividad, potencia, precisión, PP y situación de la batalla.</li>
+ *   <li>En los primeros turnos prioriza ataques de estado que debiliten al oponente.</li>
+ *   <li>Cambia de Pokémon si tiene desventaja de tipo o poca vida, eligiendo el mejor reemplazo posible.</li>
+ *   <li>Utiliza ítems de forma estratégica, priorizando curación o potenciadores según el contexto y el turno.</li>
+ *   <li>Adapta su comportamiento a lo largo de la batalla, ajustando su estrategia según el estado propio y del oponente.</li>
+ *   <li>Puede considerar huir en situaciones extremadamente desfavorables, aunque con baja probabilidad.</li>
+ * </ul>
+ *
+ * <p>Esta clase implementa la interfaz {@link MachineStrategy} y está diseñada para dotar a las máquinas de un comportamiento experto y flexible.
+ *
+ * @author  Anderson Fabian Garcia Nieto
+ * @author  Christian Alfonso Romero Martinez
+ * @version 1.0
  */
 public class ExpertStrategy implements MachineStrategy {
     

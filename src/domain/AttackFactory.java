@@ -1,9 +1,28 @@
 package domain;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+/**
+ * AttackFactory es una fábrica para la creación y gestión de ataques en el juego Poobkemon.
+ * 
+ * <p>Permite registrar, obtener y clonar instancias de {@link Attack} de diferentes tipos (físico, especial, estado).
+ * Los ataques se almacenan en un registro interno y pueden ser accedidos por nombre.
+ * 
+ * <p>Características principales:
+ * <ul>
+ *   <li>Registro centralizado de ataques disponibles en el juego.</li>
+ *   <li>Creación de instancias de ataques a partir de su nombre.</li>
+ *   <li>Obtención de la lista de nombres de ataques registrados.</li>
+ *   <li>Acceso a todos los ataques registrados como un mapa.</li>
+ * </ul>
+ *
+ * @author  Anderson Fabian Garcia Nieto
+ * @author  Christian Alfonso Romero Martinez
+ * @version 1.0
+ */
 
 public class AttackFactory {
     private static final Map<String, Attack> ATTACK_REGISTRY = new HashMap<>();
@@ -88,7 +107,13 @@ public class AttackFactory {
         ATTACK_REGISTRY.put("Viento afín", new StatusAttack("Viento afín", "Volador", 0, 5, 100, AttributeType.SPEED, 3, "Status"));
         ATTACK_REGISTRY.put("Respiro", new StatusAttack("Respiro", "Volador", 0, 5, 100, AttributeType.HP, 0, "Status"));
     }
-
+    /**
+     * Crea y retorna una nueva instancia de {@link Attack} a partir de su nombre.
+     *
+     * @param name Nombre del ataque a crear.
+     * @return Una nueva instancia clonada del ataque solicitado.
+     * @throws IllegalArgumentException si el ataque no está registrado.
+     */
     public static Attack createAttack(String name) {
         Attack attack = ATTACK_REGISTRY.get(name);
         if (attack == null) {
@@ -96,7 +121,11 @@ public class AttackFactory {
         }
         return attack.clone();
     }
-
+    /**
+     * Obtiene la lista de nombres de todos los ataques registrados.
+     *
+     * @return Lista de nombres de ataques.
+     */
     public static List<String> getAttackNames() {
         return new ArrayList<>(ATTACK_REGISTRY.keySet());
     }
@@ -108,7 +137,12 @@ public class AttackFactory {
     public static Map<String, Attack> getAllAttacks() {
         return ATTACK_REGISTRY;
     }
-
+    /**
+     * Obtiene Attack registrada bajo el nombre dado.
+     * 
+     * @param name Nombre del ataque.
+     * @return Instancia de Attack registrada, o null si no existe.
+     */
     public static Attack getAttack(String name) {
         return ATTACK_REGISTRY.get(name);
     }

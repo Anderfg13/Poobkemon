@@ -1,12 +1,28 @@
 package presentation;
 
-import domain.Poobkemon; // Asegúrate de tener acceso a los métodos del dominio
-import javax.swing.*;
+import domain.Poobkemon;
 import java.awt.*;
-import java.awt.event.*;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+import javax.swing.*;
 
+/**
+ * SeleccionarMovimientosDialog es un cuadro de diálogo para seleccionar los movimientos de un Pokémon específico.
+ * Permite al usuario elegir hasta 4 movimientos de diferentes tipos (físico, especial, estado) para un Pokémon antes de la batalla.
+ * Gestiona la validación de la selección, la visualización de los movimientos disponibles y la integración con la interfaz principal.
+ *
+ * <p>Características principales:
+ * <ul>
+ *   <li>Muestra los movimientos disponibles por tipo y permite seleccionarlos mediante checkboxes.</li>
+ *   <li>Valida que no se repitan movimientos y que solo se puedan seleccionar hasta 4.</li>
+ *   <li>Permite eliminar movimientos seleccionados y confirmar la selección.</li>
+ *   <li>Incluye un panel de fondo personalizado y muestra el GIF del Pokémon correspondiente.</li>
+ * </ul>
+ *
+ * @author  Anderson Fabian Garcia Nieto
+ * @author  Christian Alfonso Romero Martinez
+ * @version 1.0
+ */
 public class SeleccionarMovimientosDialog extends JDialog {
     private final List<String> movimientosSeleccionados = new ArrayList<>();
     private final JPanel movimientosPanel;
@@ -15,6 +31,13 @@ public class SeleccionarMovimientosDialog extends JDialog {
     private final DefaultListModel<String> modeloLista;
     private final JList<String> listaSeleccionados;
 
+    /**
+     * Constructor del cuadro de diálogo para seleccionar movimientos de un Pokémon.
+     *
+     * @param parent Ventana principal sobre la que se muestra el diálogo.
+     * @param nombreJugador Nombre del jugador que realiza la selección.
+     * @param pokemon Nombre del Pokémon para el que se seleccionan los movimientos.
+     */
     public SeleccionarMovimientosDialog(JFrame parent, String nombreJugador, String pokemon) {
         super(parent, nombreJugador + " - Seleccionar movimientos para " + pokemon, true);
         setContentPane(new FondoPanel("mult/Fondos/Pokemon_ChooseAttacks.jpeg"));
@@ -128,6 +151,11 @@ public class SeleccionarMovimientosDialog extends JDialog {
         });
     }
 
+    /**
+     * Muestra los movimientos disponibles en el panel según la lista proporcionada.
+     *
+     * @param movimientos Lista de nombres de movimientos a mostrar.
+     */
     private void mostrarMovimientos(List<String> movimientos) {
         movimientosPanel.removeAll();
         for (String mov : movimientos) {
@@ -137,18 +165,38 @@ public class SeleccionarMovimientosDialog extends JDialog {
         movimientosPanel.repaint();
     }
 
+    /**
+     * Devuelve la lista de movimientos seleccionados por el usuario.
+     *
+     * @return Lista de nombres de movimientos seleccionados.
+     */
     public List<String> getMovimientosSeleccionados() {
         return movimientosSeleccionados;
     }
 
-    // Panel de fondo con imagen
+    /**
+     * FondoPanel es un panel personalizado que muestra una imagen de fondo escalable.
+     * Permite adaptar la imagen al tamaño del panel, manteniendo la calidad visual.
+     */
     static class FondoPanel extends JPanel {
         private final Image fondo;
+
+        /**
+         * Constructor del panel de fondo.
+         *
+         * @param ruta Ruta de la imagen a mostrar como fondo.
+         */
         public FondoPanel(String ruta) {
             fondo = new ImageIcon(ruta).getImage();
             setOpaque(false);
             setOpaque(false);
         }
+
+        /**
+         * Sobrescribe el método paintComponent para dibujar la imagen escalada al tamaño del panel.
+         *
+         * @param g Objeto Graphics utilizado para dibujar la imagen.
+         */
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);

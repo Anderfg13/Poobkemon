@@ -1,10 +1,28 @@
 package presentation;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.*;
 
+/**
+ * GradientButton es un botón personalizado para Swing que muestra un fondo con gradiente de color
+ * y efectos visuales al pasar el mouse (hover). Permite mejorar la apariencia visual de la interfaz de usuario
+ * en Poobkemon, brindando una experiencia más atractiva e interactiva.
+ *
+ * <p>Características principales:
+ * <ul>
+ *   <li>Muestra un gradiente vertical de color que cambia al pasar el mouse sobre el botón.</li>
+ *   <li>Incluye un borde personalizado y fuente estilizada para el texto.</li>
+ *   <li>Reproduce un sonido al hacer clic, integrando la clase {@code Sonidos} del paquete {@code presentation}.</li>
+ *   <li>Desactiva el área de contenido estándar y el enfoque visual predeterminado de los botones Swing.</li>
+ *   <li>Permite personalizar el texto del botón mediante el constructor.</li>
+ * </ul>
+ *
+ * @author  Anderson Fabian Garcia Nieto
+ * @author  Christian Alfonso Romero Martinez
+ * @version 1.0
+ */
 public class GradientButton extends JButton {
     private boolean hover = false;
 

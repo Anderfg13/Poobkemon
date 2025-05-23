@@ -11,7 +11,25 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Implementación de una Machine controlada por Google Gemini API. prueba
+ * GeminiMachine representa una máquina controlada por IA que utiliza la API de Google Gemini para tomar decisiones en batalla.
+ * Esta máquina consulta el modelo Gemini para seleccionar el mejor Pokémon, movimiento o ítem en cada turno, adaptándose dinámicamente
+ * a la situación del combate y al estado de ambos equipos.
+ *
+ * <p>Características principales:
+ * <ul>
+ *   <li>Se comunica con la API de Gemini para analizar el contexto de la batalla y tomar decisiones estratégicas.</li>
+ *   <li>Selecciona el mejor Pokémon para cambiar, el mejor movimiento para atacar y el ítem más adecuado según la respuesta de Gemini.</li>
+ *   <li>Incluye mecanismos de verificación de conexión y fallback a decisiones aleatorias si la API no está disponible.</li>
+ *   <li>Construye prompts detallados para enviar a Gemini, incluyendo información de los Pokémon, movimientos e ítems disponibles.</li>
+ *   <li>Analiza las respuestas de Gemini para extraer la acción recomendada y ejecutarla en el juego.</li>
+ *   <li>Permite la integración de IA generativa avanzada en la lógica de combate de Poobkemon.</li>
+ * </ul>
+ *
+ * <p>Esta clase extiende {@link Machine} y debe ser utilizada para batallas donde se desee experimentar con IA generativa externa.
+ *
+ * @author  Anderson Fabian Garcia Nieto
+ * @author  Christian Alfonso Romero Martinez
+ * @version 1.0
  */
 public class GeminiMachine extends Machine {
     private static final String API_KEY = "AIzaSyCs_ggcWvYmpzYi7HgdlinmG4RhCJG-kbQ"; 

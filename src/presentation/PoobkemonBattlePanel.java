@@ -3,15 +3,34 @@ package presentation;
 import domain.Coach;
 import domain.Poobkemon;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
+/**
+ * PoobkemonBattlePanel es el panel principal de la interfaz gráfica para la batalla en el juego Poobkemon.
+ * Gestiona la visualización y la interacción del usuario durante el combate, mostrando los Pokémon activos, barras de vida,
+ * botones de acción, temporizador de turno y animaciones. Permite la integración de batallas entre jugadores humanos y/o máquinas.
+ *
+ * <p>Características principales:
+ * <ul>
+ *   <li>Muestra los Pokémon activos de ambos jugadores con sus respectivos GIFs y barras de vida actualizadas en tiempo real.</li>
+ *   <li>Incluye botones para atacar, usar ítems, cambiar de Pokémon o huir, adaptando la interfaz según el turno y el tipo de jugador.</li>
+ *   <li>Gestiona el temporizador de turno, penalizando si el tiempo se agota y cambiando el turno automáticamente.</li>
+ *   <li>Permite la ejecución automática de turnos para máquinas, incluyendo batallas máquina vs máquina.</li>
+ *   <li>Incluye paneles y diálogos personalizados para seleccionar ataques, ítems y Pokémon, así como para revivir Pokémon derrotados.</li>
+ *   <li>Actualiza la interfaz tras cada acción, mostrando mensajes de resultado y verificando el fin de la partida.</li>
+ *   <li>Integra la lógica de cambio de turno, control de botones y actualización de la música de fondo según el estado de la batalla.</li>
+ * </ul>
+ *
+ * @author  Anderson Fabian Garcia Nieto
+ * @author  Christian Alfonso Romero Martinez
+ * @version 1.0
+ */
 public class PoobkemonBattlePanel extends BackgroundPanel {
     private JLabel timerLabel;
     private JLabel pokemonNameLabel;
@@ -41,6 +60,16 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
     // Añadir estas declaraciones junto a los otros campos de clase
     private JLabel player1Label, player2Label;
 
+    /**
+     * Constructor del panel de batalla de Poobkemon.
+     * Inicializa la interfaz, los botones, temporizador y detecta el tipo de batalla.
+     * 
+     * @param poobkemon Instancia principal del juego Poobkemon.
+     * @param app Referencia a la interfaz gráfica principal.
+     * @param colorJugador1 Color personalizado para el jugador 1.
+     * @param colorJugador2 Color personalizado para el jugador 2.
+     * @param jugador1Empieza Indica si el jugador 1 inicia la batalla.
+     */
     public PoobkemonBattlePanel(Poobkemon poobkemon, PoobkemonGUI app, Color colorJugador1, Color colorJugador2, boolean jugador1Empieza) {
         super("mult/Fondos/Pokemon_NormalMode2.png");
         this.poobkemon = poobkemon;
@@ -279,6 +308,9 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
         }
     }
 
+    /**
+     * Actualiza los colores de los botones de acción según el turno actual.
+     */
     private void actualizarColoresBotones() {
         Color color = turnoJugador1 ? colorJugador1 : colorJugador2;
         fightBtn.setBackground(color);
@@ -297,6 +329,9 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
         pokemonNameLabel.setForeground(Color.WHITE);
     }
 
+    /**
+     * Inicia o reinicia el temporizador de turno, actualizando la etiqueta de tiempo y cambiando el turno si se agota.
+     */
     private void iniciarTemporizador() {
         if (timer != null) timer.cancel();
         tiempoRestante = 20;
@@ -317,6 +352,10 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
         }, 1000, 1000);
     }
 
+    /**
+     * Cambia el turno entre jugadores, verifica si algún Pokémon debe ser reemplazado y actualiza la interfaz.
+     * Si es turno de máquina, ejecuta automáticamente su acción.
+     */
     private void cambiarTurno() {
         // Detener temporizador actual
         if (timer != null) {
@@ -390,7 +429,8 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
     }
 
     /**
-     * Ejecuta automáticamente un turno de la máquina
+     * Ejecuta automáticamente un turno de la máquina, deshabilitando los botones y mostrando el resultado.
+     * Actualiza la interfaz y gestiona el flujo de la batalla para batallas máquina vs máquina o humano vs máquina.
      */
     private void ejecutarTurnoMaquina() {
         // Desactivar botones durante el turno de la máquina
@@ -501,7 +541,7 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
     }
 
     /**
-     * Inicia una batalla automática entre dos máquinas
+     * Inicia una batalla automática entre dos máquinas, deshabilitando los botones y gestionando la simulación.
      */
     private void iniciarBatallaMaquinaVsMaquina() {
         // En batalla máquina vs máquina, desactivar botones permanentemente
@@ -600,6 +640,9 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
         return false;
     }
 
+    /**
+     * Muestra el panel principal de botones de acción (Fight, Items, Pokémons, Flee).
+     */
     private void mostrarPanelBotones() {
         buttonsPanel.removeAll();
         buttonsPanel.setLayout(new GridLayout(2, 2, 8, 8));
@@ -611,6 +654,9 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
         buttonsPanel.repaint();
     }
 
+    /**
+     * Actualiza las barras de vida y etiquetas de puntos de salud de ambos Pokémon activos.
+     */
     private void actualizarBarrasDeVida() {
         int vidaActual1 = poobkemon.getActivePokemonCurrentHP(true);
         int vidaMax1 = poobkemon.getActivePokemonMaxHP(true);
@@ -626,6 +672,10 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
         hpLabel2.setText(vidaActual2 + " / " + vidaMax2);
     }
 
+    /**
+     * Muestra el panel de selección de ataques disponibles para el Pokémon activo.
+     * @param ataques Array de nombres de ataques disponibles.
+     */
     private void mostrarPanelAtaques(String[] ataques) {
         // Verificar si el array de ataques está vacío
         if (ataques == null || ataques.length == 0) {
@@ -720,8 +770,8 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
     }
 
     /**
-     * Maneja el cambio de Pokémon cuando uno es derrotado
-     * @param jugador true para jugador 1, false para jugador 2
+     * Maneja el cambio de Pokémon cuando uno es derrotado, mostrando el selector o procesando el cambio automático si es máquina.
+     * @param jugador true para jugador 1, false para jugador 2.
      */
     private void manejarPokemonDerrotado(boolean jugador) {
         // Comprobar si el jugador es una máquina
@@ -780,6 +830,10 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
         }
     }
 
+    /**
+     * Muestra el panel de selección de ítems disponibles para el jugador actual.
+     * @param items Lista de nombres de ítems disponibles.
+     */
     private void mostrarPanelItems(List<String> items) {
         buttonsPanel.removeAll();
         int filas = (int) Math.ceil(items.size() / 2.0);
@@ -828,6 +882,9 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
         buttonsPanel.repaint();
     }
 
+    /**
+     * Muestra un diálogo para seleccionar y revivir un Pokémon muerto usando un ítem de revivir.
+     */
     private void mostrarDialogoRevivir() {
         // Obtener pokémon muertos del jugador actual
         java.util.List<String> pokemonsMuertos = poobkemon.getPokemonsMuertos(turnoJugador1);

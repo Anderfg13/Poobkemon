@@ -3,6 +3,27 @@ package domain;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * GameController gestiona el flujo principal de una partida de Poobkemon entre un entrenador humano y una máquina.
+ * Se encarga de la inicialización de los entrenadores, la configuración de equipos, la gestión de turnos, 
+ * la aplicación de acciones (ataques, cambios, uso de ítems) y la verificación del estado del juego.
+ *
+ * <p>Características principales:
+ * <ul>
+ *   <li>Permite inicializar una partida con diferentes tipos de máquinas (Attacking, Defensive, Changing, Expert).</li>
+ *   <li>Gestiona el turno de cada jugador y procesa las acciones realizadas por el humano y la máquina.</li>
+ *   <li>Configura los equipos de Pokémon y asigna movimientos según la estrategia de la máquina.</li>
+ *   <li>Incluye métodos para procesar ataques, cambios de Pokémon y uso de ítems por parte del jugador y la máquina.</li>
+ *   <li>Verifica el estado del juego y determina el resultado final de la partida.</li>
+ *   <li>Permite obtener referencias a los entrenadores y consultar el estado actual del juego.</li>
+ * </ul>
+ *
+ * <p>Esta clase es el punto de entrada para controlar la lógica de una batalla estándar entre un humano y una máquina.
+ *
+ * @author  Anderson Fabian Garcia Nieto
+ * @author  Christian Alfonso Romero Martinez
+ * @version 1.0
+ */
 public class GameController {
     private Coach humanTrainer;
     private Coach machineTrainer;

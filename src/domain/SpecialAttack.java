@@ -1,5 +1,22 @@
 package domain;
 
+/**
+ * SpecialAttack representa un ataque especial en el juego Poobkemon.
+ * Hereda de la clase Attack y modela movimientos que infligen daño basado en la estadística de ataque especial del Pokémon.
+ *
+ * <p>Características principales:
+ * <ul>
+ *   <li>Permite crear ataques especiales con nombre, tipo, daño base, puntos de poder (PP), precisión y tipo de ataque.</li>
+ *   <li>Soporta la inclusión opcional de un efecto especial asociado al ataque.</li>
+ *   <li>Incluye un métodoclone() para crear una copia exacta del ataque especial.</li>
+ * </ul>
+ *
+
+ *
+ * @author  Anderson Fabian Garcia Nieto
+ * @author  Christian Alfonso Romero Martinez
+ * @version 1.0
+ */
 public class SpecialAttack extends Attack {
 
     public SpecialAttack(String name, String type, int baseDamage, int powerPoint, int precision, String attackType) {

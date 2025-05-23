@@ -3,7 +3,32 @@ package presentation;
 import java.awt.*;
 import javax.swing.*;
 
+/**
+ * PoobkemonMenu es el panel principal del menú de Poobkemon.
+ * Permite al usuario acceder a las opciones de nueva partida, cargar partida, instrucciones y regresar al inicio.
+ * Gestiona la disposición visual de los botones y el fondo escalable, integrando la navegación con la interfaz principal.
+ *
+ * <p>Características principales:
+ * <ul>
+ *   <li>Muestra un fondo escalable personalizado para el menú.</li>
+ *   <li>Incluye botones estilizados para iniciar nueva partida, cargar partida, ver instrucciones y regresar.</li>
+ *   <li>Gestiona la navegación entre pantallas mediante acciones sobre los botones.</li>
+ *   <li>Permite personalizar el tamaño y disposición de los botones en el panel.</li>
+ * </ul>
+ *
+ * @author  Anderson Fabian Garcia Nieto
+ * @author  Christian Alfonso Romero Martinez
+ * @version 1.0
+ */
 public class PoobkemonMenu extends JPanel {
+
+    /**
+     * Constructor del panel de menú principal.
+     * Inicializa el fondo, los botones y la lógica de navegación entre pantallas.
+     *
+     * @param app Referencia a la interfaz gráfica principal de Poobkemon.
+     * @param musica Instancia de la clase Musica para controlar la música de fondo.
+     */
     public PoobkemonMenu(PoobkemonGUI app, Musica musica) {
         setLayout(new BorderLayout());
 
@@ -61,14 +86,27 @@ public class PoobkemonMenu extends JPanel {
         add(background, BorderLayout.CENTER);
     }
 
-    // Panel personalizado para escalar la imagen de fondo
+    /**
+     * ScalableImagePanel es un panel personalizado para mostrar una imagen de fondo escalable.
+     * Permite adaptar la imagen al tamaño del panel, manteniendo la calidad visual.
+     */
     class ScalableImagePanel extends JPanel {
         private Image img;
 
+        /**
+         * Constructor del panel de imagen escalable.
+         *
+         * @param path Ruta de la imagen a mostrar como fondo.
+         */
         public ScalableImagePanel(String path) {
             img = new ImageIcon(path).getImage();
         }
 
+        /**
+         * Sobrescribe el método paintComponent para dibujar la imagen escalada al tamaño del panel.
+         *
+         * @param g Objeto Graphics para dibujar la imagen.
+         */
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);

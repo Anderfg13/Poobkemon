@@ -4,6 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Machine es una clase abstracta que representa a una máquina controlada por IA en el juego Poobkemon.
+ * Extiende la clase Coach y define la estructura básica y utilidades para implementar diferentes estrategias automáticas.
+ * Permite la evaluación de ataques, selección de Pokémon, uso de ítems y ejecución de turnos según la lógica de cada subclase.
+ *
+ * <p>Características principales:
+ * <ul>
+ *   <li>Define métodos abstractos para seleccionar ataques, Pokémon y decidir el uso de ítems según la estrategia de la máquina.</li>
+ *   <li>Incluye utilidades para calcular la efectividad de ataques y detectar ventajas de tipo.</li>
+ *   <li>Permite establecer el oponente para evaluar estrategias dinámicas durante la batalla.</li>
+ *   <li>Implementa la lógica general para ejecutar un turno completo de la máquina en la arena de batalla.</li>
+ *   <li>Facilita la extensión para crear máquinas con estrategias ofensivas, defensivas, cambiantes, expertas, etc.</li>
+ * </ul>
+ *
+ * @author  Anderson Fabian Garcia Nieto
+ * @author  Christian Alfonso Romero Martinez
+ * @version 1.0
+ */
 public abstract class Machine extends Coach {
     protected String machineName;
     protected String machineType;
