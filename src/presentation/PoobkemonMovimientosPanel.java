@@ -341,7 +341,8 @@ public class PoobkemonMovimientosPanel extends BackgroundPanel {
                     new ArrayList<>(pokemones2),
                     new ArrayList<>(items1), 
                     getMovesMatrix(),
-                    machineType
+                    machineType,
+                    app.getColorJugador1(), app.getColorJugador2()
                 );
             } else {
                 // Batalla humano vs humano

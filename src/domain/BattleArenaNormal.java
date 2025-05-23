@@ -59,7 +59,7 @@ public class BattleArenaNormal extends BattleArena {
     public void setupHumanVsMachine(String humanName, String machineName, 
                          ArrayList<String> humanPokemon, ArrayList<String> machinePokemon,
                          ArrayList<String> humanItems, String[][] humanAttacks, 
-                         String machineType) throws PoobkemonException {
+                         String machineType, Color player1Collor, Color player2Color) throws PoobkemonException {
         // Crear los pokémon para el humano
         ArrayList<Pokemon> humanPokemonList = new ArrayList<>();
         for (int i = 0; i < humanPokemon.size(); i++) {
@@ -148,7 +148,7 @@ public class BattleArenaNormal extends BattleArena {
     public void setupMachineVsHuman(String machineName, String humanName, 
                                 ArrayList<String> machinePokemon, ArrayList<String> humanPokemon,
                                 ArrayList<String> humanItems, String[][] humanAttacks, 
-                                String machineType) throws PoobkemonException {
+                                String machineType, Color player1Color, Color player2Color) throws PoobkemonException {
         
         // Crear los pokémon para el humano
         ArrayList<Pokemon> humanPokemonList = new ArrayList<>();
@@ -206,6 +206,10 @@ public class BattleArenaNormal extends BattleArena {
         // Asignar los entrenadores al array de coaches, pero ahora la máquina es el jugador 1
         coaches[0] = machine;      // Máquina es el jugador 1
         coaches[1] = humanCoach;   // Humano es el jugador 2
+
+        coaches[0].setColor(player1Color);
+        System.out.println("Color de la máquina 1: " + player1Color);
+        coaches[1].setColor(player2Color);
         
         // Establecer el Pokémon activo para cada entrenador
         if (!machinePokemonList.isEmpty()) {
@@ -312,6 +316,7 @@ public class BattleArenaNormal extends BattleArena {
 
     // ASIGNA LOS COLORES AQUÍ
     coaches[0].setColor(player1Color);
+    System.out.println("Color de la máquina 1: " + player1Color);
     coaches[1].setColor(player2Color);
     
     // Establecer el Pokémon activo para cada máquina

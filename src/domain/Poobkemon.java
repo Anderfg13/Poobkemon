@@ -160,7 +160,7 @@ public class Poobkemon implements Serializable {
     public void startBattleHumanVsMachine(String humanName, String machineName, 
                                ArrayList<String> humanPokemon, ArrayList<String> machinePokemon,
                                ArrayList<String> humanItems, String[][] humanAttacks, 
-                               String machineType) throws PoobkemonException {
+                               String machineType, Color player1Collor, Color player2Color) throws PoobkemonException {
         // Crear una arena de batalla apropiada
         battleArenaNormal = new BattleArenaNormal();
 
@@ -175,7 +175,7 @@ public class Poobkemon implements Serializable {
         // La máquina necesita una configuración especial basada en su tipo
         battleArenaNormal.setupHumanVsMachine(humanName, machineName, 
             humanPokemon, machinePokemon, 
-            humanItems, humanAttacks, machineType);
+            humanItems, humanAttacks, machineType, player1Collor, player2Color);
     }
 
     /**
@@ -184,14 +184,14 @@ public class Poobkemon implements Serializable {
     public void startBattleMachineVsHuman(String machineName, String humanName, 
                                ArrayList<String> machinePokemon, ArrayList<String> humanPokemon,
                                ArrayList<String> humanItems, String[][] humanAttacks, 
-                               String machineType) throws PoobkemonException {
+                               String machineType, Color player1Color, Color player2Color) throws PoobkemonException {
         // Crear una arena de batalla apropiada
         battleArenaNormal = new BattleArenaNormal();
         
         // Configurar los entrenadores (máquina y humano)
         battleArenaNormal.setupMachineVsHuman(machineName, humanName, 
             machinePokemon, humanPokemon, 
-            humanItems, humanAttacks, machineType);
+            humanItems, humanAttacks, machineType, player1Color, player2Color);
     }
 
     /**

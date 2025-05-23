@@ -587,7 +587,7 @@ public abstract class BattleArena implements Serializable {
     public abstract void setupHumanVsMachine(String humanName, String machineName,
                      ArrayList<String> humanPokemon, ArrayList<String> machinePokemon,
                      ArrayList<String> humanItems, String[][] humanAttacks,
-                     String machineType) throws PoobkemonException;
+                     String machineType, Color player1Color, Color player2Color) throws PoobkemonException;
 
     /**
      * Configura una batalla entre una máquina y un humano (máquina como player 1).
@@ -604,7 +604,7 @@ public abstract class BattleArena implements Serializable {
     public abstract void setupMachineVsHuman(String machineName, String humanName,
                      ArrayList<String> machinePokemon, ArrayList<String> humanPokemon,
                      ArrayList<String> humanItems, String[][] humanAttacks,
-                     String machineType) throws PoobkemonException;
+                     String machineType, Color player1Color, Color player2Color) throws PoobkemonException;
 
     /**
      * Configura una batalla entre dos máquinas.

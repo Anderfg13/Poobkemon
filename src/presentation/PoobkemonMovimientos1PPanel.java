@@ -99,7 +99,9 @@ public class PoobkemonMovimientos1PPanel extends BackgroundPanel {
                     new ArrayList<>(), // pokemones de la máquina se generan en el dominio
                     new ArrayList<>(itemsJugador),
                     movimientosPorPokemon,
-                    tipoMaquina
+                    tipoMaquina,
+                    app.getColorJugador1(),
+                    app.getColorJugador2()
                 );
 
                 // Determinar quién empieza según la moneda

@@ -338,6 +338,10 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
         if (!turnoJugador1 && app.isBattleWithMachine() && !app.isMachinePlayer1()) {
             SwingUtilities.invokeLater(this::ejecutarTurnoMaquina);
         }
+
+        // Antes de guardar la partida
+        poobkemon.getBattleArena().getCoach(0).setColor(app.getColorJugador1());
+        poobkemon.getBattleArena().getCoach(1).setColor(app.getColorJugador2());
     }
 
     /**

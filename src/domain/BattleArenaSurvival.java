@@ -150,7 +150,7 @@ public class BattleArenaSurvival extends BattleArena {
     public void setupHumanVsMachine(String humanName, String machineName, 
                              ArrayList<String> humanPokemon, ArrayList<String> machinePokemon,
                              ArrayList<String> humanItems, String[][] humanAttacks, 
-                             String machineType) throws PoobkemonException {
+                             String machineType, Color player1Color, Color player2Color) throws PoobkemonException {
         throw new PoobkemonException("Las batallas Humano vs Máquina no están soportadas en el modo supervivencia.");
     }
 
@@ -171,7 +171,7 @@ public class BattleArenaSurvival extends BattleArena {
     public void setupMachineVsHuman(String machineName, String humanName, 
                              ArrayList<String> machinePokemon, ArrayList<String> humanPokemon,
                              ArrayList<String> humanItems, String[][] humanAttacks, 
-                             String machineType) throws PoobkemonException {
+                             String machineType, Color player1Color, Color player2Color) throws PoobkemonException {
         throw new PoobkemonException("Las batallas Máquina vs Humano no están soportadas en el modo supervivencia.");
     }
 

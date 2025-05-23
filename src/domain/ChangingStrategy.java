@@ -1,5 +1,6 @@
 package domain;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Random;
 
@@ -22,7 +23,7 @@ import java.util.Random;
  * @author  Christian Alfonso Romero Martinez
  * @version 1.0
  */
-public class ChangingStrategy implements MachineStrategy {
+public class ChangingStrategy implements MachineStrategy, Serializable {
     private static final long serialVersionUID = 1L;
     
     private final Random random = new Random();

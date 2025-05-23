@@ -65,6 +65,8 @@ public class PoobkemonMenu extends JPanel {
                     app.setPoobkemon(partidaCargada); // Actualiza la instancia en la GUI (debes tener este método)
                     app.setColorJugador1(partidaCargada.getColorJugador1());
                     app.setColorJugador2(partidaCargada.getColorJugador2());
+                    //System.out.println("Color J1 tras cargar: " + partidaCargada.getColorJugador1());
+                    //System.out.println("Color J2 tras cargar: " + partidaCargada.getColorJugador2());
                     JOptionPane.showMessageDialog(this, "Partida cargada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                     // Cambia a la arena de batalla con la partida cargada
                     PoobkemonBattlePanel battlePanel = new PoobkemonBattlePanel(
