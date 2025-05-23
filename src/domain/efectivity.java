@@ -2,10 +2,34 @@ package domain;
 
 import java.util.HashMap;
 
+/**
+ * {@code efectivity} gestiona la lógica de efectividad de los ataques entre tipos de Pokémon en el juego Poobkemon.
+ * Proporciona una matriz de efectividad y un mapeo de nombres de tipos a índices para calcular el multiplicador de daño
+ * según el tipo del atacante y el defensor.
+ *
+ * <p>Características principales:
+ * <ul>
+ *   <li>Define una matriz de efectividad de 18x18 para todos los tipos elementales soportados.</li>
+ *   <li>Incluye un {@link HashMap} que asocia el nombre del tipo (por ejemplo, "Fuego", "Agua") con su índice en la matriz.</li>
+ *   <li>Permite consultar el multiplicador de efectividad entre dos tipos mediante el método {@link #efectividad(int, int)}.</li>
+ *   <li>Inicializa automáticamente los valores de la matriz y el mapa de tipos al cargar la clase.</li>
+ * </ul>
+ *
+ *
+ * @author  Anderson Fabian Garcia Nieto
+ * @author  Christian Alfonso Romero Martinez
+ * @version 1.0
+ */
 public class efectivity {
+    /** Matriz de efectividad de ataques entre tipos. */
     private static double[][] matriz = new double[18][18];
-    protected static HashMap<String, Integer> numberType = new HashMap<>(); // Efectos del ataque (ej. "paralizado", "quemado", etc.)
+    /**
+     * Mapa que asocia el nombre de cada tipo con su índice correspondiente en la matriz de efectividad.
+     * Ejemplo: "Fuego" → 6, "Agua" → 1, etc.
+     */
+    protected static HashMap<String, Integer> numberType = new HashMap<>();
 
+    // Bloque estático para inicializar el mapa de tipos y la matriz de efectividad.
     static {
         // Inicializar el mapa de tipos
         numberType.put("Acero", 0);
@@ -31,10 +55,21 @@ public class efectivity {
         valores();
     }
 
+    /**
+     * Devuelve el multiplicador de efectividad entre dos tipos.
+     *
+     * @param tipoAtacante Índice del tipo atacante (según {@link #numberType}).
+     * @param tipoDefensor Índice del tipo defensor (según {@link #numberType}).
+     * @return Multiplicador de daño (por ejemplo, 2.0 si es súper efectivo, 0.5 si es poco efectivo, 1.0 si es normal).
+     */
     public static double efectividad(int tipoAtacante, int tipoDefensor) {
         return matriz[tipoAtacante][tipoDefensor];
     }
 
+    /**
+     * Inicializa los valores de la matriz de efectividad entre tipos.
+     * Cada posición [i][j] representa la efectividad del tipo i contra el tipo j.
+     */
     private static void valores() {
         matriz[0][0] = 0.5;
         matriz[0][1] = 0.5;

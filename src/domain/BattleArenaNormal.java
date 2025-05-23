@@ -3,12 +3,30 @@ package domain;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * BattleArenaNormal implementa una arena de batalla estándar para el juego Poobkemon.
+ * Permite configurar y gestionar combates entre humanos y máquinas, así como entre diferentes tipos de máquinas.
+ *
+ * <p>Características principales:
+ * <ul>
+ *   <li>Permite batallas Humano vs Máquina, Máquina vs Humano y Máquina vs Máquina.</li>
+ *   <li>Asigna ataques a los Pokémon de acuerdo al tipo de máquina (estrategia ofensiva, defensiva, etc.).</li>
+ *   <li>Gestiona la creación de entrenadores, asignación de Pokémon, ítems y ataques.</li>
+ *   <li>Permite establecer el Pokémon activo y el turno inicial de la batalla.</li>
+ *   <li>Incluye utilidades para aplicar efectos de estado y seleccionar ataques aleatorios según la estrategia.</li>
+ * </ul>
+ *
+ * <p>Esta clase extiende {@link BattleArena} y debe ser utilizada para batallas normales en el juego.
+ *
+ * @author  Anderson Fabian Garcia Nieto
+ * @author  Christian Alfonso Romero Martinez
+ * @version 1.0
+ */
 public class BattleArenaNormal extends BattleArena {
 
     public BattleArenaNormal() {
         super();
     }
-
 
     /**
      * Aplica los efectos de estado a los Pokémon activos de ambos entrenadores.
@@ -23,108 +41,108 @@ public class BattleArenaNormal extends BattleArena {
         }
     }
 
-
     /**
      * Configura una batalla entre un humano y una máquina.
-     * @param humanName Nombre del entrenador humano
-     * @param machineName Nombre de la máquina
-     * @param humanPokemon Lista de pokémon del humano
-     * @param machinePokemon Lista de pokémon de la máquina
-     * @param humanItems Lista de ítems del humano
-     * @param humanAttacks Matriz de ataques para los pokémon del humano
-     * @param machineType Tipo de máquina a crear (Attacking, Defensive, Changing, Expert)
-     * @throws PoobkemonException Si ocurre un error al configurar la batalla
+     *
+     * @param humanName    Nombre del entrenador humano.
+     * @param machineName  Nombre de la máquina.
+     * @param humanPokemon Lista de nombres de Pokémon del humano.
+     * @param machinePokemon Lista de nombres de Pokémon de la máquina.
+     * @param humanItems   Lista de ítems del humano.
+     * @param humanAttacks Matriz de ataques para los Pokémon del humano.
+     * @param machineType  Tipo de máquina a crear (Attacking, Defensive, Changing, Expert).
+     * @throws PoobkemonException Si ocurre un error al configurar la batalla.
      */
     public void setupHumanVsMachine(String humanName, String machineName, 
                          ArrayList<String> humanPokemon, ArrayList<String> machinePokemon,
                          ArrayList<String> humanItems, String[][] humanAttacks, 
                          String machineType) throws PoobkemonException {
-    
-    // Crear los pokémon para el humano
-    ArrayList<Pokemon> humanPokemonList = new ArrayList<>();
-    for (int i = 0; i < humanPokemon.size(); i++) {
-        Pokemon pokemon = PokemonFactory.createPokemon(humanPokemon.get(i));
-        if (pokemon != null) {
-            // Asignar ataques a este Pokémon
-            assignAttacksToPokemon(pokemon, humanAttacks[i]);
-            humanPokemonList.add(pokemon);
+        // Crear los pokémon para el humano
+        ArrayList<Pokemon> humanPokemonList = new ArrayList<>();
+        for (int i = 0; i < humanPokemon.size(); i++) {
+            Pokemon pokemon = PokemonFactory.createPokemon(humanPokemon.get(i));
+            if (pokemon != null) {
+                // Asignar ataques a este Pokémon
+                assignAttacksToPokemon(pokemon, humanAttacks[i]);
+                humanPokemonList.add(pokemon);
+            }
         }
-    }
-    
-    // Crear la lista de ítems para el humano
-    ArrayList<Item> humanItemsList = new ArrayList<>();
-    for (String itemName : humanItems) {
-        Item item = ItemFactory.createItem(itemName);
-        if (item != null) {
-            humanItemsList.add(item);
+        
+        // Crear la lista de ítems para el humano
+        ArrayList<Item> humanItemsList = new ArrayList<>();
+        for (String itemName : humanItems) {
+            Item item = ItemFactory.createItem(itemName);
+            if (item != null) {
+                humanItemsList.add(item);
+            }
         }
-    }
-    
-    // Crear el entrenador humano
-    Coach humanCoach = new HumanCoach(humanName, humanPokemonList, humanItems);
-    
-    // Crear los pokémon para la máquina con ataques aleatorios
-    ArrayList<Pokemon> machinePokemonList = new ArrayList<>();
-    for (String pokemonName : machinePokemon) {
-        Pokemon pokemon = PokemonFactory.createPokemon(pokemonName);
-        if (pokemon != null) {
-            // Asignar ataques aleatorios basados en el tipo de máquina
-            assignRandomAttacksForMachine(pokemon, machineType);
-            machinePokemonList.add(pokemon);
+        
+        // Crear el entrenador humano
+        Coach humanCoach = new HumanCoach(humanName, humanPokemonList, humanItems);
+        
+        // Crear los pokémon para la máquina con ataques aleatorios
+        ArrayList<Pokemon> machinePokemonList = new ArrayList<>();
+        for (String pokemonName : machinePokemon) {
+            Pokemon pokemon = PokemonFactory.createPokemon(pokemonName);
+            if (pokemon != null) {
+                // Asignar ataques aleatorios basados en el tipo de máquina
+                assignRandomAttacksForMachine(pokemon, machineType);
+                machinePokemonList.add(pokemon);
+            }
         }
-    }
-    
-    // Crear la máquina según el tipo
-    Machine machine;
-    switch (machineType) {
-        case "Attacking":
-            machine = new AttackingMachine(machineName, machinePokemonList, new ArrayList<>());
-            break;
-        case "Defensive":
-            machine = new DefensiveMachine(machineName, machinePokemonList, new ArrayList<>());
-            break;
-        case "Changing":
-            machine = new ChangingMachine(machineName, machinePokemonList, new ArrayList<>());
-            break;
-        case "Expert":
-            machine = new ExpertMachine(machineName, machinePokemonList, new ArrayList<>());
-            break;
-        default:
-            machine = new AttackingMachine(machineName, machinePokemonList, new ArrayList<>());
-    }
-    
-    // Asignar los entrenadores al array de coaches
-    coaches[0] = humanCoach;  // Humano es el jugador 1
-    coaches[1] = machine;     // Máquina es el jugador 2
-    
-    // Establecer el Pokémon activo para cada entrenador
-    if (!humanPokemonList.isEmpty()) {
-        humanCoach.setActivePokemon(humanPokemonList.get(0));
-    }
-    
-    if (!machinePokemonList.isEmpty()) {
-        machine.setActivePokemon(machinePokemonList.get(0));
-    }
-    
-    // Establecer el turno inicial
-    currentTurn = 0;  // El humano comienza
+        
+        // Crear la máquina según el tipo
+        Machine machine;
+        switch (machineType) {
+            case "Attacking":
+                machine = new AttackingMachine(machineName, machinePokemonList, new ArrayList<>());
+                break;
+            case "Defensive":
+                machine = new DefensiveMachine(machineName, machinePokemonList, new ArrayList<>());
+                break;
+            case "Changing":
+                machine = new ChangingMachine(machineName, machinePokemonList, new ArrayList<>());
+                break;
+            case "Expert":
+                machine = new ExpertMachine(machineName, machinePokemonList, new ArrayList<>());
+                break;
+            default:
+                machine = new AttackingMachine(machineName, machinePokemonList, new ArrayList<>());
+        }
+        
+        // Asignar los entrenadores al array de coaches
+        coaches[0] = humanCoach;  // Humano es el jugador 1
+        coaches[1] = machine;     // Máquina es el jugador 2
+        
+        // Establecer el Pokémon activo para cada entrenador
+        if (!humanPokemonList.isEmpty()) {
+            humanCoach.setActivePokemon(humanPokemonList.get(0));
+        }
+        
+        if (!machinePokemonList.isEmpty()) {
+            machine.setActivePokemon(machinePokemonList.get(0));
+        }
+        
+        // Establecer el turno inicial
+        currentTurn = 0;  // El humano comienza
 
-    // Establecer al humano como oponente de la máquina
-    machine.setOpponent(humanCoach); 
-}
+        // Establecer al humano como oponente de la máquina
+        machine.setOpponent(humanCoach); 
+    }
 
-/**
- * Configura una batalla entre una máquina y un humano (máquina como player 1).
- * @param machineName Nombre de la máquina
- * @param humanName Nombre del entrenador humano
- * @param machinePokemon Lista de pokémon de la máquina
- * @param humanPokemon Lista de pokémon del humano
- * @param humanItems Lista de ítems del humano
- * @param humanAttacks Matriz de ataques para los pokémon del humano
- * @param machineType Tipo de máquina a crear (Attacking, Defensive, Changing, Expert)
- * @throws PoobkemonException Si ocurre un error al configurar la batalla
- */
-public void setupMachineVsHuman(String machineName, String humanName, 
+    /**
+     * Configura una batalla entre una máquina y un humano (máquina como player 1).
+     *
+     * @param machineName  Nombre de la máquina.
+     * @param humanName    Nombre del entrenador humano.
+     * @param machinePokemon Lista de nombres de Pokémon de la máquina.
+     * @param humanPokemon Lista de nombres de Pokémon del humano.
+     * @param humanItems   Lista de ítems del humano.
+     * @param humanAttacks Matriz de ataques para los Pokémon del humano.
+     * @param machineType  Tipo de máquina a crear (Attacking, Defensive, Changing, Expert).
+     * @throws PoobkemonException Si ocurre un error al configurar la batalla.
+     */
+    public void setupMachineVsHuman(String machineName, String humanName, 
                                 ArrayList<String> machinePokemon, ArrayList<String> humanPokemon,
                                 ArrayList<String> humanItems, String[][] humanAttacks, 
                                 String machineType) throws PoobkemonException {
@@ -204,13 +222,14 @@ public void setupMachineVsHuman(String machineName, String humanName,
 
     /**
      * Configura una batalla entre dos máquinas.
-     * @param machine1Name Nombre de la primera máquina
-     * @param machine2Name Nombre de la segunda máquina
-     * @param machine1Pokemon Lista de pokémon de la primera máquina
-     * @param machine2Pokemon Lista de pokémon de la segunda máquina
-     * @param machine1Type Tipo de la primera máquina
-     * @param machine2Type Tipo de la segunda máquina
-     * @throws PoobkemonException Si ocurre un error al configurar la batalla
+     *
+     * @param machine1Name    Nombre de la primera máquina.
+     * @param machine2Name    Nombre de la segunda máquina.
+     * @param machine1Pokemon Lista de nombres de Pokémon de la primera máquina.
+     * @param machine2Pokemon Lista de nombres de Pokémon de la segunda máquina.
+     * @param machine1Type    Tipo de la primera máquina.
+     * @param machine2Type    Tipo de la segunda máquina.
+     * @throws PoobkemonException Si ocurre un error al configurar la batalla.
      */
     public void setupMachineVsMachine(String machine1Name, String machine2Name, 
                              ArrayList<String> machine1Pokemon, ArrayList<String> machine2Pokemon,
@@ -298,8 +317,9 @@ public void setupMachineVsHuman(String machineName, String humanName,
 }
     /**
      * Asigna ataques a un pokémon a partir de un array de nombres de ataques.
-     * @param pokemon El pokémon al que asignar los ataques
-     * @param attackNames Array con los nombres de los ataques
+     *
+     * @param pokemon     El pokémon al que asignar los ataques.
+     * @param attackNames Array con los nombres de los ataques.
      */
     private void assignAttacksToPokemon(Pokemon pokemon, String[] attackNames) {
         ArrayList<Attack> attacks = new ArrayList<>();
@@ -316,8 +336,9 @@ public void setupMachineVsHuman(String machineName, String humanName,
 
     /**
      * Asigna ataques aleatorios a un pokémon según el tipo de máquina.
-     * @param pokemon El pokémon al que asignar los ataques
-     * @param machineType El tipo de máquina que determina la estrategia de selección de ataques
+     *
+     * @param pokemon     El pokémon al que asignar los ataques.
+     * @param machineType El tipo de máquina que determina la estrategia de selección de ataques.
      */
     private void assignRandomAttacksForMachine(Pokemon pokemon, String machineType) {
         // Obtener todos los ataques disponibles
@@ -374,9 +395,10 @@ public void setupMachineVsHuman(String machineName, String humanName,
 
     /**
      * Agrega un número específico de ataques aleatorios a la lista de ataques seleccionados.
-     * @param selectedAttacks Lista de ataques donde agregar los nuevos
-     * @param availableAttacks Lista de nombres de ataques disponibles
-     * @param count Número de ataques a agregar
+     *
+     * @param selectedAttacks  Lista de ataques donde agregar los nuevos.
+     * @param availableAttacks Lista de nombres de ataques disponibles.
+     * @param count            Número de ataques a agregar.
      */
     private void addRandomAttacks(ArrayList<Attack> selectedAttacks, List<String> availableAttacks, int count) {
         for (int i = 0; i < count && !availableAttacks.isEmpty(); i++) {
@@ -386,9 +408,10 @@ public void setupMachineVsHuman(String machineName, String humanName,
 
     /**
      * Agrega un ataque aleatorio a la lista de ataques seleccionados.
-     * @param selectedAttacks Lista de ataques donde agregar el nuevo
-     * @param availableAttacks Lista de nombres de ataques disponibles
-     * @return true si se pudo agregar un ataque, false si no había ataques disponibles
+     *
+     * @param selectedAttacks  Lista de ataques donde agregar el nuevo.
+     * @param availableAttacks Lista de nombres de ataques disponibles.
+     * @return {@code true} si se pudo agregar un ataque, {@code false} si no había ataques disponibles.
      */
     private boolean addRandomAttack(ArrayList<Attack> selectedAttacks, List<String> availableAttacks) {
         if (availableAttacks.isEmpty()) {

@@ -3,20 +3,47 @@ package domain;
 import java.util.ArrayList;
 
 /**
- * Máquina con estrategia experta.
- * Toma las mejores decisiones basadas en múltiples factores.
+ * ExpertMachine representa una máquina controlada por IA con estrategia experta.
+ * Esta máquina toma decisiones avanzadas considerando múltiples factores como vida, ventaja de tipo,
+ * estado del oponente, potencia y precisión de los ataques, y uso estratégico de ítems.
+ *
+ * <p>Características principales:
+ * <ul>
+ *   <li>Evalúa el mejor ataque considerando efectividad, potencia, precisión y situación de la batalla.</li>
+ *   <li>En los primeros turnos prioriza ataques de estado para obtener ventaja temprana.</li>
+ *   <li>Cambia de Pokémon si tiene desventaja de tipo o poca vida, eligiendo el mejor reemplazo posible.</li>
+ *   <li>Utiliza ítems de forma estratégica, priorizando curación o potenciadores según la situación.</li>
+ *   <li>Adapta su comportamiento a lo largo de la batalla, ajustando su estrategia según el contexto.</li>
+ * </ul>
+ *
+ * @author  Anderson Fabian Garcia Nieto
+ * @author  Christian Alfonso Romero Martinez
+ * @version 1.0
  */
 public class ExpertMachine extends Machine {
     
     private ExpertStrategy strategy;
     private int turnsInBattle = 0;
     
+    /**
+     * Crea una nueva instancia de {@code ExpertMachine} con el nombre, equipo y objetos dados.
+     *
+     * @param name     Nombre de la máquina.
+     * @param pokemons Lista de Pokémon que forman el equipo de la máquina.
+     * @param items    Lista de nombres de ítems disponibles para la máquina.
+     */
     public ExpertMachine(String name, ArrayList<Pokemon> pokemons, ArrayList<String> items) {
         super(name, pokemons, items);
         this.strategy = new ExpertStrategy();
         this.machineType = "Expert";
     }
     
+    /**
+     * Selecciona el índice del mejor movimiento disponible para el Pokémon activo,
+     * evaluando efectividad, potencia, precisión y situación de la batalla.
+     *
+     * @return Índice del movimiento seleccionado.
+     */
     @Override
     public int selectMove() {
         turnsInBattle++;
@@ -100,6 +127,12 @@ public class ExpertMachine extends Machine {
         return bestOverallIndex;
     }
     
+    /**
+     * Selecciona el índice del mejor Pokémon disponible para cambiar,
+     * considerando vida, ventaja de tipo y resistencia frente al oponente.
+     *
+     * @return Índice del Pokémon seleccionado.
+     */
     @Override
     public int selectBestPokemon() {
         Pokemon currentPokemon = getActivePokemon();
@@ -158,6 +191,12 @@ public class ExpertMachine extends Machine {
         return activePokemonIndex;
     }
     
+    /**
+     * Determina si la máquina debe usar un ítem en el turno actual.
+     * Usará un ítem en momentos estratégicos, especialmente si la vida es baja o la batalla está avanzada.
+     *
+     * @return {@code true} si debe usar un ítem, {@code false} en caso contrario.
+     */
     @Override
     public boolean shouldUseItem() {
         Pokemon currentPokemon = getActivePokemon();
@@ -167,6 +206,13 @@ public class ExpertMachine extends Machine {
         return (healthRatio < 0.4 && turnsInBattle > 3) || healthRatio < 0.25;
     }
     
+    /**
+     * Selecciona el índice del ítem a usar.
+     * Prioriza curación si la vida es baja, o potenciadores si hay desventaja de tipo.
+     * Si no hay ítems específicos, usa el primero disponible.
+     *
+     * @return Índice del ítem seleccionado, o -1 si no hay ítems.
+     */
     @Override
     public int selectItem() {
         Pokemon currentPokemon = getActivePokemon();

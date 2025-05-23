@@ -1,16 +1,35 @@
 package domain;
 
-import java.util.logging.Logger;
 import java.util.logging.FileHandler;
-import java.util.logging.SimpleFormatter;
 import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 /**
- * Clase utilitaria para registrar errores o excepciones en un archivo de log.
- * <p>
- * El archivo de log se guarda con el nombre "Plan15.log" y contiene
- * los errores capturados con nivel SEVERE. Utiliza la clase {@link java.util.logging}.
- * </p>
+ * Log es una clase utilitaria para registrar errores o excepciones en un archivo de log.
+ * Utiliza la API {@link java.util.logging} para almacenar trazas de excepciones y mensajes de error en un archivo persistente.
+ *
+ * <p>Características principales:
+ * <ul>
+ *   <li>Registra excepciones en un archivo de log con nombre configurable.</li>
+ *   <li>El archivo se crea o se abre en modo de adición ("append") para no sobrescribir registros anteriores.</li>
+ *   <li>Utiliza el formato {@link SimpleFormatter} para almacenar la traza de la excepción.</li>
+ *   <li>Permite centralizar el manejo de errores y facilitar la depuración del sistema.</li>
+ *   <li>En caso de error al escribir en el log, imprime la traza por consola y detiene el programa.</li>
+ * </ul>
+ *
+ * <p>Ejemplo de uso:
+ * <pre>
+ *     try {
+ *         // Código que puede lanzar una excepción
+ *     } catch (Exception e) {
+ *         Log.record(e);
+ *     }
+ * </pre>
+ *
+ * @author  Anderson Fabian Garcia Nieto
+ * @author  Christian Alfonso Romero Martinez
+ * @version 1.0
  */
 public class Log {
 

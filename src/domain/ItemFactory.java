@@ -1,11 +1,27 @@
 package domain;
 
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+/**
+ * ItemFactory es una clase de utilidad que gestiona la creación y el registro de ítems utilizables en el juego Poobkemon.
+ * Permite instanciar objetos {@link Item} a partir de su nombre, centralizando la definición de sus efectos, descripciones y atributos objetivo.
+ *
+ * <p>Características principales:
+ * <ul>
+ *   <li>Registra todos los ítems disponibles en el juego, asociando su nombre con los parámetros de construcción.</li>
+ *   <li>Permite crear instancias de {@link Item} de forma sencilla a partir de su nombre.</li>
+ *   <li>Incluye un método para obtener la lista de nombres de todos los ítems registrados.</li>
+ *   <li>Utiliza una clase auxiliar interna para almacenar los datos de cada ítem (descripción, valor de efecto y atributo objetivo).</li>
+ *   <li>Facilita la extensión y mantenimiento del catálogo de ítems del juego.</li>
+ * </ul>
+ *
+ * @author  Anderson Fabian Garcia Nieto
+ * @author  Christian Alfonso Romero Martinez
+ * @version 1.0
+ */
 public class ItemFactory {
     // Mapa que asocia nombres de ítems con sus parámetros de construcción
     private static final Map<String, ItemData> ITEM_REGISTRY = new HashMap<>();
@@ -50,7 +66,7 @@ public class ItemFactory {
         //    Item.AttributeType.PHYSICAL_ATTACK
         //));
 
-        // Añadir más ítems aquí...
+    
     }
 
     // Método para crear un ítem basado en su nombre

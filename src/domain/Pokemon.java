@@ -3,6 +3,26 @@ package domain;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Pokemon representa una criatura jugable en el mundo de Poobkemon.
+ * Modela las estadísticas, ataques, estado y comportamiento de combate de un Pokémon.
+ *
+ * <p>Características principales:
+ * <ul>
+ *   <li>Almacena atributos como nombre, tipo, puntos de salud, velocidad, ataque, defensa, evasión y estado.</li>
+ *   <li>Permite gestionar hasta 4 ataques distintos por Pokémon.</li>
+ *   <li>Incluye métodos para atacar a otros Pokémon, atacarse a sí mismo (por confusión u otros efectos) y aplicar daño por estados alterados.</li>
+ *   <li>Permite modificar y consultar estadísticas y ataques del Pokémon.</li>
+ *   <li>Gestiona el estado alterado y los turnos restantes de dicho estado.</li>
+ *   <li>Incluye utilidades para reducir PP de ataques y obtener información sobre los mismos.</li>
+ * </ul>
+ *
+
+ *
+ * @author  Anderson Fabian Garcia Nieto
+ * @author  Christian Alfonso Romero Martinez
+ * @version 1.0
+ */
 public class Pokemon {
     protected String name;
     protected int id;

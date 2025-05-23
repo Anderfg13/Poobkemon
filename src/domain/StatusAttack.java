@@ -3,6 +3,25 @@ package domain;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * StatusAttack representa un ataque de estado en el juego Poobkemon.
+ * Hereda de la clase Attack y modela movimientos que alteran atributos, aplican estados alterados
+ * o modifican condiciones de batalla en lugar de infligir daño directo.
+ *
+ * <p>Características principales:
+ * <ul>
+ *   <li>Permite crear ataques de estado que afectan atributos específicos de un Pokémon durante un número determinado de turnos.</li>
+ *   <li>Almacena el tipo de atributo afectado y la duración del efecto en turnos.</li>
+ *   <li>Incluye un método calcDaño que aplica el efecto correspondiente en vez de causar daño directo.</li>
+ *   <li>Incluye un método clone() para crear una copia exacta del ataque de estado.</li>
+ *   <li>Gestiona una lista estática de todos los ataques de estado registrados.</li>
+ * </ul>
+ *
+ *
+ * @author  Anderson Fabian Garcia Nieto
+ * @author  Christian Alfonso Romero Martinez
+ * @version 1.0
+ */
 public class StatusAttack extends Attack {
     public static final List<StatusAttack> ataquesStatus = new ArrayList<>();
     private AttributeType affects;
