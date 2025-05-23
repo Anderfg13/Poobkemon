@@ -14,11 +14,11 @@ import java.util.Random;
  * 
  * <p>Tipos de máquina soportados:
  * <ul>
- *   <li>{@link MachineType#ATTACKING} - Máquina enfocada en el ataque.</li>
- *   <li>{@link MachineType#DEFENSIVE} - Máquina enfocada en la defensa.</li>
- *   <li>{@link MachineType#CHANGING} - Máquina que cambia de estrategia según el rival.</li>
- *   <li>{@link MachineType#EXPERT} - Máquina experta que combina todas las estrategias.</li>
- *   <li>{@link MachineType#GEMINI} - Máquina que utiliza la IA generativa Gemini.</li>
+ *   <li>ATTACKING - Máquina enfocada en el ataque.</li>
+ *   <li>DEFENSIVE - Máquina enfocada en la defensa.</li>
+ *   <li>CHANGING - Máquina que cambia de estrategia según el rival.</li>
+ *   <li>EXPERT - Máquina experta que combina todas las estrategias.</li>
+ *   <li>GEMINI - Máquina que utiliza la IA generativa Gemini.</li>
  * </ul>
  * 
  * <p>La fábrica se encarga de:
@@ -49,6 +49,11 @@ public class MachineFactory {
     
     /**
      * Crea una nueva máquina con la estrategia especificada.
+     *
+     * @param type       Tipo de máquina a crear (estrategia).
+     * @param name       Nombre de la máquina.
+     * @param difficulty Dificultad (afecta la cantidad de pokémon e ítems).
+     * @return Instancia de {@code Machine} configurada según los parámetros.
      */
     public static Machine createMachine(MachineType type, String name, int difficulty) {
         // Crear lista de pokémon aleatorios
