@@ -218,9 +218,8 @@ public class Poobkemon {
     }
 
     public boolean esAtaqueSobreSiMismo(String nombreAtaque) {
-        // Puedes mejorar esto usando el dominio o una propiedad del ataque
-        List<String> ataquesSelf = List.of("Curación", "Reflejo", "Danza Espada"); // Ejemplo
-        return ataquesSelf.contains(nombreAtaque);
+        List<String> ataquesEstado = getStatusAttacks();
+        return ataquesEstado.contains(nombreAtaque);
     }
 
     /**
