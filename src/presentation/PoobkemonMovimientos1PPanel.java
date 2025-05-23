@@ -66,16 +66,27 @@ public class PoobkemonMovimientos1PPanel extends BackgroundPanel {
             }
 
             try {
+                // Configurar la batalla
                 app.getPoobkemon().startBattleHumanVsMachine(
                     nombreJugador,
                     "CPU " + tipoMaquina,
                     new ArrayList<>(pokemonesJugador),
                     new ArrayList<>(), // pokemones de la máquina se generan en el dominio
-                    new ArrayList<>(itemsJugador), // <-- Aquí pasas los ítems seleccionados
+                    new ArrayList<>(itemsJugador),
                     movimientosPorPokemon,
                     tipoMaquina
                 );
+
+                // Determinar quién empieza según la moneda
                 boolean jugador1Empieza = app.getPoobkemon().whoStarts();
+                String monedaElegida = app.getMonedaElegidaJugador1();
+
+                // Si el resultado de la moneda es "Sello" y el jugador 2 empieza, ajusta el turno inicial
+                if (!jugador1Empieza && "Sello".equalsIgnoreCase(monedaElegida)) {
+                    jugador1Empieza = true;
+                }
+
+                // Crear el panel de batalla con las posiciones visuales fijas
                 PoobkemonBattlePanel battlePanel = new PoobkemonBattlePanel(
                     app.getPoobkemon(), app,
                     app.getColorJugador1(), app.getColorJugador2(), jugador1Empieza

@@ -287,9 +287,10 @@ public class PoobkemonMovimientosPanel extends BackgroundPanel {
                     new ArrayList<>(pokemones2),
                     new ArrayList<>(items1), 
                     getMovesMatrix(),
-                    machineType);
+                    machineType
+                );
             } else {
-                // Batalla humano vs humano (código existente)
+                // Batalla humano vs humano
                 app.getPoobkemon().startBattleNormal(
                     nombreJugador1, nombreJugador2,
                     new ArrayList<>(pokemones1),
@@ -300,18 +301,33 @@ public class PoobkemonMovimientosPanel extends BackgroundPanel {
                     new String[pokemones2.size()][4]
                 );
             }
-            
+
             // Determinar quién empieza
             boolean jugador1Empieza = app.getPoobkemon().whoStarts();
-            
-            // Crear y mostrar el panel de batalla
+            String resultado = jugador1Empieza ? nombreJugador1 : nombreJugador2;
+
+            // Mostrar el resultado del lanzamiento de moneda
+            ImageIcon coinGif = new ImageIcon("mult/gifs/gifCoin.gif");
+            Image img = coinGif.getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT);
+            ImageIcon smallCoinGif = new ImageIcon(img);
+
+            JLabel label = new JLabel("¡" + resultado + " inicia la batalla!", smallCoinGif, JLabel.CENTER);
+            label.setHorizontalTextPosition(JLabel.CENTER);
+            label.setVerticalTextPosition(JLabel.BOTTOM);
+            label.setFont(new Font("Arial", Font.BOLD, 18));
+            label.setHorizontalAlignment(SwingConstants.CENTER);
+
+            JOptionPane.showMessageDialog(this, label, "Lanzamiento de moneda", JOptionPane.INFORMATION_MESSAGE);
+
+            // Crear y mostrar el panel de batalla con posiciones visuales fijas
             PoobkemonBattlePanel battlePanel = new PoobkemonBattlePanel(
                 app.getPoobkemon(), app, 
                 app.getColorJugador1(), app.getColorJugador2(),
-                !jugador1Empieza);
-            
+                jugador1Empieza // Solo afecta el turno inicial
+            );
+
             app.cambiarPantallaConPanel(battlePanel, "battle");
-            
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, 
                 "Error al iniciar la batalla: " + e.getMessage(),

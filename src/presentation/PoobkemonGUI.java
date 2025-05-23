@@ -263,6 +263,10 @@ public class PoobkemonGUI extends JFrame {
         machineVsMachine = true;
     }
 
+    public String getMonedaElegidaJugador1() {
+        return monedaElegidaJugador1;
+    }
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(PoobkemonGUI::new);
         
