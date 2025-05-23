@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Implementación de una Machine controlada por Google Gemini API. prueba
+ * Implementación de una Machine controlada por Google Gemini API. 
  */
 public class GeminiMachine extends Machine {
     private static final String API_KEY = "AIzaSyCs_ggcWvYmpzYi7HgdlinmG4RhCJG-kbQ"; 

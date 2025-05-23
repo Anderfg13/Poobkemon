@@ -3,13 +3,13 @@ package presentation;
 import domain.Poobkemon;
 import java.awt.*;
 import javax.swing.*;
-
 public class PoobkemonGUI extends JFrame {
     private CardLayout layout;
     private JPanel mainPanel;
     private Musica musica;
     private JCheckBoxMenuItem musicToggle;
     private Poobkemon poobkemon;
+    
 
     // Variables globales para los contrincantes
     private Color colorJugador1 = Color.RED;
