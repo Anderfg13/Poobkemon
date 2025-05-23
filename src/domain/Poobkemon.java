@@ -35,6 +35,7 @@ public class Poobkemon implements Serializable {
     private BattleArena battleArenaNormal;
     private ArrayList<BattleArena> battleArenas;
     private Map<String, String[][]> survivalMoves = new HashMap<>();
+    private String battleType = "PVP"; // Valor por defecto
 
     //Metodo que envia informacion de los pokemones disponibles a la GUI
     public static List<String> getAvailablePokemon() {
@@ -101,6 +102,7 @@ public class Poobkemon implements Serializable {
                             String[][] pokemAttacks1, String[][] pokemAttacks2, Color player1Color, Color player2Color) throws PoobkemonException {
         battleArenaNormal = new BattleArenaNormal(); // Crear la arena de batalla
         battleArenaNormal.setupCoaches(coachName1, coachName2, pokemons1, pokemons2, items1, items2, pokemAttacks1, pokemAttacks2, player1Color, player2Color);
+        this.battleType = "PVP";
     }
 
     /**
@@ -116,6 +118,7 @@ public class Poobkemon implements Serializable {
         // Guardar los movimientos asignados para cada jugador
         survivalMoves.put("Player 1", pokemAttacks1);
         survivalMoves.put("Player 2", pokemAttacks2);
+        this.battleType = "PVP";
     }
 
     // Método para obtener los movimientos asignados en modo Survival
@@ -176,6 +179,7 @@ public class Poobkemon implements Serializable {
         battleArenaNormal.setupHumanVsMachine(humanName, machineName, 
             humanPokemon, machinePokemon, 
             humanItems, humanAttacks, machineType, player1Collor, player2Color);
+            this.battleType = "PVM";
     }
 
     /**
@@ -187,7 +191,7 @@ public class Poobkemon implements Serializable {
                                String machineType, Color player1Color, Color player2Color) throws PoobkemonException {
         // Crear una arena de batalla apropiada
         battleArenaNormal = new BattleArenaNormal();
-        
+        this.battleType = "PVM";
         // Configurar los entrenadores (máquina y humano)
         battleArenaNormal.setupMachineVsHuman(machineName, humanName, 
             machinePokemon, humanPokemon, 
@@ -207,6 +211,7 @@ public class Poobkemon implements Serializable {
         battleArenaNormal.setupMachineVsMachine(machine1Name, machine2Name, 
             machine1Pokemon, machine2Pokemon, 
             machine1Type, machine2Type, player1Color, player2Color);
+            this.battleType = "MVM";
     }
 
     public boolean whoStarts(){
@@ -440,6 +445,14 @@ public class Poobkemon implements Serializable {
     // return battleArenaNormal.jugador1Empieza();
     // Si no tienes nada, puedes devolver true por defecto:
     return true;
+}
+
+public String getBattleType() {
+    return battleType;
+}
+
+public void setBattleType(String tipo) {
+    this.battleType = tipo;
 }
 }
 

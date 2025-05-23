@@ -69,11 +69,8 @@ public class PoobkemonMenu extends JPanel {
                     //System.out.println("Color J2 tras cargar: " + partidaCargada.getColorJugador2());
                     JOptionPane.showMessageDialog(this, "Partida cargada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                     // Cambia a la arena de batalla con la partida cargada
-                    PoobkemonBattlePanel battlePanel = new PoobkemonBattlePanel(
-                        app.getPoobkemon(), app,
-                        app.getColorJugador1(), app.getColorJugador2(), partidaCargada.jugador1Empieza()
-                    );
-                    app.cambiarPantallaConPanel(battlePanel, "battle");
+                    app.cargarPartida(partidaCargada);
+                    app.mostrarPanelBatallaConPartida(partidaCargada);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }

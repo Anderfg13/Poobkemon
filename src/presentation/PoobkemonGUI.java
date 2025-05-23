@@ -372,6 +372,15 @@ public class PoobkemonGUI extends JFrame {
     }
 
     /**
+     * Configura la batalla para modo normal (humano vs humano).
+     */
+    public void configureBattleNormal() {
+        battleWithMachine = false;
+        machineVsMachine = false;
+        machineIsPlayer1 = false;
+    }
+
+    /**
      * Obtiene la moneda elegida por el jugador 1 para el sorteo inicial.
      * @return "Cara" o "Sello" según la selección.
      */
@@ -406,4 +415,23 @@ public class PoobkemonGUI extends JFrame {
     public void setColorJugador1(Color c) { colorJugador1 = c; }
     public void setColorJugador2(Color c) { colorJugador2 = c; }
     
+    public void cargarPartida(Poobkemon partidaCargada) {
+        setPoobkemon(partidaCargada);
+        setColorJugador1(partidaCargada.getColorJugador1());
+        setColorJugador2(partidaCargada.getColorJugador2());
+        
+        // Configura la GUI según el tipo de batalla
+        switch (partidaCargada.getBattleType()) {
+            case "MVM":
+                configureBattleMachineVsMachine();
+                break;
+            case "PVM":
+                configureBattleHumanVsMachine();
+                break;
+            case "PVP":
+            default:
+                configureBattleNormal();
+                break;
+        }
+    }
 }
