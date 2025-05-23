@@ -381,6 +381,22 @@ public class Poobkemon {
         }
         return 0; // O lanza una excepción si prefieres
     }
+
+    public String getNombreJugador1() {
+        return battleArenaNormal.getCoach(0).getName();
+    }
+
+    public String getNombreJugador2() {
+        return battleArenaNormal.getCoach(1).getName();
+    }
+
+    public List<String> getPokemonsName(boolean esJugador1) {
+        List<String> nombres = new ArrayList<>();
+        for (Pokemon p : battleArenaNormal.getCoach(esJugador1 ? 0 : 1).getPokemons()) {
+            nombres.add(p.getName());
+        }
+        return nombres;
+    }
 }
 
 
