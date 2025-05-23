@@ -108,7 +108,7 @@ public class AttackFactory {
         ATTACK_REGISTRY.put("Respiro", new StatusAttack("Respiro", "Volador", 0, 5, 100, AttributeType.HP, 0, "Status"));
     }
     /**
-     * Crea y retorna una nueva instancia de {@link Attack} a partir de su nombre.
+     * Crea y retorna una nueva instancia de Attack a partir de su nombre.
      *
      * @param name Nombre del ataque a crear.
      * @return Una nueva instancia clonada del ataque solicitado.
