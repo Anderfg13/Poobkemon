@@ -29,7 +29,7 @@ public class efectivity implements Serializable {
      * Mapa que asocia el nombre de cada tipo con su índice correspondiente en la matriz de efectividad.
      * Ejemplo: "Fuego" → 6, "Agua" → 1, etc.
      */
-    protected static HashMap<String, Integer> numberType = new HashMap<>();
+    public static HashMap<String, Integer> numberType = new HashMap<>();
 
     // Bloque estático para inicializar el mapa de tipos y la matriz de efectividad.
     static {

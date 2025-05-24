@@ -85,13 +85,6 @@ public class PoobkemonGUI extends JFrame {
 
         JMenu optionsMenu = new JMenu("Options");
 
-        // Abrir
-        JMenuItem openItem = new JMenuItem("Abrir");
-        openItem.addActionListener(e -> JOptionPane.showMessageDialog(this, "Funcionalidad de Abrir no implementada."));
-
-        // Guardar
-        JMenuItem saveItem = new JMenuItem("Guardar");
-        saveItem.addActionListener(e -> JOptionPane.showMessageDialog(this, "Funcionalidad de Guardar no implementada."));
 
         // Pausar/Reanudar música
         musicToggle = new JCheckBoxMenuItem("Pausar música");
@@ -121,9 +114,7 @@ public class PoobkemonGUI extends JFrame {
             }
         });
 
-        optionsMenu.add(openItem);
-        optionsMenu.add(saveItem);
-        optionsMenu.addSeparator();
+        //optionsMenu.addSeparator();
         optionsMenu.add(musicToggle);
         optionsMenu.addSeparator();
         optionsMenu.add(exitItem);
