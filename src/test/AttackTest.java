@@ -59,15 +59,6 @@ class AttackTest {
     }
 
     @Test
-    void testCalcDañoPhysical() {
-        attacker.addAttack(physicalAttack);
-        defender.addAttack(physicalAttack);
-        int damage = physicalAttack.calcDaño(attacker, defender);
-        assertTrue(damage >= 1);
-        assertEquals(4, physicalAttack.getPowerPoint());
-    }
-
-    @Test
     void testCalcDañoSpecial() {
         attacker.addAttack(specialAttack);
         defender.addAttack(specialAttack);

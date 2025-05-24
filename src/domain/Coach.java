@@ -36,7 +36,6 @@ public abstract class Coach implements Serializable {
     /** Lista de objetos del entrenador. */
     protected List<Item> items;
     /** Puntaje del entrenador. */
-    private int score;
     /** Indica si el entrenador ha huido de la batalla. */
     private boolean fled = false;
     private Color colorCoach;
@@ -52,7 +51,6 @@ public abstract class Coach implements Serializable {
         this.pokemons = new ArrayList<>(pokemons);
         createItems(items);
         this.activePokemonIndex = 0; // Por defecto, el primer Pokémon es el activo
-        this.score = 0;
     }
 
     /**
@@ -228,21 +226,6 @@ public abstract class Coach implements Serializable {
         items.remove(item);
     }
 
-    /**
-     * Devuelve el puntaje actual del entrenador.
-     * @return Puntaje.
-     */
-    public int getScore() {
-        return score;
-    }
-
-    /**
-     * Suma puntos al puntaje del entrenador.
-     * @param points Puntos a agregar.
-     */
-    public void addScore(int points) {
-        this.score += points;
-    }
 
     /**
      * Maneja el tiempo agotado del turno.

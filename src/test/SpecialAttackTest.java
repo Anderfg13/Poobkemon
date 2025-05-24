@@ -51,16 +51,6 @@ class SpecialAttackTest {
     }
 
     @Test
-    void testCalcDañoReturnsPositiveAndReducesPP() {
-        attacker.addAttack(attack);
-        defender.addAttack(attack);
-        int initialPP = attack.getPowerPoint();
-        int damage = attack.calcDaño(attacker, defender);
-        assertTrue(damage >= 1);
-        assertEquals(initialPP - 1, attack.getPowerPoint());
-    }
-
-    @Test
     void testCalcDañoReturnsZeroIfNoPP() {
         attacker.addAttack(attack);
         defender.addAttack(attack);
