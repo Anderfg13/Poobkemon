@@ -91,23 +91,3 @@ java.io.FileNotFoundException: mult\tu_musica_global.wav (El sistema no puede en
 	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
 	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
 
-May 24, 2025 6:18:21 PM domain.Log record
-SEVERE: java.io.FileNotFoundException: mult\tu_musica_global.wav (El sistema no puede encontrar el archivo especificado)
-java.io.FileNotFoundException: mult\tu_musica_global.wav (El sistema no puede encontrar el archivo especificado)
-	at java.base/java.io.FileInputStream.open0(Native Method)
-	at java.base/java.io.FileInputStream.open(FileInputStream.java:185)
-	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:139)
-	at java.desktop/com.sun.media.sound.SunFileReader.getAudioInputStream(SunFileReader.java:117)
-	at java.desktop/javax.sound.sampled.AudioSystem.getAudioInputStream(AudioSystem.java:1042)
-	at presentation.Musica.<init>(Musica.java:32)
-	at presentation.PoobkemonGUI.<init>(PoobkemonGUI.java:55)
-	at java.desktop/java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:318)
-	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:723)
-	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:702)
-	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
-	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
-	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
-	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
-	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
-	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
-
