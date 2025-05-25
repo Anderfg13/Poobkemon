@@ -104,56 +104,12 @@ public abstract class BattleArena implements Serializable {
     }
 
     /**
-     * Inicia el temporizador para un turno específico.
-     *
-     * @param coachIndex Índice del entrenador cuyo turno es actual.
-     */
-    protected void startTurnTimer(final int coachIndex) {
-        turnTimer = new Timer();
-        turnTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                if (!isPaused) {
-                    coaches[coachIndex].handleTurnTimeout();
-                    cancelTurnTimer();
-                    currentTurn = 1 - coachIndex; // Cambiar turno automáticamente
-                }
-            }
-        }, timeRemaining);
-    }
-
-    /**
      * Cancela el temporizador de turno activo.
      */
     protected void cancelTurnTimer() {
         if (turnTimer != null) {
             turnTimer.cancel();
             turnTimer = null;
-        }
-    }
-
-    /**
-     * Pausa la batalla y detiene el temporizador.
-     */
-    public void pauseBattle() {
-        if (!isPaused) {
-            this.isPaused = true;
-            pauseStartTime = System.currentTimeMillis();
-            cancelTurnTimer();
-            System.out.println("La batalla ha sido pausada.");
-        }
-    }
-
-    /**
-     * Reanuda la batalla y ajusta el temporizador según el tiempo pausado.
-     */
-    public void resumeBattle() {
-        if (isPaused) {
-            this.isPaused = false;
-            long pauseDuration = System.currentTimeMillis() - pauseStartTime;
-            timeRemaining -= pauseDuration;
-            System.out.println("La batalla ha sido reanudada. Tiempo restante: " + timeRemaining / 1000 + " segundos.");
-            startTurnTimer(currentTurn);
         }
     }
 
@@ -403,18 +359,6 @@ public abstract class BattleArena implements Serializable {
     public int getPPDeAtaqueActual(boolean esJugador1, String nombreAtaque) {
         Pokemon activo = coaches[esJugador1 ? 0 : 1].getActivePokemon();
         return activo.getPPDeAtaque(nombreAtaque);
-    }
-
-    /**
-     * Obtiene los PP máximos de un ataque del Pokémon activo.
-     *
-     * @param esJugador1   {@code true} para el jugador 1, {@code false} para el jugador 2.
-     * @param nombreAtaque Nombre del ataque.
-     * @return PP máximos del ataque.
-     */
-    public int getPPMaxDeAtaqueActual(boolean esJugador1, String nombreAtaque) {
-        Pokemon activo = coaches[esJugador1 ? 0 : 1].getActivePokemon();
-        return activo.getPPMaxDeAtaque(nombreAtaque);
     }
 
     /**
