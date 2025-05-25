@@ -30,6 +30,14 @@ public class ExpertStrategy implements MachineStrategy, Serializable {
     private final Random random = new Random();
     private int turnCounter = 0;
     
+    /**
+     * Decide la acción a realizar en el turno actual basándose en la situación del Pokémon activo y del oponente.
+     * Considera factores como vida, ventaja de tipo, estado del oponente y uso de ítems.
+     *
+     * @param machine Máquina que contiene los Pokémon y los ataques.
+     * @param battleArena Arena de batalla actual.
+     * @return Código de acción: 1 para atacar, 2 para usar ítem, 3 para cambiar Pokémon.
+     */
     @Override
     public int decideAction(Machine machine, BattleArena battleArena) {
         turnCounter++;
@@ -80,6 +88,14 @@ public class ExpertStrategy implements MachineStrategy, Serializable {
         return 1;
     }
     
+    /**
+     * Selecciona el mejor ataque considerando efectividad, potencia, precisión y PP.
+     * Prioriza ataques de estado en los primeros turnos y ataques físicos/especiales según estadísticas.
+     *
+     * @param machine Máquina que contiene los Pokémon y los ataques.
+     * @param battleArena Arena de batalla actual.
+     * @return Nombre del ataque seleccionado, o null si no hay ataques disponibles.
+     */
     @Override
     public String selectAttack(Machine machine, BattleArena battleArena) {
         Pokemon active = machine.getActivePokemon();
@@ -139,6 +155,14 @@ public class ExpertStrategy implements MachineStrategy, Serializable {
         return bestAttack != null ? bestAttack.getName() : null;
     }
     
+    /**
+     * Selecciona un ítem para usar, priorizando curación o potenciadores según la situación.
+     * Considera el estado de salud del Pokémon activo y la cantidad de ítems disponibles.
+     *
+     * @param machine Máquina que contiene los Pokémon y los ítems.
+     * @param battleArena Arena de batalla actual.
+     * @return Nombre del ítem seleccionado, o null si no hay ítems disponibles.
+     */
     @Override
     public String selectItem(Machine machine, BattleArena battleArena) {
         List<Item> items = machine.getItems();
@@ -188,6 +212,14 @@ public class ExpertStrategy implements MachineStrategy, Serializable {
         return items.get(0).getName();
     }
     
+    /**
+     * Selecciona el mejor Pokémon para enviar a la batalla considerando la situación actual.
+     * Evalúa la efectividad de tipo, salud, velocidad y ataque de cada Pokémon disponible.
+     *
+     * @param machine Máquina que contiene los Pokémon.
+     * @param battleArena Arena de batalla actual.
+     * @return Índice del Pokémon seleccionado, o -1 si no hay un Pokémon adecuado.
+     */
     @Override
     public int selectPokemon(Machine machine, BattleArena battleArena) {
         Pokemon opponent = getOpponentPokemon(machine, battleArena);
@@ -246,6 +278,14 @@ public class ExpertStrategy implements MachineStrategy, Serializable {
         return bestIndex >= 0 ? bestIndex : selectBestOverallPokemon(machine);
     }
     
+    /**
+     * Determina si la máquina debería huir de la batalla.
+     * La estrategia experta considera huir solo en situaciones extremadamente desfavorables.
+     *
+     * @param machine Máquina que contiene los Pokémon.
+     * @param battleArena Arena de batalla actual.
+     * @return true si debería huir, false en caso contrario.
+     */
     @Override
     public boolean shouldFlee(Machine machine, BattleArena battleArena) {
         // La estrategia experta considera huir solo en situaciones extremadamente desfavorables
@@ -270,8 +310,14 @@ public class ExpertStrategy implements MachineStrategy, Serializable {
         return false;
     }
     
-    // Métodos auxiliares
-    
+    /**
+     * Selecciona el Pokémon con mejor tipo contra el oponente actual.
+     * Si no hay un Pokémon adecuado, selecciona el mejor Pokémon general.
+     *
+     * @param machine Máquina que contiene los Pokémon.
+     * @param battleArena Arena de batalla actual.
+     * @return Índice del Pokémon seleccionado, o -1 si no hay un Pokémon adecuado.
+     */
     private Pokemon getOpponentPokemon(Machine machine, BattleArena battleArena) {
         for (Coach coach : battleArena.getCoaches()) {
             if (coach != machine) {
@@ -281,18 +327,39 @@ public class ExpertStrategy implements MachineStrategy, Serializable {
         return null;
     }
     
+    /**
+     * Verifica si el Pokémon atacante tiene desventaja de tipo contra el defensor.
+     * 
+     * @param attacker Pokémon atacante.
+     * @param defender Pokémon defensor.
+     * @return true si tiene desventaja de tipo, false en caso contrario.
+     */
     private boolean hasTypeDisadvantage(Pokemon attacker, Pokemon defender) {
         if (attacker == null || defender == null) return false;
         
         return getTypeAdvantage(attacker, defender) < 1.0;
     }
     
+    /**
+     * Verifica si el Pokémon atacante tiene ventaja de tipo contra el defensor.
+     * 
+     * @param attacker Pokémon atacante.
+     * @param defender Pokémon defensor.
+     * @return true si tiene ventaja de tipo, false en caso contrario.
+     */
     private boolean hasTypeAdvantage(Pokemon attacker, Pokemon defender) {
         if (attacker == null || defender == null) return false;
         
         return getTypeAdvantage(attacker, defender) > 1.0;
     }
     
+    /**
+     * Obtiene la ventaja de tipo entre el Pokémon atacante y el defensor.
+     * 
+     * @param attacker Pokémon atacante.
+     * @param defender Pokémon defensor.
+     * @return Valor de ventaja de tipo (1.0 = neutral, >1.0 = ventaja, <1.0 = desventaja).
+     */
     private double getTypeAdvantage(Pokemon attacker, Pokemon defender) {
         if (attacker == null || defender == null) return 1.0;
         
@@ -302,6 +369,13 @@ public class ExpertStrategy implements MachineStrategy, Serializable {
         return efectivity.efectividad(attackerType, defenderType);
     }
     
+    /**
+     * Busca un Pokémon mejor para cambiar, considerando ventaja de tipo y estadísticas.
+     * 
+     * @param machine Máquina que contiene los Pokémon.
+     * @param opponent Pokémon oponente actual.
+     * @return Índice del mejor Pokémon para cambiar, o -1 si no hay uno adecuado.
+     */
     private int findBetterPokemon(Machine machine, Pokemon opponent) {
         if (opponent == null) return -1;
         
@@ -327,6 +401,14 @@ public class ExpertStrategy implements MachineStrategy, Serializable {
         return bestIndex;
     }
     
+    /**
+     * Verifica si el Pokémon atacante puede dar el golpe final al defensor.
+     * Considera ataques que puedan derrotar al oponente en este turno.
+     * 
+     * @param attacker Pokémon atacante.
+     * @param defender Pokémon defensor.
+     * @return true si puede dar el golpe final, false en caso contrario.
+     */
     private boolean canDeliverFinishingBlow(Pokemon attacker, Pokemon defender) {
         if (attacker == null || defender == null) return false;
         
@@ -343,6 +425,16 @@ public class ExpertStrategy implements MachineStrategy, Serializable {
         return false;
     }
     
+    /**
+     * Estima el daño que un ataque causaría a un Pokémon defensor.
+     * Utiliza una fórmula simplificada considerando efectividad de tipo, poder del ataque,
+     * estadísticas de ataque y defensa del atacante y defensor.
+     *
+     * @param attacker Pokémon atacante.
+     * @param defender Pokémon defensor.
+     * @param attack Ataque a evaluar.
+     * @return Daño estimado que causaría el ataque al defensor.
+     */
     private int estimateDamage(Pokemon attacker, Pokemon defender, Attack attack) {
         // Cálculo simplificado de daño
         double effectiveness = 1.0;
@@ -368,6 +460,13 @@ public class ExpertStrategy implements MachineStrategy, Serializable {
         return (int)((power * attackStat / defenseStat) * effectiveness * 0.2);
     }
     
+    /**
+     * Selecciona el mejor Pokémon general considerando salud, ataque, defensa y velocidad.
+     * Utiliza una puntuación compuesta para determinar el mejor Pokémon disponible.
+     *
+     * @param machine Máquina que contiene los Pokémon.
+     * @return Índice del mejor Pokémon general, o 0 si no hay otros disponibles.
+     */
     private int selectBestOverallPokemon(Machine machine) {
         List<Pokemon> pokemons = machine.getPokemons();
         Pokemon current = machine.getActivePokemon();
@@ -398,6 +497,12 @@ public class ExpertStrategy implements MachineStrategy, Serializable {
         return bestIndex;
     }
     
+    /**
+     * Verifica si un ataque es un ataque de debuff que debilita al oponente.
+     * 
+     * @param attack Ataque a evaluar.
+     * @return true si es un ataque de debuff, false en caso contrario.
+     */
     private boolean isDebuffAttack(Attack attack) {
         if (!(attack instanceof StatusAttack)) return false;
         

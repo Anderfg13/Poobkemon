@@ -47,7 +47,13 @@ public class PokemonFactory implements Serializable {
         
     }
 
-    // Método para crear un Pokémon basado en su nombre
+    /**
+     * Crea una instancia de Pokémon a partir de su nombre.
+     * 
+     * @param name El nombre del Pokémon a crear.
+     * @return Una instancia de {@link Pokemon} correspondiente al nombre proporcionado.
+     * @throws IllegalArgumentException Si el nombre no está registrado en el catálogo de Pokémon.
+     */
     public static Pokemon createPokemon(String name) {
         Supplier<Pokemon> constructor = POKEMON_REGISTRY.get(name);
         if (constructor == null) {

@@ -298,20 +298,34 @@ public class GameController {
         return machine.executeTurn(battleArena);
     }
     
-    // Getters adaptados para trabajar con Coach en lugar de Trainer
-    
+    /**
+     * Obtiene los entrenadores del juego
+     * @return Lista de entrenadores
+     */    
     public Coach getHumanTrainer() {
         return humanTrainer;
     }
     
+    /**
+     * Obtiene el entrenador de la máquina
+     * @return Entrenador de la máquina
+     */
     public Coach getMachineTrainer() {
         return machineTrainer;
     }
     
+    /**
+     * Verifica si el juego ha terminado
+     * @return true si el juego ha terminado, false en caso contrario
+     */
     public boolean isGameOver() {
         return gameOver;
     }
     
+    /**
+     * Verifica si es el turno del jugador
+     * @return true si es el turno del jugador, false si es el turno de la máquina
+     */
     public boolean isPlayerTurn() {
         return playerTurn;
     }

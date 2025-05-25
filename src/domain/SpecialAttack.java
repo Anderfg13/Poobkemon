@@ -28,6 +28,14 @@ public class SpecialAttack extends Attack {
         super(name, type, baseDamage, powerPoint, precision, attackType, effect);
     }
 
+    /**
+     * Calcula el daño infligido por este ataque especial.
+     * Utiliza la estadística de ataque especial del Pokémon atacante y la defensa especial del Pokémon defensor.
+     *
+     * @param attacker El Pokémon que realiza el ataque.
+     * @param defender El Pokémon que recibe el ataque.
+     * @return El daño calculado que se inflige al defensor.
+     */
     @Override
     public Attack clone() {
         return new SpecialAttack(getName(), getType(), getBaseDamage(), getPowerPoint(), getPrecision(), "Special", getEffect());

@@ -326,10 +326,18 @@ public abstract class Coach implements Serializable {
         return false;
     }
 
+    /**
+     * Devuelve el color asociado al entrenador.
+     * @return Color del entrenador.
+     */
     public Color getColorCoach() {
         return colorCoach;
     }
 
+    /**
+     * Establece el color asociado al entrenador.
+     * @param colorCoach Color a asignar al entrenador.
+     */
     public void setColor(Color colorCoach) {
         this.colorCoach = colorCoach;
     }

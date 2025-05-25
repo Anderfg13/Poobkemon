@@ -233,7 +233,8 @@ public class GeminiMachine extends Machine {
     }
 
     /**
-     * Selecciona el mejor item
+     * Selecciona el índice del ítem a usar
+     * Prioriza ítems que aumentan el ataque o curativos
      */
     @Override
     public int selectItem() {

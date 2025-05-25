@@ -3,7 +3,6 @@ package domain;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.awt.Color;
 
 /**
  * Pokemon representa una criatura jugable en el mundo de Poobkemon.
@@ -84,7 +83,11 @@ public class Pokemon implements Serializable {
     public void setStatus(int status) { this.status = status; }
     public void setTurnStatus(int turnStatus) { this.turnStatus = turnStatus; }
 
-
+    /**
+     * Añade un ataque al Pokémon.
+     * @param attack El ataque a añadir.
+     * @throws IllegalStateException si el Pokémon ya tiene 4 ataques.
+     */
     public void addAttack(Attack attack) {
         if (ataques.size() < 4) { // Máximo 4 ataques
             ataques.add(attack);
@@ -93,17 +96,31 @@ public class Pokemon implements Serializable {
         }
     }
 
+    /**
+     * Establece los puntos de salud del Pokémon.
+     * Si el valor es mayor que el total de PS, se ajusta al máximo.
+     * Si es negativo, se ajusta a 0.
+     * @param ps Puntos de salud a establecer.
+     */
     public void setPs(int ps) { 
     	if(ps > total_ps) {
     		this.ps = total_ps;
     		return;
     	}
-    	this.ps = Math.max(ps, 0); }
+    this.ps = Math.max(ps, 0); }
 
+    /**
+     * Obtiene la lista de ataques del Pokémon.
+     * @return Lista de ataques.
+     */
     public List<Attack> getAtaques() {
         return ataques;
     }
 
+    /**
+     * Obtiene el número total de ataques del Pokémon.
+     * @return Número de ataques.
+     */
     public List<String> getNombreAtaques() {
         List<String> nombres = new ArrayList<>();
         for (Attack ataque : ataques) {
@@ -112,7 +129,11 @@ public class Pokemon implements Serializable {
         return nombres;
     }
 
-    //Hacerlo sin los swiches
+    /**
+     * Aplica el daño por estado al Pokémon.
+     * Dependiendo del estado, se aplica un daño específico.
+     * Por ejemplo, quemado y envenenado causan daño periódico.
+     */
     public void applyEffectDamage() {
         if (status != 0) {
             // Lógica para aplicar daño por estado
@@ -136,12 +157,20 @@ public class Pokemon implements Serializable {
         }
     }   
 
+    /**
+     * Reduce el PP de todos los ataques del Pokémon en 1.
+     * Si un ataque llega a 0 PP, se puede eliminar o no usar.
+     */
     public void reducePP() {
         for (Attack ataque : ataques) {
             ataque.setPowerPoint(ataque.getPowerPoint()-1); // Reduce el PP del ataque
         }
     }
 
+    /**
+     * Establece los ataques del Pokémon a partir de un array de Attack.
+     * @param ataques Array de ataques a asignar.
+     */
     public void setAttacks(Attack[] ataques) {
         this.ataques = new ArrayList<>();
         for (Attack ataque : ataques) {
@@ -160,6 +189,7 @@ public class Pokemon implements Serializable {
         }
         return daño;
     }
+
     /**
     * Establece la lista de ataques del Pokémon.
     * @param ataques Lista de ataques a asignar
@@ -167,6 +197,7 @@ public class Pokemon implements Serializable {
     public void setAtaques(ArrayList<Attack> ataques) {
         this.ataques = new ArrayList<>(ataques); // Crear una copia para evitar modificaciones externas
     }
+
     /**
      * Realiza un ataque a sí mismo o al oponente.
      * @param toItself si true, se ataca a sí mismo.
@@ -197,6 +228,11 @@ public class Pokemon implements Serializable {
         return daño;
     }
 
+    /**
+     * Obtiene el PP actual de un ataque específico por su nombre.
+     * @param nombreAtaque Nombre del ataque.
+     * @return PP actual del ataque, o 0 si no se encuentra.
+     */
     public int getPPDeAtaque(String nombreAtaque) {
         for (Attack ataque : ataques) {
             if (ataque.getName().equals(nombreAtaque)) {
@@ -206,6 +242,11 @@ public class Pokemon implements Serializable {
         return 0; // O lanza excepción si no lo encuentra
     }
 
+    /**
+     * Obtiene el PP máximo de un ataque específico por su nombre.
+     * @param nombreAtaque Nombre del ataque.
+     * @return PP máximo del ataque, o 0 si no se encuentra.
+     */
     public int getPPMaxDeAtaque(String nombreAtaque) {
         for (Attack ataque : ataques) {
             if (ataque.getName().equals(nombreAtaque)) {
@@ -215,6 +256,11 @@ public class Pokemon implements Serializable {
         return 0;
     }
 
+    /**
+     * Obtiene un ataque específico por su nombre.
+     * @param nombreAtaque Nombre del ataque.
+     * @return El ataque correspondiente, o null si no se encuentra.
+     */
     public Attack getAtaquePorNombre(String nombreAtaque) {
         for (Attack ataque : ataques) {
             if (ataque.getName().equals(nombreAtaque)) {
