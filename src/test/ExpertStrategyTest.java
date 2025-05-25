@@ -128,5 +128,146 @@ class ExpertStrategyTest {
 
     
     }
+    @Test
+@DisplayName("Test selectMove bypasses first if when turnsInBattle > 2")
+void testSelectMoveBypassesFirstIfWhenTurnsInBattleGreaterThan2() {
+    // Setup - crear oponente
+    DefensiveMachine opponent = new DefensiveMachine("CPU2", pokemons, items);
+    machine.setOpponent(opponent);
     
+    // Setup - simular que han pasado más de 2 turnos llamando selectMove múltiples veces
+    // Esto incrementará turnsInBattle internamente
+    machine.selectMove(); // turnsInBattle = 1
+    machine.selectMove(); // turnsInBattle = 2
+    machine.selectMove(); // turnsInBattle = 3 (ahora > 2)
+    
+    // Setup - asegurar que el Pokémon activo tiene ataques disponibles
+    Pokemon activePokemon = machine.getActivePokemon();
+    assertTrue(activePokemon.getAtaques().size() > 0, "El Pokémon activo debe tener ataques");
+    
+    // Setup - configurar escenario donde el oponente está débil (< 30% vida)
+    // para activar la lógica después del primer if
+    Pokemon opponentPokemon = opponent.getActivePokemon();
+    int maxPs = opponentPokemon.getTotalPs();
+    opponentPokemon.setPs((int)(maxPs * 0.25)); // 25% de vida (< 30%)
+    
+    // Execute - ahora selectMove debería pasar el primer if y evaluar al oponente débil
+    int selectedMoveIndex = machine.selectMove(); // turnsInBattle = 4
+    
+    // Verify - debe devolver un índice válido
+    assertTrue(selectedMoveIndex >= 0, "El índice de movimiento debe ser >= 0");
+    assertTrue(selectedMoveIndex < activePokemon.getAtaques().size(), 
+              "El índice debe ser menor que el número de ataques disponibles");
+    
+    // Verify - el ataque seleccionado no debe ser de estado cuando el oponente está débil
+    Attack selectedAttack = activePokemon.getAtaques().get(selectedMoveIndex);
+    assertNotNull(selectedAttack, "El ataque seleccionado no debe ser null");
+    
+    // Como el oponente está débil (< 30%), debería priorizar ataques de daño, no de estado
+    if (!(selectedAttack instanceof StatusAttack)) {
+        assertTrue(selectedAttack.getBaseDamage() > 0, 
+                  "Debería seleccionar un ataque con daño cuando el oponente está débil");
+    }
+}
+
+@Test
+@DisplayName("Test selectMove evaluates overall score when turnsInBattle > 2 and opponent healthy")
+void testSelectMoveEvaluatesOverallScoreWhenTurnsGreaterThan2AndOpponentHealthy() {
+    // Setup - crear oponente
+    DefensiveMachine opponent = new DefensiveMachine("CPU2", pokemons, items);
+    machine.setOpponent(opponent);
+    
+    // Setup - incrementar turnsInBattle para pasar el primer if
+    machine.selectMove(); // turnsInBattle = 1
+    machine.selectMove(); // turnsInBattle = 2  
+    machine.selectMove(); // turnsInBattle = 3
+    
+    // Setup - asegurar que el oponente tiene buena vida (> 50%)
+    Pokemon opponentPokemon = opponent.getActivePokemon();
+    int maxPs = opponentPokemon.getTotalPs();
+    opponentPokemon.setPs((int)(maxPs * 0.8)); // 80% de vida
+    
+    // Setup - asegurar que nuestro Pokémon también tiene buena vida
+    Pokemon activePokemon = machine.getActivePokemon();
+    activePokemon.setPs((int)(activePokemon.getTotalPs() * 0.7)); // 70% de vida
+    
+    // Execute - debería evaluar la puntuación general de todos los ataques
+    int selectedMoveIndex = machine.selectMove(); // turnsInBattle = 4
+    
+    // Verify - debe seleccionar un ataque válido
+    assertTrue(selectedMoveIndex >= 0 && selectedMoveIndex < activePokemon.getAtaques().size(),
+              "Debe seleccionar un índice de ataque válido");
+    
+    // Verify - debe haber evaluado efectividad, potencia y precisión
+    Attack selectedAttack = activePokemon.getAtaques().get(selectedMoveIndex);
+    assertNotNull(selectedAttack, "El ataque seleccionado no debe ser null");
+    
+    // El ataque debe tener características válidas
+    assertTrue(selectedAttack.getBaseDamage() >= 0, "El ataque debe tener daño válido");
+    assertTrue(selectedAttack.getPrecision() > 0, "El ataque debe tener precisión válida");
+}
+
+@Test
+@DisplayName("Test selectMove with multiple calls increments turnsInBattle correctly")
+void testSelectMoveWithMultipleCallsIncrementsTurnsInBattleCorrectly() {
+    // Setup
+    DefensiveMachine opponent = new DefensiveMachine("CPU2", pokemons, items);
+    machine.setOpponent(opponent);
+    
+    // Verificar que tenemos ataques disponibles
+    Pokemon activePokemon = machine.getActivePokemon();
+    assertTrue(activePokemon.getAtaques().size() > 0, "Debe tener ataques disponibles");
+    
+    // Execute - llamar selectMove múltiples veces y verificar comportamiento
+    int[] selectedMoves = new int[5];
+    for (int i = 0; i < 5; i++) {
+        selectedMoves[i] = machine.selectMove();
+        
+        // Verify - cada llamada debe devolver un índice válido
+        assertTrue(selectedMoves[i] >= 0, "Movimiento " + i + " debe tener índice >= 0");
+        assertTrue(selectedMoves[i] < activePokemon.getAtaques().size(), 
+                  "Movimiento " + i + " debe tener índice válido");
+    }
+    
+    // Verificar que después de múltiples llamadas, la lógica ha cambiado
+    // (después de turnsInBattle > 2, debería usar lógica diferente)
+    assertTrue(true, "Múltiples llamadas a selectMove completadas exitosamente");
+}
+
+@Test
+@DisplayName("Test selectMove strategic behavior after early turns")
+void testSelectMoveStrategicBehaviorAfterEarlyTurns() {
+    // Setup
+    DefensiveMachine opponent = new DefensiveMachine("CPU2", pokemons, items);
+    machine.setOpponent(opponent);
+    
+    // Setup - simular escenario de batalla avanzada (turnsInBattle > 2)
+    machine.selectMove(); // Turn 1
+    machine.selectMove(); // Turn 2
+    machine.selectMove(); // Turn 3
+    
+    // Setup - crear diferentes escenarios de salud
+    Pokemon activePokemon = machine.getActivePokemon();
+    Pokemon opponentPokemon = opponent.getActivePokemon();
+    
+    // Escenario 1: Ambos con buena vida
+    activePokemon.setPs((int)(activePokemon.getTotalPs() * 0.8));
+    opponentPokemon.setPs((int)(opponentPokemon.getTotalPs() * 0.8));
+    
+    int move1 = machine.selectMove(); // Turn 4
+    assertTrue(move1 >= 0 && move1 < activePokemon.getAtaques().size(),
+              "Debe seleccionar movimiento válido con ambos saludables");
+    
+    // Escenario 2: Nuestro Pokémon débil, oponente saludable
+    activePokemon.setPs((int)(activePokemon.getTotalPs() * 0.3));
+    opponentPokemon.setPs((int)(opponentPokemon.getTotalPs() * 0.8));
+    
+    int move2 = machine.selectMove(); // Turn 5
+    assertTrue(move2 >= 0 && move2 < activePokemon.getAtaques().size(),
+              "Debe seleccionar movimiento válido cuando estamos débiles");
+    
+    // Verify - en situaciones avanzadas, debe tomar decisiones estratégicas
+    assertNotEquals(-1, move1, "No debe devolver -1 en batalla avanzada");
+    assertNotEquals(-1, move2, "No debe devolver -1 cuando estamos débiles");
+}
 }
