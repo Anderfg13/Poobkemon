@@ -114,7 +114,7 @@ public abstract class Machine extends Coach implements Serializable {
     /**
      * Evalúa qué ataque es el mejor basado en efectividad
      */
-    protected int getBestEffectivenessMove() {
+    public int getBestEffectivenessMove() {
         Pokemon attacker = getActivePokemon();
         Pokemon defender = opponent.getActivePokemon();
         

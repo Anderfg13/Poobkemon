@@ -306,4 +306,24 @@ public class MachineTest {
         System.out.println("✅ Test 28: La máquina cambiante tiene el tipo correcto");
     }
 
+    // GRUPO 8: PRUEBAS DE getBestEffectivenessMove Y executeTurn
+
+    @Test
+    @DisplayName("22. getBestEffectivenessMove retorna el índice correcto")
+    public void testGetBestEffectivenessMove() {
+        // DefensiveMachine tiene como oponente a attackingMachine
+        int idx = attackingMachine.getBestEffectivenessMove();
+        assertTrue(idx >= 0 && idx < attackingMachine.getActivePokemon().getAtaques().size());
+        System.out.println("✅ Test 29: getBestEffectivenessMove retorna un índice válido: " + idx);
+    }
+
+    @Test
+    @DisplayName("23. getBestEffectivenessMove retorna 0 si no hay ataques")
+    public void testGetBestEffectivenessMoveNoAttacks() {
+        attackingMachine.getActivePokemon().getAtaques().clear();
+        int idx = attackingMachine.getBestEffectivenessMove();
+        assertEquals(0, idx);
+        System.out.println("✅ Test 30: getBestEffectivenessMove retorna 0 si no hay ataques");
+    }
+
 }
