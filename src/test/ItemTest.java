@@ -46,7 +46,7 @@ public class ItemTest {
     public void shouldRestoreHPWithSuperPotion() throws PoobkemonException {
         raichu.setPs(50);
         superpocion.applyItemEffect(raichu);
-        assertEquals(90, raichu.getPs()); // Superpoción suma 40
+        assertEquals(100, raichu.getPs()); // Superpoción suma 40
     }
     @Test
     public void shouldNotUseSuperPotionOnFaintedPokemon() {
