@@ -38,7 +38,7 @@ public abstract class BattleArena implements Serializable {
     /** Arreglo de entrenadores participantes en la batalla. */
     protected Coach[] coaches = new Coach[2];
     /** Indica si la batalla está pausada. */
-    private boolean isPaused;
+    public boolean isPaused;
     /** Temporizador para controlar el tiempo de cada turno. */
     private Timer turnTimer;
     /** Generador de números aleatorios para decisiones y sorteos. */
@@ -200,7 +200,7 @@ public abstract class BattleArena implements Serializable {
      *
      * @return Entrenador oponente.
      */
-    protected Coach getOpponentCoach() {
+    public Coach getOpponentCoach() {
         return coaches[1 - currentTurn];
     }
 
@@ -568,7 +568,7 @@ public abstract class BattleArena implements Serializable {
      *
      * @param turn El número de turno a establecer.
      */
-    protected void setCurrentTurn(int turn) {
+    public void setCurrentTurn(int turn) {
         this.currentTurn = turn;
     }
 
