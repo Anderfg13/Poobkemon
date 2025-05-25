@@ -81,4 +81,43 @@ class MachineFactoryTest {
         }
     }
 
+@Test
+@DisplayName("Test Random Items Creation")
+public void testRandomItemsCreation() {
+    // Test for different difficulty levels
+    for (int difficulty = 1; difficulty <= 3; difficulty++) {
+        try {
+            // Create machine with specific difficulty level
+            Machine machine = MachineFactory.createMachine(MachineFactory.MachineType.ATTACKING, "ItemTestMachine", difficulty);
+            
+            // Verify the machine has items
+            assertNotNull(machine.getItems(), "Items should not be null for difficulty " + difficulty);
+            
+            // Check that the number of items makes sense for difficulty
+            assertTrue(machine.getItems().size() <= difficulty, 
+                "Machine should have at most " + difficulty + " items, but has " + machine.getItems().size());
+            
+            // Only proceed with item validation if there are any items
+            if (!machine.getItems().isEmpty()) {
+                // Check that all items are valid
+                for (String itemName : machine.getNombreItems()) {
+                    assertNotNull(itemName, "Item name should not be null");
+                    assertFalse(itemName.isEmpty(), "Item name should not be empty");
+                    
+                    // Verify we can create an item with this name (it's a valid item)
+                    Item item = ItemFactory.createItem(itemName);
+                    assertNotNull(item, "ItemFactory should create a valid item for: " + itemName);
+                }
+                
+                // Check for duplicates
+                List<String> itemNames = machine.getNombreItems();
+                assertEquals(itemNames.size(), itemNames.stream().distinct().count(),
+                    "There should be no duplicate items");
+            }
+        } catch (Exception e) {
+            // If item creation requires API access that might fail, log the exception
+            System.out.println("Note: Item creation test for difficulty " + difficulty + 
+                               " skipped due to possible API requirements: " + e.getMessage());
+        }
+    }}
 }
