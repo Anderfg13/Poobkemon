@@ -41,4 +41,27 @@ public class ItemTest {
         raichu.setPs(0);
         assertThrows(PoobkemonException.class, () -> pocion.applyItemEffect(raichu));
     }
+
+    @Test
+    public void shouldRestoreHPWithSuperPotion() throws PoobkemonException {
+        raichu.setPs(50);
+        superpocion.applyItemEffect(raichu);
+        assertEquals(90, raichu.getPs()); // Superpoción suma 40
+    }
+    @Test
+    public void shouldNotUseSuperPotionOnFaintedPokemon() {
+        raichu.setPs(0);
+        assertThrows(PoobkemonException.class, () -> superpocion.applyItemEffect(raichu));
+    }
+
+
+
+    @Test
+    public void shouldUseItemOnInactivePokemon() throws PoobkemonException {
+        Pokemon inactiveRaichu = new Pokemon("Raichu", 1, 100, 90, 55, 40, 50, 50, "Eléctrico", 100);
+        inactiveRaichu.setPs(50);
+        pocion.applyItemEffect(inactiveRaichu);
+        assertEquals(70, inactiveRaichu.getPs()); // Poción suma 20
+    }
+
 }

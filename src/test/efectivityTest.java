@@ -54,4 +54,35 @@ class efectivityTest {
         int fairy = efectivity.numberType.get("Hada");
         assertEquals(2.0, efectivity.efectividad(steel, fairy));
     }
+
+    @Test
+void testNormalEffectiveness() {
+    // Normal vs Normal should be neutral (1.0)
+    int normal = efectivity.numberType.get("Normal");
+    assertEquals(1.0, efectivity.efectividad(normal, normal));
+}
+
+@Test
+void testWaterVsFireEffectiveness() {
+    // Water is super effective against Fire
+    int water = efectivity.numberType.get("Agua");
+    int fire = efectivity.numberType.get("Fuego");
+    assertEquals(2.0, efectivity.efectividad(water, fire));
+}
+
+@Test
+void testGrassVsWaterEffectiveness() {
+    // Grass is super effective against Water
+    int grass = efectivity.numberType.get("Planta");
+    int water = efectivity.numberType.get("Agua");
+    assertEquals(2.0, efectivity.efectividad(grass, water));
+}
+
+@Test
+void testElectricVsGroundEffectiveness() {
+    // Electric has no effect on Ground
+    int electric = efectivity.numberType.get("Electrico");
+    int ground = efectivity.numberType.get("Tierra");
+    assertEquals(0.0, efectivity.efectividad(electric, ground));
+}
 }

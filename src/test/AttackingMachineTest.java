@@ -71,4 +71,31 @@ class AttackingMachineTest {
         int idx = machine.selectItem();
         assertTrue(idx == 1 || idx == 0); // X-Ataque o Poción
     }
+
+ 
+@Test
+void testSelectOffensivePokemonAgainstDefensiveOpponent() {
+    // Create a machine that prefers offensive Pokemon
+    AttackingMachine testMachine = new AttackingMachine("TestCPU", pokemons, items);
+    
+    // Create an opponent with a defensive Pokemon
+    Pokemon defensivePokemon = new Pokemon("Tank", 1, 200, 10, 20, 100, 100, 10, "Roca", 100);
+    ArrayList<Pokemon> defensiveTeam = new ArrayList<>(Arrays.asList(defensivePokemon));
+    DefensiveMachine opponent = new DefensiveMachine("Defender", defensiveTeam, items);
+    
+    testMachine.setOpponent(opponent);
+    
+    // When selecting the best Pokemon, it should prefer one with high attack stats
+    int selectedIndex = testMachine.selectBestPokemon();
+    
+    // Find the Pokemon with highest attack stat
+    int highestAttackIndex = 0;
+    for (int i = 1; i < pokemons.size(); i++) {
+        if (pokemons.get(i).getPhysicalAttack() > pokemons.get(highestAttackIndex).getPhysicalAttack()) {
+            highestAttackIndex = i;
+        }
+    }
+    
+    assertEquals(highestAttackIndex, selectedIndex);
+}
 }

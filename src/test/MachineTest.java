@@ -282,12 +282,28 @@ public class MachineTest {
         assertEquals("Expert", expert.getMachineType());
         System.out.println("✅ Test 25: La máquina experta tiene el tipo correcto");
     }
+    @Test
+    @DisplayName("19. Verifica la creación de una máquina defensiva")
+    public void testDefensiveMachine() {
+        Machine defensive = new DefensiveMachine("Defensive", pokemons, items);
+        assertEquals("Defensive", defensive.getMachineType());
+        System.out.println("✅ Test 26: La máquina defensiva tiene el tipo correcto");
+    }
 
+    @Test
+    @DisplayName("20. Verifica la creación de una máquina atacante")
+    public void testAttackingMachine() {
+        Machine attacking = new AttackingMachine("Attacking", pokemons, items);
+        assertEquals("Attacking", attacking.getMachineType());
+        System.out.println("✅ Test 27: La máquina atacante tiene el tipo correcto");
+    }
 
-
-
-
-
-
+    @Test
+    @DisplayName("21. Verifica la creación de una máquina cambiante")
+    public void testChangingMachine() {
+        Machine changing = new ChangingMachine("Changing", pokemons, items);
+        assertEquals("Changing", changing.getMachineType());
+        System.out.println("✅ Test 28: La máquina cambiante tiene el tipo correcto");
+    }
 
 }

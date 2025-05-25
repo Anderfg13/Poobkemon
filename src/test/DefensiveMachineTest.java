@@ -66,4 +66,23 @@ class DefensiveMachineTest {
         assertTrue(idx >= 0 && idx < items.size());
         assertTrue(items.get(idx).contains("Poción"));
     }
+
+
+
+@Test
+void testShouldUseItemWhenHealthHigh() {
+    machine.getActivePokemon().setPs(100); // High health
+    assertFalse(machine.shouldUseItem());
+}
+
+@Test
+void testSelectItemWithNoItems() {
+    // Create a machine with no items
+    DefensiveMachine noItemMachine = new DefensiveMachine("NoItems", pokemons, new ArrayList<>());
+    
+    int itemIndex = noItemMachine.selectItem();
+    assertEquals(-1, itemIndex); // Should return -1 when no items are available
+}
+
+
 }

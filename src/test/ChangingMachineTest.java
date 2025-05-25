@@ -69,4 +69,53 @@ class ChangingMachineTest {
         assertEquals("Poción", items.get(idx));
     }
 
+  
+
+@Test
+void testChangesStrategyBasedOnOpponent() {
+    // Create two different types of opponents
+    Pokemon attackerPokemon = new Pokemon("Attacker", 1, 50, 100, 100, 20, 20, 100, "Lucha", 100);
+    ArrayList<Pokemon> attackingTeam = new ArrayList<>(Arrays.asList(attackerPokemon));
+    AttackingMachine attackingOpponent = new AttackingMachine("Attacker", attackingTeam, items);
+    
+    Pokemon defenderPokemon = new Pokemon("Defender", 1, 200, 20, 20, 100, 100, 20, "Acero", 50);
+    ArrayList<Pokemon> defendingTeam = new ArrayList<>(Arrays.asList(defenderPokemon));
+    DefensiveMachine defensiveOpponent = new DefensiveMachine("Defender", defendingTeam, items);
+    
+    // Test behavior with attacking opponent
+    machine.setOpponent(attackingOpponent);
+    raichu.setPs(100); // Make sure health is high
+    int moveIndex1 = machine.selectMove();
+    
+    // Test behavior with defensive opponent
+    machine.setOpponent(defensiveOpponent);
+    int moveIndex2 = machine.selectMove();
+    
+    assertNotEquals(moveIndex1, moveIndex2);
+}
+
+@Test
+void testSelectsPokemonBasedOnOpponentType() {
+    // Create opponent with a specific type
+    Pokemon firePokemon = new Pokemon("Charizard", 1, 100, 90, 90, 70, 70, 100, "Fuego", 100);
+    ArrayList<Pokemon> fireTeam = new ArrayList<>(Arrays.asList(firePokemon));
+    AttackingMachine fireOpponent = new AttackingMachine("FireTrainer", fireTeam, items);
+    machine.setOpponent(fireOpponent);
+    
+    int waterIndex = -1;
+    for (int i = 0; i < pokemons.size(); i++) {
+        if ("Agua".equals(pokemons.get(i).getType())) {
+            waterIndex = i;
+            break;
+        }
+    }
+    
+    if (waterIndex != -1) {
+        int selectedIndex = machine.selectBestPokemon();
+        assertEquals(waterIndex, selectedIndex);
+    }
+}
+
+
+
 }

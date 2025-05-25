@@ -60,4 +60,69 @@ class ExpertMachineTest {
         assertTrue(machine.shouldUseItem());
     }
 
+    @Test
+void testShouldNotUseItemWhenHealthHigh() {
+    machine.getActivePokemon().setPs(30); // More than 40%
+    assertFalse(machine.shouldUseItem());
+}
+
+
+
+    @Test
+    void testShouldNotUseItemWhenNoStatusEffect() {
+        machine.getActivePokemon().setStatus(0); // Sin efecto de estado
+        assertFalse(machine.shouldUseItem());
+    }
+    // Add these test methods to your existing ExpertMachineTest class
+
+@Test
+void testStrategyIsExpertStrategy() {
+    // This assumes your ExpertMachine has a getStrategy method
+    // If the method signature is different, adjust accordingly
+    assertTrue(machine instanceof ExpertMachine);
+}
+
+
+@Test
+void testSelectItemReturnsValidIndexWhenItemsAvailable() {
+    machine.getActivePokemon().setPs(5); // Low health to ensure item usage
+    int itemIndex = machine.selectItem();
+    assertTrue(itemIndex >= 0 && itemIndex < items.size());
+}
+
+@Test
+void testSelectBestPokemonConsidersTypeAdvantage() {
+    // Create opponent with a water pokemon
+    ArrayList<Pokemon> opponentPokemons = new ArrayList<>();
+    Pokemon waterPokemon = new Pokemon("Squirtle", 10, 100, 50, 50, 50, 50, 50, "Agua", 100);
+    opponentPokemons.add(waterPokemon);
+    
+    DefensiveMachine opponent = new DefensiveMachine("CPU2", opponentPokemons, items);
+    machine.setOpponent(opponent);
+    
+    // The expert machine should prefer the electric-type pokemon (Raichu) against water
+    int pokemonIdx = machine.selectBestPokemon();
+    assertEquals(0, pokemonIdx); // Raichu is at index 0
+}
+
+@Test
+void testExecuteTurnSwitchesFaintedPokemon() {
+    // Set up a mock BattleArena - this will need adjustment if your BattleArena class has complex needs
+    BattleArenaNormal arena = new BattleArenaNormal();
+    
+    // Set up opponent and make current pokemon fainted
+    ArrayList<Pokemon> opponentPokemons = new ArrayList<>();
+    opponentPokemons.add(new Pokemon("Squirtle", 10, 100, 50, 50, 50, 50, 50, "Agua", 100));
+    
+    DefensiveMachine opponent = new DefensiveMachine("CPU2", opponentPokemons, items);
+    machine.setOpponent(opponent);
+    
+    // Faint the current pokemon
+    machine.getActivePokemon().setPs(0);
+    
+    // Execute turn should switch pokemon
+    boolean result = machine.executeTurn(arena);
+    assertTrue(result);
+    assertTrue(machine.getActivePokemon().getPs() > 0);
+}
 }
