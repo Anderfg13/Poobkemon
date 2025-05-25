@@ -69,7 +69,12 @@ public class ItemFactory {
     
     }
 
-    // Método para crear un ítem basado en su nombre
+    /**
+     * Crea una instancia de {@link Item} a partir de su nombre.
+     * @param name Nombre del ítem a crear.
+     * @return Instancia de {@link Item} con los parámetros correspondientes.
+     * @throws IllegalArgumentException Si el nombre del ítem no está registrado.
+     */
     public static Item createItem(String name) {
         ItemData data = ITEM_REGISTRY.get(name);
         if (data == null) {
@@ -78,7 +83,10 @@ public class ItemFactory {
         return new Item(name, data.description(), data.effectValue(), data.applyTo());
     }
 
-    // Método para obtener los nombres de todos los ítems registrados
+    /**
+     * Obtiene una lista con los nombres de todos los ítems registrados.
+     * @return Lista de nombres de ítems.
+     */
     public static List<String> getItemNames() {
         return new ArrayList<>(ITEM_REGISTRY.keySet());
     }

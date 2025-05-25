@@ -152,8 +152,6 @@ public class HumanCoach extends Coach {
         }
     }
 
-    // Métodos de UI (versión básica)
-
     /**
      * Obtiene el índice del movimiento seleccionado por el usuario.
      * @return Índice del movimiento seleccionado.

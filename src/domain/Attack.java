@@ -160,6 +160,7 @@ public abstract class Attack implements Serializable {
         usarAtaque();
         return danioBase;
     }
+    
     /**
      * Crea y retorna una copia profunda de este ataque.
      * Debe ser implementado por las subclases.

@@ -39,14 +39,10 @@ public class Log {
     public static String nombre = "Poobkemon Garcia Romero";
 
     /**
-     * Registra una excepción en el archivo de log especificado.
-     * <p>
-     * El archivo de log se crea o se abre en modo de adición ("append") y se
-     * registra la traza de la excepción con un formato simple.
-     * </p>
+     * Registra una excepción en el archivo de log.
+     * Si ocurre un error al intentar registrar, imprime la traza de la excepción y termina el programa.
      *
-     * @param e la excepción que se desea registrar.
-     * @throws RuntimeException si ocurre un error al intentar escribir en el archivo de log.
+     * @param e La excepción a registrar.
      */
     public static void record(Exception e) {
         try {

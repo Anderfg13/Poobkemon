@@ -33,18 +33,34 @@ public class StatusAttack extends Attack {
         this.turnosDuracion = turnosDuracion;
     }
     
+    /**
+     * Obtiene el tipo de atributo que este ataque de estado afecta.
+     * @return
+     */
     public AttributeType getAffects() {
         return affects;
     }
 
+    /**
+     * Obtiene la duración del efecto de este ataque de estado en turnos.
+     * @return
+     */
     public int getTurnosDuracion() {
         return turnosDuracion;
     }
 
+    /**
+     * Establece la duración del efecto de este ataque de estado en turnos.
+     * @param turnosDuracion
+     */
     public String getEffect() {
         return affects.name();
     }
 
+    /**
+     * Calcula el daño infligido por este ataque de estado.
+     * En lugar de infligir daño, aplica el efecto correspondiente al Pokémon atacante. 
+     */
     @Override
     public int calcDaño(Pokemon atacante, Pokemon defensor) {
         switch (affects) {
@@ -59,6 +75,10 @@ public class StatusAttack extends Attack {
         return 0;
     }
 
+    /**
+     * Clona este ataque de estado creando una nueva instancia con los mismos atributos.
+     * @return Una copia exacta de este ataque de estado.
+     */
     @Override
     public Attack clone() {
         return new StatusAttack(getName(), getType(), getBaseDamage(), getPowerPoint(), getPrecision(), affects, getTurnosDuracion(), getAttackType());

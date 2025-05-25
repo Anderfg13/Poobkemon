@@ -36,6 +36,11 @@ public abstract class Machine extends Coach implements Serializable {
         this.machineType = getClass().getSimpleName();
     }
 
+    /**
+     * Método para cambiar el Pokémon activo de la máquina.
+     * @param index Índice del Pokémon a cambiar
+     * @throws PoobkemonException Si el índice es inválido o el Pokémon está debilitado
+     */
     @Override
     public void handleTurnTimeout() {
         // Implementación por defecto para las máquinas
@@ -185,6 +190,10 @@ public abstract class Machine extends Coach implements Serializable {
         return bestPokemonIndex;
     }
     
+/**
+     * Obtiene los ítems disponibles de la máquina
+     * @return Lista de ítems
+     */
     @Override
     public List<Item> getItems() {
         // Llamar al método de la clase padre
@@ -233,11 +242,20 @@ public abstract class Machine extends Coach implements Serializable {
             return false;
         }
     }
+
+    /**
+     * Obtiene el Pokémon activo de la máquina
+     * @return El Pokémon activo
+     */
     @Override
     public String getName() {
         return machineName;
     }
 
+    /**
+     * Verifica si la máquina es un tipo de máquina
+     * @return true si es una máquina, false en caso contrario
+     */
     @Override
     public boolean isMachine() {
         return true;

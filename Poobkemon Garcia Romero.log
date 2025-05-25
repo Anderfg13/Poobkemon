@@ -1,4 +1,4 @@
-may 24, 2025 6:47:05 P. M. domain.Log record
+may 24, 2025 8:49:37 P. M. domain.Log record
 SEVERE: java.lang.Exception: Test exception for logging
 java.lang.Exception: Test exception for logging
 	at test.LogTest.testRecordCreatesLogFile(LogTest.java:15)
@@ -71,7 +71,7 @@ java.lang.Exception: Test exception for logging
 	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:443)
 	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:211)
 
-May 24, 2025 8:16:11 PM domain.Log record
+may 24, 2025 9:15:04 P. M. domain.Log record
 SEVERE: java.io.FileNotFoundException: mult\tu_musica_global.wav (El sistema no puede encontrar el archivo especificado)
 java.io.FileNotFoundException: mult\tu_musica_global.wav (El sistema no puede encontrar el archivo especificado)
 	at java.base/java.io.FileInputStream.open0(Native Method)
