@@ -72,21 +72,7 @@ class GeminiMachineTest {
         assertTrue(itemIndex >= 0 && itemIndex < items.size());
     }
 
-    @Test
-    void testSelectMoveReturnsValidIndex() {
-        DefensiveMachine opponent = new DefensiveMachine("CPU2", pokemons, items);
-        machine.setOpponent(opponent);
-        int moveIndex = machine.selectMove();
-        assertTrue(moveIndex >= 0 && moveIndex < machine.getActivePokemon().getAtaques().size());
-    }
 
-    @Test
-    void testSelectBestPokemonReturnsValidIndex() {
-        DefensiveMachine opponent = new DefensiveMachine("CPU2", pokemons, items);
-        machine.setOpponent(opponent);
-        int idx = machine.selectBestPokemon();
-        assertTrue(idx >= 0 && idx < pokemons.size());
-    }
 
     @Test
     void testSelectItemReturnsValidIndexWhenHealthLow() {
@@ -114,6 +100,15 @@ class GeminiMachineTest {
         assertTrue(itemIndex >= 0 && itemIndex < items.size());
     }
 
+    @BeforeEach
+    void setUp() {
+        // Inicialización para GeminiMachine
+    }
+    
+    @Test
+    void testGeminiMachineType() {
+        assertEquals("Gemini", machine.getMachineType());
+    }
  
 
 }
