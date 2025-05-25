@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Timer;
-import java.util.TimerTask;
 import java.awt.Color;
 
 /**
@@ -33,20 +32,12 @@ public abstract class BattleArena implements Serializable {
     private static final long serialVersionUID = 1L;
     /** Número de turno actual. */
     protected int currentTurn = 0;
-    /** Tiempo máximo por turno en segundos. */
-    private static final int MAX_TIME_SECONDS = 20;
     /** Arreglo de entrenadores participantes en la batalla. */
     protected Coach[] coaches = new Coach[2];
-    /** Indica si la batalla está pausada. */
-    private boolean isPaused;
     /** Temporizador para controlar el tiempo de cada turno. */
     private Timer turnTimer;
     /** Generador de números aleatorios para decisiones y sorteos. */
     private Random rand = new Random();
-    /** Tiempo restante para el turno actual en milisegundos. */
-    private long timeRemaining = MAX_TIME_SECONDS * 1000L;
-    /** Momento en que se pausó la batalla. */
-    private long pauseStartTime;
     /** Indica si la batalla ha finalizado. */
     protected boolean battleFinished;
     /** Indica si es el turno del jugador 1. */
@@ -57,7 +48,6 @@ public abstract class BattleArena implements Serializable {
      * Inicializa los estados de pausa y finalización.
      */
     public BattleArena() {
-        this.isPaused = false;
         this.battleFinished = false;
     }
 
