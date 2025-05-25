@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import domain.*;
 import java.util.ArrayList;
 
-class GameControllerTest {
+public class GameControllerTest {
     
     private GameController gameController;
     
