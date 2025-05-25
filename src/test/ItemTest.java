@@ -64,4 +64,79 @@ public class ItemTest {
         assertEquals(70, inactiveRaichu.getPs()); // Poción suma 20
     }
 
+    @Test
+    public void shouldReturnCorrectNameDescriptionEffectAndApplyTo() {
+        assertEquals("Poción", pocion.getName());
+        assertTrue(pocion.getDescription().contains("Restaura"));
+        assertEquals(20, pocion.getEffectValue());
+        assertEquals(Item.AttributeType.HP, pocion.getApplyTo());
+    }
+
+    @Test
+    public void shouldAllowPotionUseWhenNotFullHP() {
+        raichu.setPs(80);
+        assertTrue(pocion.canUse(raichu, new java.util.ArrayList<>()));
+    }
+
+    @Test
+    public void shouldNotAllowPotionUseWhenFullHP() {
+        raichu.setPs(raichu.getTotalPs());
+        assertFalse(pocion.canUse(raichu, new java.util.ArrayList<>()));
+    }
+
+    @Test
+    public void shouldApplyReviveEffect() throws PoobkemonException {
+        revive = ItemFactory.createItem("Revive");
+        raichu.setPs(0);
+        revive.applyItemEffect(raichu);
+        assertTrue(raichu.getPs() > 0);
+    }
+
+    @Test
+    public void shouldApplyStatBoosts() throws PoobkemonException {
+        Item xAtaque = new Item("X-Ataque", "Aumenta el ataque físico", 2, Item.AttributeType.PHYSICAL_ATTACK);
+        int before = raichu.getPhysicalAttack();
+        xAtaque.applyItemEffect(raichu);
+        assertEquals(before + 2, raichu.getPhysicalAttack());
+    }
+
+    @Test
+    public void shouldApplyDefenseBoost() throws PoobkemonException {
+        Item xDefensa = new Item("X-Defensa", "Aumenta la defensa física", 3, Item.AttributeType.PHYSICAL_DEFENSE);
+        int before = raichu.getPhysicalDefense();
+        xDefensa.applyItemEffect(raichu);
+        assertEquals(before + 3, raichu.getPhysicalDefense());
+    }
+
+    @Test
+    public void shouldApplySpecialAttackBoost() throws PoobkemonException {
+        Item xEsp = new Item("X-Especial", "Aumenta el ataque especial", 4, Item.AttributeType.SPECIAL_ATTACK);
+        int before = raichu.getSpecialAttack();
+        xEsp.applyItemEffect(raichu);
+        assertEquals(before + 4, raichu.getSpecialAttack());
+    }
+
+    @Test
+    public void shouldApplySpecialDefenseBoost() throws PoobkemonException {
+        Item xEspDef = new Item("X-EspecialDef", "Aumenta la defensa especial", 2, Item.AttributeType.SPECIAL_DEFENSE);
+        int before = raichu.getSpecialDefense();
+        xEspDef.applyItemEffect(raichu);
+        assertEquals(before + 2, raichu.getSpecialDefense());
+    }
+
+    @Test
+    public void shouldApplySpeedBoost() throws PoobkemonException {
+        Item xVel = new Item("X-Velocidad", "Aumenta la velocidad", 5, Item.AttributeType.SPEED);
+        int before = raichu.getSpeed();
+        xVel.applyItemEffect(raichu);
+        assertEquals(before + 5, raichu.getSpeed());
+    }
+
+    @Test
+    public void shouldApplyEvasionBoost() throws PoobkemonException {
+        Item xEvasion = new Item("X-Evasión", "Aumenta la evasión", 1, Item.AttributeType.EVASION);
+        int before = raichu.getEvasion();
+        xEvasion.applyItemEffect(raichu);
+        assertEquals(before + 1, raichu.getEvasion());
+    }
 }

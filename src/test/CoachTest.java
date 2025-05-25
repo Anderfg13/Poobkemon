@@ -70,4 +70,59 @@ public class CoachTest {
         }
         assertTrue(coach.areAllPokemonFainted());
     }
+
+    @Test
+    public void shouldAddPokemon() {
+        int before = coach.getPokemons().size();
+        coach.agregarPokemon("Blastoise");
+        assertEquals(before + 1, coach.getPokemons().size());
+        assertEquals("Blastoise", coach.getPokemons().get(before).getName());
+    }
+
+    @Test
+    public void shouldCreateItems() {
+        ArrayList<String> newItems = new ArrayList<>();
+        newItems.add("Revive");
+        coach.createItems(newItems);
+        assertTrue(coach.getNombreItems().contains("Revive"));
+    }
+
+    @Test
+    public void shouldCheckPokemonStatus() {
+        Pokemon p = coach.getPokemons().get(0);
+        p.setPs(0);
+        assertTrue(coach.checkPokemonStatus(p));
+        p.setPs(10);
+        assertFalse(coach.checkPokemonStatus(p));
+    }
+
+    @Test
+    public void shouldGetCurrentPokemon() {
+        assertEquals(coach.getActivePokemon(), coach.getCurrentPokemon());
+    }
+
+    @Test
+    public void shouldSetActivePokemon() {
+        Pokemon p = coach.getPokemons().get(1);
+        coach.setActivePokemon(p);
+        assertEquals(p, coach.getActivePokemon());
+    }
+
+    @Test
+    public void shouldGetItems() {
+        List<domain.Item> items = coach.getItems();
+        assertNotNull(items);
+        assertFalse(items.isEmpty());
+    }
+
+    @Test
+    public void shouldGetColorCoachAndSetColor() {
+        coach.setColor(java.awt.Color.RED);
+        assertEquals(java.awt.Color.RED, coach.getColorCoach());
+    }
+
+    @Test
+    public void shouldReturnIsMachineFalseForHumanCoach() {
+        assertFalse(coach.isMachine());
+    }
 }
