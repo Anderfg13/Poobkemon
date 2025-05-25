@@ -346,6 +346,30 @@ public class Poobkemon implements Serializable {
         battleArenaNormal.eliminarItem(esJugador1, nombreItem);
     }
 
+    private Coach createMachineCoach(String name, String machineType, ArrayList<String> pokemonNames, ArrayList<String> items) {
+        // Convertir nombres de pokémon a objetos Pokemon
+        ArrayList<Pokemon> pokemons = new ArrayList<>();
+        for (String pokemonName : pokemonNames) {
+            pokemons.add(PokemonFactory.createPokemon(pokemonName));
+        }
+        
+        // Crear la máquina según el tipo
+        if (machineType.equals("Gemini")) {
+            return new GeminiMachine(name, pokemons, items);
+        } else if (machineType.equalsIgnoreCase("attacking")) {
+            return new AttackingMachine(name, pokemons, items);
+        } else if (machineType.equalsIgnoreCase("defensive")) {
+            return new DefensiveMachine(name, pokemons, items);
+        } else if (machineType.equalsIgnoreCase("changing")) {
+            return new ChangingMachine(name, pokemons, items);
+        } else if (machineType.equalsIgnoreCase("expert")) {
+            return new ExpertMachine(name, pokemons, items);
+        } else {
+            // Por defecto, usar AttackingMachine
+            return new AttackingMachine(name, pokemons, items);
+        }
+    }
+
     public int getPokemonHP(boolean esJugador1, String nombrePokemon) {
         // Busca el Pokémon por nombre en el coach correspondiente y retorna su vida actual
         for (Pokemon p : battleArenaNormal.getCoach(esJugador1 ? 0 : 1).getPokemons()) {
