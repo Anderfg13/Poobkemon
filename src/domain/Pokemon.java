@@ -1,11 +1,11 @@
 package domain;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Pokemon representa una criatura jugable en el mundo de Poobkemon.
+ * Implementa PokemonBase para ser compatible con el patrón Decorator.
  * Modela las estadísticas, ataques, estado y comportamiento de combate de un Pokémon.
  *
  * <p>Características principales:
@@ -18,13 +18,11 @@ import java.util.List;
  *   <li>Incluye utilidades para reducir PP de ataques y obtener información sobre los mismos.</li>
  * </ul>
  *
-
- *
  * @author  Anderson Fabian Garcia Nieto
  * @author  Christian Alfonso Romero Martinez
  * @version 1.0
  */
-public class Pokemon implements Serializable {
+public class Pokemon implements PokemonBase {
     private static final long serialVersionUID = 1L;
     protected String name;
     protected int id;
@@ -59,35 +57,82 @@ public class Pokemon implements Serializable {
         this.turnStatus = 0; // Sin turnos de estado
     }
 
+    // Implementación de métodos getter de PokemonBase
+    @Override
     public String getName() { return name; }
+    
+    @Override
     public String getType() { return type; }
+    
+    @Override
     public int getId() { return id; }
+    
+    @Override
     public int getTotalPs() { return total_ps; }
+    
+    @Override
     public int getPs() { return this.ps; }
+    
+    @Override
     public int getSpeed() { return speed; }
+    
+    @Override
     public int getEvasion() { return evasion; }
+    
+    @Override
     public int getSpecialAttack() { return specialAttack; }
+    
+    @Override
     public int getPhysicalAttack() { return physicalAttack; }
+    
+    @Override
     public int getSpecialDefense() { return specialDefense; }
+    
+    @Override
     public int getPhysicalDefense() { return physicalDefense; }
+    
+    @Override
     public int getStatus() { return status; }
+    
+    @Override
     public int getTurnStatus() { return turnStatus; }
 
-
+    // Implementación de métodos setter de PokemonBase
+    @Override
+    public void setPs(int ps) { 
+        if(ps > total_ps) {
+            this.ps = total_ps;
+            return;
+        }
+        this.ps = Math.max(ps, 0); 
+    }
+    
+    @Override
     public void setSpeed(int speed) { this.speed = speed; }
+    
+    @Override
     public void setEvasion(int evasion) { this.evasion = evasion; }
+    
+    @Override
     public void setSpecialAttack(int specialAttack) { this.specialAttack = specialAttack; }
+    
+    @Override
     public void setSpecialDefense(int specialDefense) { this.specialDefense = specialDefense; }
+    
+    @Override
     public void setPhysicalAttack(int physicalAttack) { this.physicalAttack = physicalAttack; }
+    
+    @Override
     public void setPhysicalDefense(int physicalDefense) { this.physicalDefense = physicalDefense; }
+    
+    @Override
     public void setStatus(int status) { this.status = status; }
+    
+    @Override
     public void setTurnStatus(int turnStatus) { this.turnStatus = turnStatus; }
 
-    /**
-     * Añade un ataque al Pokémon.
-     * @param attack El ataque a añadir.
-     * @throws IllegalStateException si el Pokémon ya tiene 4 ataques.
-     */
+    // Implementación de métodos de ataque y comportamiento de PokemonBase
+    @Override
     public void addAttack(Attack attack) {
         if (ataques.size() < 4) { // Máximo 4 ataques
             ataques.add(attack);
@@ -96,31 +141,12 @@ public class Pokemon implements Serializable {
         }
     }
 
-    /**
-     * Establece los puntos de salud del Pokémon.
-     * Si el valor es mayor que el total de PS, se ajusta al máximo.
-     * Si es negativo, se ajusta a 0.
-     * @param ps Puntos de salud a establecer.
-     */
-    public void setPs(int ps) { 
-    	if(ps > total_ps) {
-    		this.ps = total_ps;
-    		return;
-    	}
-    this.ps = Math.max(ps, 0); }
-
-    /**
-     * Obtiene la lista de ataques del Pokémon.
-     * @return Lista de ataques.
-     */
+    @Override
     public List<Attack> getAtaques() {
-        return ataques;
+        return new ArrayList<>(ataques); // Retorna copia para evitar modificaciones externas
     }
 
-    /**
-     * Obtiene el número total de ataques del Pokémon.
-     * @return Número de ataques.
-     */
+    @Override
     public List<String> getNombreAtaques() {
         List<String> nombres = new ArrayList<>();
         for (Attack ataque : ataques) {
@@ -129,33 +155,91 @@ public class Pokemon implements Serializable {
         return nombres;
     }
 
-    /**
-     * Aplica el daño por estado al Pokémon.
-     * Dependiendo del estado, se aplica un daño específico.
-     * Por ejemplo, quemado y envenenado causan daño periódico.
-     */
+    @Override
     public void applyEffectDamage() {
         if (status != 0) {
-            // Lógica para aplicar daño por estado
             switch (status) {
                 case 1: // Paralizado
-                    // Lógica de parálisis
+                    // Lógica de parálisis - no causa daño directo
                     break;
                 case 2: // Dormido
-                    // Lógica de sueño
+                    // Lógica de sueño - no causa daño directo
                     break;
                 case 3: // Quemado
                     setPs(ps - (total_ps / 16)); // Daño por quemadura
                     break;
                 case 4: // Congelado
-                    // Lógica de congelación
+                    // Lógica de congelación - no causa daño directo
                     break;
                 case 5: // Envenenado
                     setPs(ps - (total_ps / 8)); // Daño por veneno
                     break;
             }
         }
-    }   
+    }
+
+    @Override
+    public int attack(PokemonBase defensor, Attack attack) {
+        // Verificar que el ataque esté disponible
+        if (!ataques.contains(attack)) {
+            throw new IllegalArgumentException("El Pokémon no conoce este ataque.");
+        }
+        
+        // Calcular daño usando el método del ataque
+        int daño = attack.calcDaño(this, (Pokemon)defensor);
+        
+        // Aplicar daño al defensor si es mayor que 0
+        if (daño > 0) {
+            defensor.setPs(defensor.getPs() - daño);
+        }
+        
+        return daño;
+    }
+    
+    @Override
+    public boolean hasStatus(int statusCode) {
+        return this.status == statusCode;
+    }
+
+    // Métodos adicionales específicos de Pokemon (mantener compatibilidad)
+    
+    /**
+     * Método sobrecargado para mantener compatibilidad con código existente
+     * que usa Pokemon directamente en lugar de PokemonBase.
+     */
+    public int attack(Pokemon defensor, Attack attack) {
+        return attack(((PokemonBase)defensor), attack);
+    }
+
+    /**
+     * Realiza un ataque a sí mismo o al oponente.
+     * @param toItself si true, se ataca a sí mismo.
+     * @param attack el ataque a usar.
+     * @return el daño causado
+     */
+    public int attack(boolean toItself, Attack attack) {
+        if (!ataques.contains(attack)) {
+            throw new IllegalArgumentException("El Pokémon no conoce este ataque.");
+        }
+
+        if (toItself) {
+            return attackItself(attack);
+        } else {
+            throw new UnsupportedOperationException("Debes usar attack(PokemonBase, Attack) para atacar al oponente.");
+        }
+    }
+
+    /**
+     * Aplica un ataque a sí mismo (por ejemplo, por confusión).
+     * @return el daño causado
+     */
+    private int attackItself(Attack attack) {
+        int daño = attack.calcDaño(this, this); // Atacándose a sí mismo
+        if (daño > 0) {
+            setPs(ps - daño);
+        }
+        return daño;
+    }
 
     /**
      * Reduce el PP de todos los ataques del Pokémon en 1.
@@ -179,53 +263,11 @@ public class Pokemon implements Serializable {
     }
 
     /**
-     * Ataca a otro Pokémon con un ataque específico.
-     * @return el daño causado
+     * Establece la lista de ataques del Pokémon.
+     * @param ataques Lista de ataques a asignar
      */
-    public int attack(Pokemon defensor, Attack attack) {
-        int daño = attack.calcDaño(this, defensor);
-        if (daño > 0) {
-            defensor.setPs(defensor.getPs() - daño);
-        }
-        return daño;
-    }
-
-    /**
-    * Establece la lista de ataques del Pokémon.
-    * @param ataques Lista de ataques a asignar
-    */
     public void setAtaques(ArrayList<Attack> ataques) {
         this.ataques = new ArrayList<>(ataques); // Crear una copia para evitar modificaciones externas
-    }
-
-    /**
-     * Realiza un ataque a sí mismo o al oponente.
-     * @param toItself si true, se ataca a sí mismo.
-     * @param attack el ataque a usar.
-     * @return el daño causado
-     */
-    public int attack(boolean toItself, Attack attack) {
-        if (!ataques.contains(attack)) {
-            throw new IllegalArgumentException("El Pokémon no conoce este ataque.");
-        }
-
-        if (toItself) {
-            return attackItself(attack);
-        } else {
-            throw new UnsupportedOperationException("Debes usar attack(Pokemon, Attack) para atacar al oponente.");
-        }
-    }
-
-    /**
-     * Aplica un ataque a sí mismo (por ejemplo, por confusión).
-     * @return el daño causado
-     */
-    private int attackItself(Attack attack) {
-        int daño = attack.calcDaño(this, this); // Atacándose a sí mismo
-        if (daño > 0) {
-            setPs(ps - daño);
-        }
-        return daño;
     }
 
     /**
