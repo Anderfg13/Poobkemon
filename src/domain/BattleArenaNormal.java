@@ -1,8 +1,8 @@
 package domain;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import java.awt.Color;
 
 /**
  * BattleArenaNormal implementa una arena de batalla estándar para el juego Poobkemon.
@@ -31,32 +31,17 @@ public class BattleArenaNormal extends BattleArena {
     }
 
     /**
- * Aplica los efectos de estado a los Pokémon activos de ambos entrenadores.
- */
-private void applyStatusEffects() {
-    for (Coach coach : getCoaches()) {
-        Pokemon activePokemon = coach.getActivePokemon();
-        if (activePokemon != null) {
-            // Obtener el estado actual
-            int currentStatus = activePokemon.getStatus();
-            
-            // Si el Pokémon tiene un estado alterado
-            if (currentStatus != 0) {
+     * Aplica los efectos de estado a los Pokémon activos de ambos entrenadores.
+     */
+    private void applyStatusEffects() {
+        for (Coach coach : getCoaches()) {
+            Pokemon activePokemon = coach.getActivePokemon();
+            if (activePokemon.getStatus() != 0) {
                 System.out.println("Pokémon " + activePokemon.getName() + " está afectado por su estado.");
-                
-                // Aplicar los efectos del estado usando el patrón Decorator
-                PokemonBase decoratedPokemon = PokemonStatusFactory.applyStatus(activePokemon, currentStatus);
-                decoratedPokemon.applyEffectDamage();
-                
-                // Actualizar la referencia en el entrenador si es necesario
-                if (decoratedPokemon != activePokemon) {
-                    Pokemon basePokemon = PokemonStatusFactory.getBasePokemon(decoratedPokemon);
-                    updatePokemonReference(coach, activePokemon, basePokemon);
-                }
+                activePokemon.applyEffectDamage();
             }
         }
     }
-}
 
     /**
      * Configura una batalla entre un humano y una máquina.
@@ -463,42 +448,4 @@ private void applyStatusEffects() {
         
         return false;
     }
-
-    /**
- * Actualiza la referencia a un Pokémon en la lista de un entrenador.
- * Necesario cuando se aplican decoradores.
- * 
- * @param coach El entrenador cuya lista se va a actualizar
- * @param oldPokemon El Pokémon original a reemplazar
- * @param newPokemon El nuevo Pokémon decorado
- */
-private void updatePokemonReference(Coach coach, Pokemon oldPokemon, Pokemon newPokemon) {
-    List<Pokemon> pokemons = coach.getPokemons();
-    for (int i = 0; i < pokemons.size(); i++) {
-        if (pokemons.get(i) == oldPokemon) {
-            pokemons.set(i, newPokemon);
-            if (coach.getActivePokemon() == oldPokemon) {
-                coach.setActivePokemon(newPokemon);
-            }
-            return;
-        }
-    }
-}
-    /**
- * Aplica un estado a un Pokémon usando el patrón Decorator.
- * 
- * @param pokemon El Pokémon al que se aplicará el estado
- * @param statusCode El código del estado a aplicar
- * @param coach El entrenador dueño del Pokémon
- */
-public void applyStatusToActivePokemon(Pokemon pokemon, int statusCode, Coach coach) {
-    if (statusCode == 0 || pokemon == null) return;
-    
-    // Aplicar el estado usando el patrón Decorator
-    PokemonBase decoratedPokemon = PokemonStatusFactory.applyStatus(pokemon, statusCode);
-    
-    // Actualizar la referencia en el entrenador
-    Pokemon basePokemon = PokemonStatusFactory.getBasePokemon(decoratedPokemon);
-    updatePokemonReference(coach, pokemon, basePokemon);
-}
 }
