@@ -61,12 +61,10 @@ class ExpertMachineTest {
     }
 
     @Test
-void testShouldNotUseItemWhenHealthHigh() {
-    machine.getActivePokemon().setPs(30); // More than 40%
-    assertFalse(machine.shouldUseItem());
-}
-
-
+    void testShouldNotUseItemWhenHealthHigh() {
+        machine.getActivePokemon().setPs(30); // More than 40%
+        assertFalse(machine.shouldUseItem());
+    }
 
     @Test
     void testShouldNotUseItemWhenNoStatusEffect() {
@@ -75,54 +73,134 @@ void testShouldNotUseItemWhenHealthHigh() {
     }
     // Add these test methods to your existing ExpertMachineTest class
 
-@Test
-void testStrategyIsExpertStrategy() {
-    // This assumes your ExpertMachine has a getStrategy method
-    // If the method signature is different, adjust accordingly
-    assertTrue(machine instanceof ExpertMachine);
-}
+    @Test
+    void testStrategyIsExpertStrategy() {
+        // This assumes your ExpertMachine has a getStrategy method
+        // If the method signature is different, adjust accordingly
+        assertTrue(machine instanceof ExpertMachine);
+    }
 
 
-@Test
-void testSelectItemReturnsValidIndexWhenItemsAvailable() {
-    machine.getActivePokemon().setPs(5); // Low health to ensure item usage
-    int itemIndex = machine.selectItem();
-    assertTrue(itemIndex >= 0 && itemIndex < items.size());
-}
+    @Test
+    void testSelectItemReturnsValidIndexWhenItemsAvailable() {
+        machine.getActivePokemon().setPs(5); // Low health to ensure item usage
+        int itemIndex = machine.selectItem();
+        assertTrue(itemIndex >= 0 && itemIndex < items.size());
+    }
 
-@Test
-void testSelectBestPokemonConsidersTypeAdvantage() {
-    // Create opponent with a water pokemon
-    ArrayList<Pokemon> opponentPokemons = new ArrayList<>();
-    Pokemon waterPokemon = new Pokemon("Squirtle", 10, 100, 50, 50, 50, 50, 50, "Agua", 100);
-    opponentPokemons.add(waterPokemon);
-    
-    DefensiveMachine opponent = new DefensiveMachine("CPU2", opponentPokemons, items);
-    machine.setOpponent(opponent);
-    
-    // The expert machine should prefer the electric-type pokemon (Raichu) against water
-    int pokemonIdx = machine.selectBestPokemon();
-    assertEquals(0, pokemonIdx); // Raichu is at index 0
-}
+    @Test
+    void testSelectBestPokemonConsidersTypeAdvantage() {
+        // Create opponent with a water pokemon
+        ArrayList<Pokemon> opponentPokemons = new ArrayList<>();
+        Pokemon waterPokemon = new Pokemon("Squirtle", 10, 100, 50, 50, 50, 50, 50, "Agua", 100);
+        opponentPokemons.add(waterPokemon);
 
-@Test
-void testExecuteTurnSwitchesFaintedPokemon() {
-    // Set up a mock BattleArena - this will need adjustment if your BattleArena class has complex needs
-    BattleArenaNormal arena = new BattleArenaNormal();
-    
-    // Set up opponent and make current pokemon fainted
-    ArrayList<Pokemon> opponentPokemons = new ArrayList<>();
-    opponentPokemons.add(new Pokemon("Squirtle", 10, 100, 50, 50, 50, 50, 50, "Agua", 100));
-    
-    DefensiveMachine opponent = new DefensiveMachine("CPU2", opponentPokemons, items);
-    machine.setOpponent(opponent);
-    
-    // Faint the current pokemon
-    machine.getActivePokemon().setPs(0);
-    
-    // Execute turn should switch pokemon
-    boolean result = machine.executeTurn(arena);
-    assertTrue(result);
-    assertTrue(machine.getActivePokemon().getPs() > 0);
-}
+        DefensiveMachine opponent = new DefensiveMachine("CPU2", opponentPokemons, items);
+        machine.setOpponent(opponent);
+
+        // The expert machine should prefer the electric-type pokemon (Raichu) against water
+        int pokemonIdx = machine.selectBestPokemon();
+        assertEquals(0, pokemonIdx); // Raichu is at index 0
+    }
+
+    @Test
+    void testExecuteTurnSwitchesFaintedPokemon() {
+        // Set up a mock BattleArena - this will need adjustment if your BattleArena class has complex needs
+        BattleArenaNormal arena = new BattleArenaNormal();
+
+        // Set up opponent and make current pokemon fainted
+        ArrayList<Pokemon> opponentPokemons = new ArrayList<>();
+        opponentPokemons.add(new Pokemon("Squirtle", 10, 100, 50, 50, 50, 50, 50, "Agua", 100));
+
+        DefensiveMachine opponent = new DefensiveMachine("CPU2", opponentPokemons, items);
+        machine.setOpponent(opponent);
+
+        // Faint the current pokemon
+        machine.getActivePokemon().setPs(0);
+
+        // Execute turn should switch pokemon
+        boolean result = machine.executeTurn(arena);
+        assertTrue(result);
+        assertTrue(machine.getActivePokemon().getPs() > 0);
+    }
+
+    @Test
+    void testGetPokemonsReturnsList() {
+        assertEquals(3, machine.getPokemons().size());
+    }
+
+    @Test
+    void testGetItemsReturnsList() {
+        assertEquals(3, machine.getItems().size());
+    }
+
+    @Test
+    void testGetActivePokemonNotNull() {
+        assertNotNull(machine.getActivePokemon());
+    }
+
+    @Test
+    void testSwitchPokemonChangesActive() throws Exception {
+        int before = machine.getActivePokemon().getPs();
+        machine.getPokemons().get(1).setPs(50);
+        machine.switchPokemon(1);
+        assertEquals(machine.getPokemons().get(1), machine.getActivePokemon());
+    }
+
+    @Test
+    void testRevivirPokemonRestoresHP() throws Exception {
+        machine.getPokemons().get(2).setPs(0);
+        machine.revivirPokemon(machine.getPokemons().get(2).getName());
+        assertTrue(machine.getPokemons().get(2).getPs() > 0);
+    }
+
+    @Test
+    void testRevivirPokemonThrowsIfNotFainted() {
+        assertThrows(Exception.class, () -> machine.revivirPokemon(machine.getActivePokemon().getName()));
+    }
+
+    @Test
+    void testEliminarItemRemovesItem() {
+        machine.eliminarItem("Poción");
+        assertFalse(machine.getNombreItems().contains("Poción"));
+    }
+
+    @Test
+    void testGetNombreItemsReturnsNames() {
+        assertTrue(machine.getNombreItems().contains("Revive"));
+    }
+
+    @Test
+    void testAreAllPokemonFaintedFalse() {
+        assertFalse(machine.areAllPokemonFainted());
+    }
+
+    @Test
+    void testAreAllPokemonFaintedTrue() {
+        for (Pokemon p : machine.getPokemons()) {
+            p.setPs(0);
+        }
+        assertTrue(machine.areAllPokemonFainted());
+    }
+
+    @Test
+    void testIsMachineReturnsTrue() {
+        assertTrue(machine.isMachine());
+    }
+
+    @Test
+    void testSetOpponentAndGetOpponent() {
+        DefensiveMachine opponent = new DefensiveMachine("CPU2", pokemons, items);
+        machine.setOpponent(opponent);
+        // No excepción, solo cobertura
+    }
+
+    @Test
+    void testHandleTurnTimeoutReducesPP() {
+        int before = machine.getActivePokemon().getAtaques().get(0).getPowerPoint();
+        machine.handleTurnTimeout();
+        int after = machine.getActivePokemon().getAtaques().get(0).getPowerPoint();
+        assertTrue(after <= before);
+    }
+
 }

@@ -100,10 +100,10 @@ class GeminiMachineTest {
         assertTrue(itemIndex >= 0 && itemIndex < items.size());
     }
 
-    @BeforeEach
-    void setUp() {
+    //@BeforeEach
+    //void setUp() {
         // Inicialización para GeminiMachine
-    }
+    //}
     
     @Test
     void testGeminiMachineType() {

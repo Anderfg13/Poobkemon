@@ -196,3 +196,4 @@ class ChangingStrategyTest {
         // Assert
         assertFalse(shouldFlee, "Should not flee when there's no opponent information");
     }
+}
