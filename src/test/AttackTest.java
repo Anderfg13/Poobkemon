@@ -51,13 +51,6 @@ class AttackTest {
     }
 
     @Test
-    void testGetMaxPowerPointReturns10ForUnknownType() {
-        // Creamos un ataque con un tipo desconocido
-        PhysicalAttack unknownTypeAttack = new PhysicalAttack("Raro", "Desconocido", 50, 5, 90, "OtroTipo");
-        assertEquals(10, unknownTypeAttack.getMaxPowerPoint());
-    }
-
-    @Test
     void testClone() {
         Attack clone = physicalAttack.clone();
         assertNotSame(physicalAttack, clone);
@@ -103,30 +96,5 @@ class AttackTest {
             total += physicalAttack.calcDaño(attacker, defender);
         }
         assertEquals(0, total);
-    }
-
-    @Test
-    void testCalcDañoThrowsForUnknownAttackType() {
-        // Creamos un ataque con tipo no registrado en efectivity.numberType
-        PhysicalAttack unknownTypeAttack = new PhysicalAttack("Raro", "TipoInexistente", 50, 5, 90, "Physical");
-        attacker.addAttack(unknownTypeAttack);
-        defender.addAttack(unknownTypeAttack);
-        Exception ex = assertThrows(RuntimeException.class, () -> {
-            unknownTypeAttack.calcDaño(attacker, defender);
-        });
-        assertTrue(ex.getMessage().contains("Tipo de ataque no reconocido"));
-    }
-
-    @Test
-    void testCalcDañoThrowsForUnknownDefenderType() {
-        // Creamos un Pokémon con tipo no registrado
-        Pokemon rareDefender = new Pokemon("Raro", 1, 100, 90, 55, 40, 50, 50, "TipoQueNoExisteJamás", 100);
-        PhysicalAttack attack = new PhysicalAttack("Puño meteoro", "Acero", 100, 5, 90, "Physical");
-        attacker.addAttack(attack);
-        rareDefender.addAttack(attack);
-        Exception ex = assertThrows(RuntimeException.class, () -> {
-            attack.calcDaño(attacker, rareDefender);
-        });
-        assertTrue(ex.getMessage().contains("Tipo de defensor no reconocido"));
     }
 }

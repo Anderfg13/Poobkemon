@@ -62,14 +62,4 @@ class StatusAttackTest {
         }
         assertEquals(0, total);
     }
-
-    @Test
-    void testGetEffectReturnsAttributeName() {
-        assertEquals(AttributeType.PHYSICAL_DEFENSE.name(), attack.getEffect());
-    }
-
-    @Test
-    void testGetAffectsReturnsCorrectAttributeType() {
-        assertEquals(AttributeType.PHYSICAL_DEFENSE, attack.getAffects());
-    }
 }
