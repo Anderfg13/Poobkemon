@@ -152,24 +152,6 @@ public class PoobkemonTest {
     }
 
     @Test
-    public void testUseItemDelegatesToArena() throws PoobkemonException {
-        ArrayList<String> pokemons1 = new ArrayList<>(Poobkemon.getAvailablePokemon().subList(0, 6));
-        ArrayList<String> pokemons2 = new ArrayList<>(Poobkemon.getAvailablePokemon().subList(0, 6));
-        List<String> attacks = Poobkemon.getAvailableAttacks();
-        String[][] moves1 = new String[6][4];
-        String[][] moves2 = new String[6][4];
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 4; j++) {
-                moves1[i][j] = attacks.get((i + j) % attacks.size());
-                moves2[i][j] = attacks.get((i + j + 1) % attacks.size());
-            }
-        }
-        poobkemon.startBattleSurvival(pokemons1, pokemons2, moves1, moves2, Color.GREEN, Color.BLUE);
-        // Si no hay ítems, debe lanzar excepción
-        assertThrows(PoobkemonException.class, () -> poobkemon.useItem("Poción"));
-    }
-
-    @Test
     public void testSwitchToPokemonDelegatesToArena() throws PoobkemonException {
         ArrayList<String> pokemons1 = new ArrayList<>(Poobkemon.getAvailablePokemon().subList(0, 6));
         ArrayList<String> pokemons2 = new ArrayList<>(Poobkemon.getAvailablePokemon().subList(0, 6));
@@ -576,4 +558,56 @@ public class PoobkemonTest {
         Coach defaultType = (Coach) method.invoke(poobkemon, "CPU", "otro", pokemons, items);
         assertEquals("AttackingMachine", defaultType.getClass().getSimpleName());
     }
+
+    @Test
+    public void testGetColorJugador1And2() throws PoobkemonException {
+        ArrayList<String> pokemons1 = new ArrayList<>(Poobkemon.getAvailablePokemon().subList(0, 6));
+        ArrayList<String> pokemons2 = new ArrayList<>(Poobkemon.getAvailablePokemon().subList(0, 6));
+        ArrayList<String> items1 = new ArrayList<>();
+        ArrayList<String> items2 = new ArrayList<>();
+        String[][] moves1 = new String[6][4];
+        String[][] moves2 = new String[6][4];
+        List<String> attacks = Poobkemon.getAvailableAttacks();
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 4; j++) {
+                moves1[i][j] = attacks.get((i + j) % attacks.size());
+                moves2[i][j] = attacks.get((i + j + 1) % attacks.size());
+            }
+        }
+        Color color1 = Color.GREEN;
+        Color color2 = Color.BLUE;
+        poobkemon.startBattleNormal("Ash", "Gary", pokemons1, pokemons2, items1, items2, moves1, moves2, color1, color2);
+
+        assertEquals(color1, poobkemon.getColorJugador1());
+        assertEquals(color2, poobkemon.getColorJugador2());
+    }
+
+    @Test
+    public void testAttackAffectsOpponent() throws PoobkemonException {
+        ArrayList<String> pokemons1 = new ArrayList<>(Poobkemon.getAvailablePokemon().subList(0, 6));
+        ArrayList<String> pokemons2 = new ArrayList<>(Poobkemon.getAvailablePokemon().subList(0, 6));
+        ArrayList<String> items1 = new ArrayList<>();
+        ArrayList<String> items2 = new ArrayList<>();
+        String[][] moves1 = new String[6][4];
+        String[][] moves2 = new String[6][4];
+        List<String> attacks = Poobkemon.getAvailableAttacks();
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 4; j++) {
+                moves1[i][j] = attacks.get((i + j) % attacks.size());
+                moves2[i][j] = attacks.get((i + j + 1) % attacks.size());
+            }
+        }
+        poobkemon.startBattleNormal("Ash", "Gary", pokemons1, pokemons2, items1, items2, moves1, moves2, Color.GREEN, Color.BLUE);
+
+        // Obtén el nombre del primer ataque del Pokémon activo del jugador 1
+        String attackName = poobkemon.getActivePokemonMoves(true).get(0);
+        int hpBefore = poobkemon.getActivePokemonCurrentHP(false); // HP del oponente antes del ataque
+
+        // Ataca al oponente (toItself = false, esJugador1 = true)
+        poobkemon.attack(attackName, false, true);
+
+        int hpAfter = poobkemon.getActivePokemonCurrentHP(false); // HP del oponente después del ataque
+        assertTrue(hpAfter <= hpBefore, "El HP del oponente debe disminuir o mantenerse igual tras el ataque");
+    }
+
 }

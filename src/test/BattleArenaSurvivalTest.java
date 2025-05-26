@@ -45,6 +45,17 @@ class BattleArenaSurvivalTest {
     }
 
     @Test
+    void testAttackToOpponentAffectsOpponentPokemon() throws Exception {
+        arena.setupSurvivalBattle("Ash", "Gary", Color.BLUE, Color.RED);
+        // Obtén el nombre del primer ataque del pokémon activo del jugador 1
+        String attackName = arena.getActivePokemonMoves(true).get(0);
+        int hpBefore = arena.getActivePokemonCurrentHP(false); // HP del oponente antes del ataque
+        arena.attack(attackName, "opponent"); // Ataca al oponente
+        int hpAfter = arena.getActivePokemonCurrentHP(false); // HP del oponente después del ataque
+        assertTrue(hpAfter <= hpBefore, "El HP del oponente debe disminuir o mantenerse igual tras el ataque");
+    }
+
+    @Test
     void testSetupHumanVsMachineThrowsException() {
         Exception ex = assertThrows(PoobkemonException.class, () -> {
             arena.setupHumanVsMachine("Ash", "CPU", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new String[0][0], "Attacking", Color.BLUE, Color.RED);

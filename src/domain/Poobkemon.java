@@ -153,18 +153,6 @@ public class Poobkemon implements Serializable {
     public void flee(){
         battleArenaNormal.flee();
     }
-    
-    /**
-     * Permite al jugador atacar con un ataque específico.
-     * Delegará la lógica de ataque a la arena de batalla.
-     * @param attackName Nombre del ataque a usar.
-     * @param toItself Indica si el ataque es a sí mismo o al oponente.
-     * @throws PoobkemonException Si ocurre un error al atacar.
-     */
-    public void useItem(String itemName) throws PoobkemonException {
-        // Delegar la lógica del uso de ítem a la arena de batalla
-        battleArenaNormal.useItem(itemName);
-    }
 
     /**
      * Cambia el Pokémon activo del jugador.
