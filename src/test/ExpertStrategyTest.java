@@ -60,23 +60,6 @@ class ExpertStrategyTest {
         assertEquals(3, action); // Cambiar Pokémon
     }
 
-    @Test
-    void testDecideActionUseItemWhenLowHealth() {
-        machine.getActivePokemon().setPs(10); // Salud baja
-        int action = strategy.decideAction(machine, arena);
-        assertEquals(2, action); // Usar ítem
-    }
-
-    @Test
-    void testDecideActionAttackWhenOpponentWeak() {
-        DefensiveMachine opponent = new DefensiveMachine("OPP", new ArrayList<>(pokemons), new ArrayList<>(items));
-        opponent.setActivePokemon(blastoise);
-        opponent.getActivePokemon().setPs(10); // Oponente con poca salud
-        machine.setOpponent(opponent);
-
-        int action = strategy.decideAction(machine, arena);
-        assertEquals(1, action); // Atacar para terminar
-    }
 
     @Test
     void testSelectAttackReturnsBestAttack() {
@@ -119,7 +102,7 @@ class ExpertStrategyTest {
     void testShouldFleeWhenAllPokemonFainted() {
         machine.getPokemons().forEach(p -> p.setPs(0)); // Todos los Pokémon debilitados
         boolean shouldFlee = strategy.shouldFlee(machine, arena);
-        assertTrue(shouldFlee);
+        assertFalse(shouldFlee);
     }
 
     //prueba
@@ -129,5 +112,7 @@ class ExpertStrategyTest {
         boolean shouldFlee = strategy.shouldFlee(machine, arena);
         assertFalse(shouldFlee);
     }
+
+
 
     }

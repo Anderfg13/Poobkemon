@@ -36,67 +36,36 @@ class GeminiMachineTest {
         assertEquals("CPU", machine.getMachineName());
         assertEquals("Gemini", machine.getMachineType());
     }
-    
 
     @Test
     void testShouldNotUseItemWhenSufficientHealth() {
-        machine.getActivePokemon().setPs(20); // More than 40%
-        assertFalse(machine.shouldUseItem());
-    }
-
-
-
-
-    @Test
-    void testShouldNotUseItemWhenNoStatusEffect() {
-        machine.getActivePokemon().setStatus(0); // No status effect
-        assertFalse(machine.shouldUseItem());
+        machine.getActivePokemon().setPs(20); // Más del 40% de salud
+        assertFalse(machine.shouldUseItem(), "No debería usar un ítem cuando la salud es suficiente");
     }
 
     @Test
     void testSelectItemReturnsValidIndexWhenItemsAvailable() {
-        machine.getActivePokemon().setPs(5); // Low health to ensure item usage
+        machine.getActivePokemon().setPs(5); // Salud baja para asegurar el uso de ítems
         int itemIndex = machine.selectItem();
-        assertTrue(itemIndex >= 0 && itemIndex < items.size());
-    }
-
-
-
-    @Test
-    void testSelectItemReturnsValidIndexWhenHealthLow() {
-        machine.getActivePokemon().setPs(5); // Low health to ensure item usage
-        int itemIndex = machine.selectItem();
-        assertTrue(itemIndex >= 0 && itemIndex < items.size());
-    }
-    @Test
-    void testSelectItemReturnsValidIndexWhenHealthHigh() {
-        machine.getActivePokemon().setPs(30); // More than 40%
-        int itemIndex = machine.selectItem();
-        assertTrue(itemIndex >= 0 && itemIndex < items.size());
-    }
-    @Test
-    void testSelectItemReturnsValidIndexWhenNoStatusEffect() {
-        machine.getActivePokemon().setStatus(0); // No status effect
-        int itemIndex = machine.selectItem();
-        assertTrue(itemIndex >= 0 && itemIndex < items.size());
+        assertTrue(itemIndex >= 0 && itemIndex < items.size(), "Debe devolver un índice válido de ítem");
     }
 
     @Test
-    void testSelectItemReturnsValidIndexWhenStatusEffect() {
-        machine.getActivePokemon().setStatus(1); // Some status effect
+    void testSelectItemReturnsMinusOneWhenNoItemsAvailable() {
+        machine.getItems().clear(); // Sin ítems disponibles
         int itemIndex = machine.selectItem();
-        assertTrue(itemIndex >= 0 && itemIndex < items.size());
+        assertEquals(-1, itemIndex, "Debe devolver -1 cuando no hay ítems disponibles");
     }
 
-    //@BeforeEach
-    //void setUp() {
-        // Inicialización para GeminiMachine
-    //}
-    
     @Test
-    void testGeminiMachineType() {
-        assertEquals("Gemini", machine.getMachineType());
+    void testSelectBestPokemonReturnsValidIndex() {
+        int bestPokemonIndex = machine.selectBestPokemon();
+        assertTrue(bestPokemonIndex >= 0 && bestPokemonIndex < pokemons.size(), "Debe devolver un índice válido de Pokémon");
     }
- 
 
+    @Test
+    void testSelectMoveReturnsValidIndex() {
+        int moveIndex = machine.selectMove();
+        assertTrue(moveIndex >= 0 && moveIndex < machine.getActivePokemon().getAtaques().size(), "Debe devolver un índice válido de ataque");
+    }
 }
