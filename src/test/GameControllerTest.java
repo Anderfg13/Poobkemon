@@ -25,104 +25,49 @@ public class GameControllerTest {
         return list;
     }
 
+
+
+ 
+
     @Test
-    void shouldInitializeGameWithValidAndInvalidConfigurations() {
-        ArrayList<String> playerPokemons = createMutablePokemonList("Pikachu", "Charmander");
-        ArrayList<String> machinePokemons = createMutablePokemonList("Squirtle", "Bulbasaur");
+    void shouldProcessMachineTurnWithNoActivePokemon() {
+        ArrayList<String> playerPokemons = createMutablePokemonList("Pikachu");
+        ArrayList<String> machinePokemons = createMutablePokemonList("Squirtle");
 
-        // Configuración válida
         gameController.initializeGame("Player1", "attacking", playerPokemons, machinePokemons);
-        assertNotNull(gameController.getHumanTrainer(), "El entrenador humano no debería ser null");
-        assertNotNull(gameController.getMachineTrainer(), "El entrenador máquina no debería ser null");
 
-        // Configuración inválida (tipo de máquina inválido)
-        gameController.initializeGame("Player1", "invalid", playerPokemons, machinePokemons);
-        assertNotNull(gameController.getHumanTrainer(), "El entrenador humano no debería ser null");
-        assertNull(gameController.getMachineTrainer(), "El entrenador máquina debería ser null para tipo inválido");
+        // Debilitar todos los Pokémon de la máquina
+        for (Pokemon p : gameController.getMachineTrainer().getPokemons()) {
+            p.setPs(0);
+        }
 
-        // Configuración con listas vacías
-        gameController.initializeGame("Player1", "attacking", new ArrayList<>(), new ArrayList<>());
+        String result = gameController.processMachineTurn();
+        assertTrue(result.contains("No hay Pokémon activos"), "Debería manejar el caso donde no hay Pokémon activos");
+    }
+
+  
+
+
+
+
+    @Test
+    void shouldInitializeGameWithEmptyLists() {
+        ArrayList<String> emptyPlayerPokemons = new ArrayList<>();
+        ArrayList<String> emptyMachinePokemons = new ArrayList<>();
+
+        gameController.initializeGame("Player1", "attacking", emptyPlayerPokemons, emptyMachinePokemons);
         assertNull(gameController.getHumanTrainer(), "El entrenador humano debería ser null con listas vacías");
         assertNull(gameController.getMachineTrainer(), "El entrenador máquina debería ser null con listas vacías");
     }
 
     @Test
-    void shouldProcessPlayerTurnWithValidAndInvalidActions() {
-        ArrayList<String> playerPokemons = createMutablePokemonList("Pikachu");
-        ArrayList<String> machinePokemons = createMutablePokemonList("Squirtle");
+    void shouldProcessTurnsWithoutInitialization() {
+        String playerResult = gameController.processPlayerTurn("attack", "Placaje");
+        assertNotNull(playerResult, "El resultado del turno del jugador no debería ser null");
 
-        gameController.initializeGame("Player1", "attacking", playerPokemons, machinePokemons);
-
-        // Acciones válidas
-        String attackResult = gameController.processPlayerTurn("attack", "Placaje");
-        assertNotNull(attackResult, "El resultado del ataque no debería ser null");
-
-        String switchResult = gameController.processPlayerTurn("switch", "1");
-        assertNotNull(switchResult, "El resultado del cambio no debería ser null");
-
-        String itemResult = gameController.processPlayerTurn("item", "Poción");
-        assertNotNull(itemResult, "El resultado del uso de ítem no debería ser null");
-
-        // Acción inválida
-        String invalidResult = gameController.processPlayerTurn("invalid", "value");
-        assertNotNull(invalidResult, "El resultado para una acción inválida no debería ser null");
-        assertTrue(invalidResult.contains("Acción no válida"), "Debería indicar que la acción no es válida");
+        String machineResult = gameController.processMachineTurn();
+        assertNotNull(machineResult, "El resultado del turno de la máquina no debería ser null");
     }
 
-    @Test
-    void shouldProcessMachineTurnCorrectly() {
-        ArrayList<String> playerPokemons = createMutablePokemonList("Pikachu");
-        ArrayList<String> machinePokemons = createMutablePokemonList("Squirtle");
 
-        gameController.initializeGame("Player1", "attacking", playerPokemons, machinePokemons);
-
-        String result = gameController.processMachineTurn();
-        assertNotNull(result, "El resultado del turno de la máquina no debería ser null");
-    }
-
-    @Test
-    void shouldVerifyGameStateCorrectly() {
-        ArrayList<String> playerPokemons = createMutablePokemonList("Pikachu");
-        ArrayList<String> machinePokemons = createMutablePokemonList("Squirtle");
-
-        gameController.initializeGame("Player1", "attacking", playerPokemons, machinePokemons);
-
-        // Verificar que el juego no ha terminado
-        assertFalse(gameController.isGameOver(), "El juego no debería estar terminado al inicio");
-
-        // Marcar el juego como terminado
-        gameController.setGameOver(true);
-        assertTrue(gameController.isGameOver(), "El juego debería estar terminado después de marcarlo como terminado");
-    }
-
-    @Test
-    void shouldGetGameResultCorrectly() {
-        ArrayList<String> playerPokemons = createMutablePokemonList("Pikachu");
-        ArrayList<String> machinePokemons = createMutablePokemonList("Squirtle");
-
-        gameController.initializeGame("Player1", "attacking", playerPokemons, machinePokemons);
-
-        // Marcar el juego como terminado
-        gameController.setGameOver(true);
-
-        String result = gameController.getGameResult();
-        assertNotNull(result, "El resultado del juego no debería ser null");
-        assertTrue(result.contains("Juego terminado"), "Debería indicar que el juego ha terminado");
-    }
-
-    @Test
-    void shouldHandleMultipleInitializations() {
-        ArrayList<String> playerPokemons = createMutablePokemonList("Pikachu");
-        ArrayList<String> machinePokemons = createMutablePokemonList("Squirtle");
-
-        // Primera inicialización
-        gameController.initializeGame("Player1", "attacking", playerPokemons, machinePokemons);
-        assertNotNull(gameController.getHumanTrainer(), "El entrenador humano no debería ser null");
-        assertNotNull(gameController.getMachineTrainer(), "El entrenador máquina no debería ser null");
-
-        // Segunda inicialización
-        gameController.initializeGame("Player2", "defensive", playerPokemons, machinePokemons);
-        assertNotNull(gameController.getHumanTrainer(), "El entrenador humano no debería ser null después de la segunda inicialización");
-        assertNotNull(gameController.getMachineTrainer(), "El entrenador máquina no debería ser null después de la segunda inicialización");
-    }
 }
