@@ -329,4 +329,8 @@ public class GameController {
     public boolean isPlayerTurn() {
         return playerTurn;
     }
+
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
+    }
 }

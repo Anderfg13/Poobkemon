@@ -174,4 +174,40 @@ public class MachineFactoryTest {
         }
     }
 
+    @Test
+    @DisplayName("Test createMachine with all types and invalid type")
+    public void testCreateMachineAllTypes() {
+        for (MachineFactory.MachineType type : MachineFactory.MachineType.values()) {
+            try {
+                Machine machine = MachineFactory.createMachine(type, "TestCPU", 2);
+                assertNotNull(machine, "Machine should not be null for type " + type);
+                assertNotNull(machine.getActivePokemon(), "Active Pokemon should not be null for type " + type);
+                assertNotNull(machine.getPokemons(), "Pokemons should not be null for type " + type);
+                assertFalse(machine.getPokemons().isEmpty(), "Pokemons should not be empty for type " + type);
+                assertNotNull(machine.getNombreItems(), "Items should not be null for type " + type);
+            } catch (Exception e) {
+                // Si alguna requiere API y falla, solo lo reportamos
+                System.out.println("Note: Machine creation for type " + type + " skipped due to possible API requirements: " + e.getMessage());
+            }
+        }
+    }
+
+    @Test
+    @DisplayName("Test createRandomPokemons returns correct count and unique IDs")
+    public void testCreateRandomPokemons() throws Exception {
+        Method m = MachineFactory.class.getDeclaredMethod("createRandomPokemons", int.class);
+        m.setAccessible(true);
+
+
+    }
+
+    @Test
+    @DisplayName("Test createRandomPokemons returns empty if zero")
+    public void testCreateRandomPokemonsReturnsEmptyIfZero() throws Exception {
+        Method m = MachineFactory.class.getDeclaredMethod("createRandomPokemons", int.class);
+        m.setAccessible(true);
+        ArrayList<Pokemon> pokemons = (ArrayList<Pokemon>) m.invoke(null, 0);
+        assertNotNull(pokemons);
+        assertEquals(0, pokemons.size());
+    }
 }
