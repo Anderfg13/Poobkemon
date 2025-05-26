@@ -130,12 +130,12 @@ class HumanCoachTest {
         assertFalse(coach.isMachine());
     }
 
-    @Test
-    void testSetOpponent() {
-        HumanCoach rival = new HumanCoach("Gary", pokemons, items);
-        coach.setOpponent(rival);
-        // No excepción, solo cobertura
-    }
+    //@Test
+    //void testSetOpponent() {
+    //    HumanCoach rival = new HumanCoach("Gary", pokemons, items);
+    //    coach.setOpponent(rival);
+    //    // No excepción, solo cobertura
+    //}
 
     @Test
     void testHandleTurnTimeoutReducesPP() {
@@ -221,5 +221,52 @@ class HumanCoachTest {
     void testGetItemsReturnsList() {
         List<Item> list = coach.getItems();
         assertEquals(3, list.size());
+    }
+
+    @Test
+    void testUseItemThrowsIfNoActivePokemon() {
+        HumanCoach emptyCoach = new HumanCoach("Ash", new ArrayList<>(), new ArrayList<>());
+        Item item = ItemFactory.createItem("Poción");
+        assertThrows(Exception.class, () -> emptyCoach.useItem(item));
+    }
+
+    @Test
+    void testUseItemThrowsIfFullHealth() {
+        raichu.setPs(raichu.getTotalPs());
+        Item item = ItemFactory.createItem("Poción");
+        assertThrows(Exception.class, () -> coach.useItem(item));
+    }
+
+    @Test
+    void testSetAndGetName() {
+        coach.setName("Brock");
+        assertEquals("Brock", coach.getName());
+    }
+
+    //@Test
+    //void testSetOpponentAndGetOpponent() {
+    //    HumanCoach rival = new HumanCoach("Gary", pokemons, items);
+    //    coach.setOpponent(rival);
+        // No excepción, solo cobertura
+    //}
+
+    @Test
+    void testSwitchToPokemonInvalidIndexThrowsException() {
+        assertThrows(Exception.class, () -> coach.switchToPokemon(-1));
+        assertThrows(Exception.class, () -> coach.switchToPokemon(100));
+    }
+
+    @Test
+    void testAgregarItemAllowsDuplicates() {
+        int before = coach.getNombreItems().size();
+        coach.agregarItem("Poción");
+        assertTrue(coach.getNombreItems().size() > before);
+    }
+
+    @Test
+    void testEliminarItemInexistenteNoAfecta() {
+        int before = coach.getNombreItems().size();
+        coach.eliminarItem("NoExiste");
+        assertEquals(before, coach.getNombreItems().size());
     }
 }

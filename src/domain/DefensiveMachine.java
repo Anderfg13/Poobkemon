@@ -154,12 +154,12 @@ public class DefensiveMachine extends Machine {
         }
         
         // Si no hay pociones, buscar ítems defensivos
-        for (int i = 0; i < items.size(); i++) {
-            Item item = items.get(i);
-            if (item.getName().contains("Defensa") || item.getName().contains("X-Defensa")) {
-                return i;
-            }
-        }
+        //for (int i = 0; i < items.size(); i++) {
+        //    Item item = items.get(i);
+        //    if (item.getName().contains("Defensa") || item.getName().contains("X-Defensa")) {
+        //        return i;
+        //    }
+        //}
         
         // Si no hay ítems específicos, usar el primero disponible
         return !items.isEmpty() ? 0 : -1;

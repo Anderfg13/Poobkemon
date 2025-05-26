@@ -557,7 +557,7 @@ public abstract class BattleArena implements Serializable {
      * @param index Índice del entrenador (0 para el primer jugador, 1 para el segundo).
      * @param coach El entrenador a establecer.
      */
-    protected void setCoach(int index, Coach coach) {
+    public void setCoach(int index, Coach coach) {
         if (index >= 0 && index < coaches.length) {
             coaches[index] = coach;
         }

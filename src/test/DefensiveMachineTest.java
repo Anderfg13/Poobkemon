@@ -84,5 +84,37 @@ void testSelectItemWithNoItems() {
     assertEquals(-1, itemIndex); // Should return -1 when no items are available
 }
 
+@Test
+void testSelectMoveReturnsBestEffectivenessWhenOpponentHasTypeAdvantage() {
+    // Simula que el oponente tiene ventaja de tipo
+    DefensiveMachine opponent = new DefensiveMachine("OPP", pokemons, items);
+    machine.setOpponent(opponent);
+    // Forzar ventaja de tipo: Raichu (Electrico) vs Blastoise (Agua)
+    machine.setActivePokemon(raichu);
+    opponent.setActivePokemon(blastoise);
 
+    // El método debe retornar el índice del ataque más efectivo
+    int idx = machine.selectMove();
+    assertTrue(idx >= 0 && idx < raichu.getAtaques().size());
+}
+
+@Test
+void testSelectMoveReturnsRandomIfNoEffectiveMove() {
+    // Simula que getBestEffectivenessMove() retorna 0 y hay más de un ataque
+    DefensiveMachine customMachine = new DefensiveMachine("CPU", pokemons, items) {
+        @Override
+        public int getBestEffectivenessMove() {
+            return 0; // Forzar que no hay ataque efectivo
+        }
+    };
+    customMachine.setOpponent(new DefensiveMachine("OPP", pokemons, items));
+    customMachine.setActivePokemon(raichu);
+
+    // Asegura que hay más de un ataque
+    assertTrue(raichu.getAtaques().size() > 1);
+
+    // Ejecuta selectMove y verifica que el resultado es un índice válido
+    int idx = customMachine.selectMove();
+    assertTrue(idx >= 0 && idx < raichu.getAtaques().size());
+}
 }

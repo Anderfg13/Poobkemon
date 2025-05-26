@@ -5,6 +5,8 @@ import domain.HumanCoach;
 import domain.Pokemon;
 import domain.PokemonFactory;
 import domain.PoobkemonException;
+import domain.Item;
+import domain.ItemFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -124,5 +126,23 @@ public class CoachTest {
     @Test
     public void shouldReturnIsMachineFalseForHumanCoach() {
         assertFalse(coach.isMachine());
+    }
+
+    @Test
+    void testUseItemReviveRevivesFaintedPokemon() throws PoobkemonException {
+        // Suponiendo que tienes un Coach con al menos un Pokémon
+        Pokemon p = coach.getActivePokemon();
+        p.setPs(0); // Debilita al Pokémon
+        Item revive = ItemFactory.createItem("Revive");
+        assertNotNull(revive);
+
+        // El Pokémon debe estar debilitado antes de usar el ítem
+        assertEquals(0, p.getPs());
+
+        // Usa el ítem "Revivir"
+        coach.useItem(revive);
+
+        // El Pokémon debe haber recuperado vida (por ejemplo, la mitad de la vida máxima)
+        assertTrue(p.getPs() > 0, "El Pokémon debe haber sido revivido");
     }
 }
