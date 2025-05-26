@@ -31,7 +31,7 @@ public class GameController {
     private boolean playerTurn;
 
     /**
-     * Constructor para el controlador del juego
+     * Constructor para el controlador del juego.
      */
     public GameController() {
         this.gameOver = false;
