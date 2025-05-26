@@ -24,7 +24,7 @@ import java.util.List;
  * @author  Christian Alfonso Romero Martinez
  * @version 1.0
  */
-public class Pokemon implements Serializable {
+public class Pokemon implements PokemonBase, Serializable {
     private static final long serialVersionUID = 1L;
     protected String name;
     protected int id;
@@ -268,5 +268,15 @@ public class Pokemon implements Serializable {
             }
         }
         return null; // O lanza una excepción si prefieres
+    }
+
+    @Override
+    public int attack(PokemonBase defensor, Attack attack) {
+        // Implementar método para trabajar con PokemonBase
+        if (defensor instanceof Pokemon) {
+            return attack((Pokemon)defensor, attack);
+        }
+        // Implementación para decoradores
+        return 0;
     }
 }

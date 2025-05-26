@@ -1,8 +1,8 @@
 package domain;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
-import java.awt.Color;
 
 /**
  * BattleArenaNormal implementa una arena de batalla estándar para el juego Poobkemon.
@@ -33,15 +33,24 @@ public class BattleArenaNormal extends BattleArena {
     /**
      * Aplica los efectos de estado a los Pokémon activos de ambos entrenadores.
      */
-    private void applyStatusEffects() {
-        for (Coach coach : getCoaches()) {
-            Pokemon activePokemon = coach.getActivePokemon();
-            if (activePokemon.getStatus() != 0) {
-                System.out.println("Pokémon " + activePokemon.getName() + " está afectado por su estado.");
-                activePokemon.applyEffectDamage();
+private void applyStatusEffects() {
+    for (Coach coach : getCoaches()) {
+        Pokemon activePokemon = coach.getActivePokemon();
+        if (activePokemon != null && activePokemon.getStatus() != 0) {
+            System.out.println("Pokémon " + activePokemon.getName() + " está afectado por su estado.");
+            
+            // Aplicar efecto usando el decorador adecuado
+            PokemonBase decorated = PokemonStatusFactory.applyStatus(activePokemon, activePokemon.getStatus());
+            decorated.applyEffectDamage();
+            
+            // Si se aplicó un decorador y modificó el Pokémon, actualizar la referencia
+            if (decorated != activePokemon) {
+                Pokemon basePokemon = PokemonStatusFactory.cureAllStatus(decorated);
+                updatePokemonReference(coach, activePokemon, basePokemon);
             }
         }
     }
+}
 
     /**
      * Configura una batalla entre un humano y una máquina.
@@ -448,4 +457,22 @@ public class BattleArenaNormal extends BattleArena {
         
         return false;
     }
+
+    /**
+ * Actualiza la referencia a un Pokémon en la lista de un entrenador.
+ * Necesario cuando se aplican decoradores.
+ */
+private void updatePokemonReference(Coach coach, Pokemon oldPokemon, Pokemon newPokemon) {
+    List<Pokemon> pokemons = coach.getPokemons();
+    for (int i = 0; i < pokemons.size(); i++) {
+        if (pokemons.get(i) == oldPokemon) {
+            pokemons.set(i, newPokemon);
+            // Si es el Pokémon activo, también actualizarlo
+            if (coach.getActivePokemon() == oldPokemon) {
+                coach.setActivePokemon(newPokemon);
+            }
+            return;
+        }
+    }
+}
 }
