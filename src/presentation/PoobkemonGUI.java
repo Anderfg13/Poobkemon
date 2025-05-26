@@ -60,9 +60,11 @@ public class PoobkemonGUI extends JFrame {
 
         // --- MENÚ ---
         JMenuBar menuBar = new JMenuBar();
+        menuBar.setBackground(Color.BLACK);
 
         // Menú Vista (nuevo, a la izquierda)
         JMenu vistaMenu = new JMenu("Vista");
+        vistaMenu.setForeground(Color.WHITE);
         JMenuItem coloresItem = new JMenuItem("Colores");
         coloresItem.addActionListener(e -> {
             ConfiguracionJugadoresDialog dialog = new ConfiguracionJugadoresDialog(this, colorJugador1, colorJugador2);
@@ -84,6 +86,7 @@ public class PoobkemonGUI extends JFrame {
         menuBar.add(vistaMenu); // <-- Se agrega primero para que quede a la izquierda
 
         JMenu optionsMenu = new JMenu("Options");
+        optionsMenu.setForeground(Color.WHITE);
 
 
         // Pausar/Reanudar música
