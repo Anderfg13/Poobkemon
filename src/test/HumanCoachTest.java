@@ -130,13 +130,6 @@ class HumanCoachTest {
         assertFalse(coach.isMachine());
     }
 
-    //@Test
-    //void testSetOpponent() {
-    //    HumanCoach rival = new HumanCoach("Gary", pokemons, items);
-    //    coach.setOpponent(rival);
-    //    // No excepción, solo cobertura
-    //}
-
     @Test
     void testHandleTurnTimeoutReducesPP() {
         int before = raichu.getAtaques().get(0).getPowerPoint();
@@ -242,13 +235,6 @@ class HumanCoachTest {
         coach.setName("Brock");
         assertEquals("Brock", coach.getName());
     }
-
-    //@Test
-    //void testSetOpponentAndGetOpponent() {
-    //    HumanCoach rival = new HumanCoach("Gary", pokemons, items);
-    //    coach.setOpponent(rival);
-        // No excepción, solo cobertura
-    //}
 
     @Test
     void testSwitchToPokemonInvalidIndexThrowsException() {

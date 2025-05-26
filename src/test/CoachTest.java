@@ -145,4 +145,19 @@ public class CoachTest {
         // El Pokémon debe haber recuperado vida (por ejemplo, la mitad de la vida máxima)
         assertTrue(p.getPs() > 0, "El Pokémon debe haber sido revivido");
     }
+
+    @Test
+    public void shouldGetPokemonByName() {
+        Pokemon raichu = coach.getPokemonByName("Raichu");
+        assertNotNull(raichu);
+        assertEquals("Raichu", raichu.getName());
+
+        Pokemon venusaur = coach.getPokemonByName("Venusaur");
+        assertNotNull(venusaur);
+        assertEquals("Venusaur", venusaur.getName());
+
+        // Caso donde no existe el Pokémon
+        Pokemon missing = coach.getPokemonByName("MissingNo");
+        assertNull(missing);
+    }
 }

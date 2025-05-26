@@ -660,6 +660,31 @@ public class Poobkemon implements Serializable {
     public void setBattleType(String tipo) {
         this.battleType = tipo;
     }
+
+    /**
+     * Verifica si el Pokémon activo del jugador indicado es sacrificable.
+     * @param isJugador1
+     * @return
+     */
+    public boolean esSacrificable(boolean isJugador1) {
+		return battleArenaNormal.esSacrificable(isJugador1);
+	}
+
+    /**
+     * Sacrifica el Pokémon activo del jugador indicado.
+     * @param isJugador1 true si es el jugador 1, false si es el jugador 2
+     * @param pokemonName Nombre del Pokémon a sacrificar
+     * @throws PoobkemonException Si el Pokémon no puede ser sacrificado
+     */
+    public void sacrificarPokemon(boolean isJugador1, String pokemonName) throws PoobkemonException {
+        if (esSacrificable(isJugador1)){
+            battleArenaNormal.sacrificarPokemon(isJugador1, pokemonName);
+        }else {
+            throw new PoobkemonException(PoobkemonException.POKEMON_NOT_SACRIFICABLE);
+
+        }
+        
+    }
 }
 
 

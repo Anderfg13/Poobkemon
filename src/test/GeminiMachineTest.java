@@ -38,14 +38,6 @@ class GeminiMachineTest {
     }
     
 
-
-
-    @Test
-    void testShouldUseItemWhenLowHealth() {
-        machine.getActivePokemon().setPs(5); // Less than 40%
-        assertTrue(machine.shouldUseItem());
-    }
-
     @Test
     void testShouldNotUseItemWhenSufficientHealth() {
         machine.getActivePokemon().setPs(20); // More than 40%

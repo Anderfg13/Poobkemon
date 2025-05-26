@@ -3,6 +3,9 @@ package test;
 import domain.BattleArenaNormal;
 import domain.Poobkemon;
 import domain.PoobkemonException;
+import domain.DefensiveMachine;
+import domain.ChangingMachine;
+import domain.ExpertMachine;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.awt.Color;
@@ -83,4 +86,54 @@ public class BattleArenaNormalTest {
         assertEquals(0, muertos2.size());
     }
 
+    @Test
+    public void testSetupHumanVsMachineWithDefensiveMachine() throws PoobkemonException {
+        BattleArenaNormal arena = new BattleArenaNormal();
+        ArrayList<String> pokemons1 = new ArrayList<>(Poobkemon.getAvailablePokemon().subList(0, 6));
+        ArrayList<String> pokemons2 = new ArrayList<>(Poobkemon.getAvailablePokemon().subList(0, 6));
+        ArrayList<String> items1 = new ArrayList<>();
+        String[][] moves1 = new String[6][4];
+        List<String> attacks = Poobkemon.getAvailableAttacks();
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 4; j++) {
+                moves1[i][j] = attacks.get((i + j) % attacks.size());
+            }
+        }
+        arena.setupHumanVsMachine("Ash", "CPU", pokemons1, pokemons2, items1, moves1, "Defensive", Color.GREEN, Color.BLUE);
+        assertTrue(arena.getCoach(1) instanceof DefensiveMachine);
+    }
+
+    @Test
+    public void testSetupHumanVsMachineWithChangingMachine() throws PoobkemonException {
+        BattleArenaNormal arena = new BattleArenaNormal();
+        ArrayList<String> pokemons1 = new ArrayList<>(Poobkemon.getAvailablePokemon().subList(0, 6));
+        ArrayList<String> pokemons2 = new ArrayList<>(Poobkemon.getAvailablePokemon().subList(0, 6));
+        ArrayList<String> items1 = new ArrayList<>();
+        String[][] moves1 = new String[6][4];
+        List<String> attacks = Poobkemon.getAvailableAttacks();
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 4; j++) {
+                moves1[i][j] = attacks.get((i + j) % attacks.size());
+            }
+        }
+        arena.setupHumanVsMachine("Ash", "CPU", pokemons1, pokemons2, items1, moves1, "Changing", Color.GREEN, Color.BLUE);
+        assertTrue(arena.getCoach(1) instanceof ChangingMachine);
+    }
+
+    @Test
+    public void testSetupHumanVsMachineWithExpertMachine() throws PoobkemonException {
+        BattleArenaNormal arena = new BattleArenaNormal();
+        ArrayList<String> pokemons1 = new ArrayList<>(Poobkemon.getAvailablePokemon().subList(0, 6));
+        ArrayList<String> pokemons2 = new ArrayList<>(Poobkemon.getAvailablePokemon().subList(0, 6));
+        ArrayList<String> items1 = new ArrayList<>();
+        String[][] moves1 = new String[6][4];
+        List<String> attacks = Poobkemon.getAvailableAttacks();
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 4; j++) {
+                moves1[i][j] = attacks.get((i + j) % attacks.size());
+            }
+        }
+        arena.setupHumanVsMachine("Ash", "CPU", pokemons1, pokemons2, items1, moves1, "Expert", Color.GREEN, Color.BLUE);
+        assertTrue(arena.getCoach(1) instanceof ExpertMachine);
+    }
 }

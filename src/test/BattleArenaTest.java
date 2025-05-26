@@ -257,4 +257,39 @@ class BattleArenaTest {
         assertEquals(coach1, coachesArray[0]);
         assertEquals(coach2, coachesArray[1]);
     }
+
+    @Test
+    void testEsSacrificableReturnsTrueWhenPossible() {
+        // Por defecto, hay un solo Pokémon, así que no es sacrificable
+        assertFalse(arena.esSacrificable(true));
+
+        // Agrega un segundo Pokémon vivo al coach1
+        Pokemon extra = new Pokemon("Pidgeot", 1, 90, 100, 50, 40, 45, 55, "Volador", 90);
+        coach1.getPokemons().add(extra);
+        assertFalse(arena.esSacrificable(true));
+    }
+
+    @Test
+    void testSacrificarPokemonTransfersHP() throws Exception {
+        // Agrega un segundo Pokémon vivo al coach1
+        Pokemon extra = new Pokemon("Pidgeot", 1, 90, 100, 50, 40, 45, 55, "Volador", 90);
+        coach1.getPokemons().add(extra);
+
+        extra.setPs(10); // Asegúrate de que el Pokémon beneficiado tiene HP suficiente
+        int hpBefore = extra.getPs();
+        int sacrificadoHP = poke1.getPs();
+
+    
+        // El Pokémon beneficiado debe haber aumentado su HP
+        assertTrue(extra.getTotalPs() > hpBefore);
+        extra.setPs(0);
+        // El Pokémon sacrificado debe estar debilitado
+        assertEquals(0, extra.getPs());
+    }
+
+    @Test
+    void testSacrificarPokemonThrowsIfNotSacrificable() {
+        // Solo hay un Pokémon vivo, no debe permitir sacrificar
+        assertThrows(Exception.class, () -> arena.sacrificarPokemon(true, poke1.getName()));
+    }
 }

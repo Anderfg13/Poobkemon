@@ -26,6 +26,9 @@ public class PoobkemonException extends Exception {
     public static final String POKEMON_GAME_OVER = "El juego ha terminado, no hay más pokemones disponibles";
     public static final String FULL_POKEMON_HEALTH ="No se puede usar un ítem en un Pokémon con PS completos.";
     public static final String CANT_USE_ITEM_ON_POKEMON_FAINTED = "No se puede usar un ítem en un Pokémon debilitado.";
+    public static final String POKEMON_SACRIFICADO = "El pokemon ha sido sacrficado";
+    public static final String POKEMON_NOT_AVAILABLE = "El pokemon no esta disponible";
+    public static final String POKEMON_NOT_SACRIFICABLE = "No se puede sacrificar el Pokémon activo.";
 
     public PoobkemonException(String message) {
         super(message);

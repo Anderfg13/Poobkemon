@@ -218,5 +218,14 @@ public void shouldApplyEffectDamageForSleep() {
     assertEquals(3, Raichu.getTurnStatus());
 }
 
-
+@Test
+public void shouldSetTotalPsCorrectly() {
+    Raichu.setTotalPs(150);
+    assertEquals(150, Raichu.getTotalPs());
+    // También verifica que no afecta el ps actual si no lo cambias manualmente
+    int currentPs = Raichu.getPs();
+    Raichu.setTotalPs(200);
+    assertEquals(200, Raichu.getTotalPs());
+    assertEquals(currentPs, Raichu.getPs());
+}
 }

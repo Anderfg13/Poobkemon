@@ -38,7 +38,7 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
     private JProgressBar hpBar1, hpBar2;
     private JLabel pokemonGif1, pokemonGif2;
     private JButton pauseButton;
-    private JButton fightBtn, itemsBtn, pokemonsBtn, fleeBtn;
+    private JButton fightBtn, itemsBtn, pokemonsBtn, fleeBtn, sacrificablebtn;
     private Color colorJugador1, colorJugador2;
     private int tiempoRestante = 20;
     private Timer timer;
@@ -185,17 +185,19 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
         bottomPanel.add(pokemonNameLabel, BorderLayout.WEST);
 
         // Panel de botones
-        buttonsPanel = new JPanel(new GridLayout(2, 2, 8, 8));
+        buttonsPanel = new JPanel(new GridLayout(2, 3, 8, 8));
         buttonsPanel.setOpaque(false);
         fightBtn = new JButton("Fight");
         itemsBtn = new JButton("Items");
         pokemonsBtn = new JButton("Pokémons");
         fleeBtn = new JButton("Flee");
+        sacrificablebtn = new JButton("Sacrificar");
         Font btnFont = new Font("Times New Roman", Font.BOLD, 20);
         fightBtn.setFont(btnFont);
         itemsBtn.setFont(btnFont);
         pokemonsBtn.setFont(btnFont);
         fleeBtn.setFont(btnFont);
+        sacrificablebtn.setFont(btnFont);
         mostrarPanelBotones(); // Inicializa con los botones principales
         bottomPanel.add(buttonsPanel, BorderLayout.CENTER);
 
@@ -331,6 +333,62 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
                 SwingUtilities.invokeLater(() -> ejecutarTurnoMaquina());
             }
         }
+
+        sacrificablebtn.addActionListener(e -> {
+            boolean esJugador1 = turnoJugador1;
+            String pokemonActual = esJugador1 ? nombrePokemon1 : nombrePokemon2;
+            java.util.List<String> pokemonsVivos = poobkemon.getPokemonsVivos(esJugador1);
+
+            // Elimina el pokémon actual de la lista para evitar que lo seleccione de nuevo (opcional)
+            pokemonsVivos.remove(pokemonActual);
+
+            if (pokemonsVivos.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "No tienes otros pokémon vivos para poder sacrificar al pokemon actual.", "Cambio de Pokémon", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+
+            // Construir listas de vida actual y máxima
+            java.util.List<Integer> hpActual = new ArrayList<>();
+            java.util.List<Integer> hpMax = new ArrayList<>();
+            for (String nombre : pokemonsVivos) {
+                hpActual.add(poobkemon.getPokemonHP(esJugador1, nombre));
+                hpMax.add(poobkemon.getPokemonMaxHP(esJugador1, nombre));
+            }
+
+            String nuevoPokemon = PokemonSelectorDialog.seleccionarPokemon(this, pokemonsVivos, hpActual, hpMax);
+
+            String pokemonActivo = poobkemon.getActivePokemonName(esJugador1);
+            
+            try {
+                poobkemon.sacrificarPokemon(esJugador1, nuevoPokemon);
+                JOptionPane.showMessageDialog(this, 
+                    "Has sacrificado a " + pokemonActivo + ".", 
+                    "Pokémon Sacrificado", 
+                    JOptionPane.INFORMATION_MESSAGE);
+                // Actualizar Pokémon activos y barras de vida
+                actualizarPokemonActivos();
+                actualizarBarrasDeVida();
+                mostrarPanelBotones();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, 
+                    ex.getMessage(), 
+                    "Error al sacrificar Pokémon", 
+                    JOptionPane.ERROR_MESSAGE);
+                
+            }
+
+            if (nuevoPokemon != null && poobkemon.esSacrificable(esJugador1)) {
+                poobkemon.cambiarPokemonActivo(esJugador1, nuevoPokemon);
+                // Actualiza nombres y gifs
+                nombrePokemon1 = app.getPokemonActivoJugador1();
+                nombrePokemon2 = app.getPokemonActivoJugador2();
+                pokemonGif1.setIcon(new ImageIcon("mult/gifs/" + nombrePokemon1 + ".gif"));
+                pokemonGif2.setIcon(new ImageIcon("mult/gifs/" + nombrePokemon2 + ".gif"));
+                actualizarBarrasDeVida();
+                mostrarPanelBotones();
+                cambiarTurno(); // Termina el turno tras cambiar de pokémon
+            }
+        });
         
         actualizarBarrasDeVida();
         // Actualizar los nombres iniciales
@@ -354,10 +412,12 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
         itemsBtn.setBackground(color);
         pokemonsBtn.setBackground(color);
         fleeBtn.setBackground(color);
+        sacrificablebtn.setBackground(color);
         fightBtn.setForeground(Color.WHITE);
         itemsBtn.setForeground(Color.WHITE);
         pokemonsBtn.setForeground(Color.WHITE);
         fleeBtn.setForeground(Color.WHITE);
+        sacrificablebtn.setForeground(Color.WHITE);
 
         // Actualiza el nombre del pokémon con el turno y su fondo
         pokemonNameLabel.setText(turnoJugador1 ? nombrePokemon1 : nombrePokemon2);
@@ -628,6 +688,7 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
         itemsBtn.setEnabled(habilitar);
         pokemonsBtn.setEnabled(habilitar);
         fleeBtn.setEnabled(habilitar);
+        sacrificablebtn.setEnabled(habilitar);
     }
     
     /**
@@ -678,6 +739,7 @@ public class PoobkemonBattlePanel extends BackgroundPanel {
         buttonsPanel.add(itemsBtn);
         buttonsPanel.add(pokemonsBtn);
         buttonsPanel.add(fleeBtn);
+        buttonsPanel.add(sacrificablebtn);
         buttonsPanel.revalidate();
         buttonsPanel.repaint();
     }

@@ -610,4 +610,47 @@ public class PoobkemonTest {
         assertTrue(hpAfter <= hpBefore, "El HP del oponente debe disminuir o mantenerse igual tras el ataque");
     }
 
+    @Test
+    public void testEsSacrificableReturnsTrueWhenPossible() throws PoobkemonException {
+        ArrayList<String> pokemons1 = new ArrayList<>(Poobkemon.getAvailablePokemon().subList(0, 6));
+        ArrayList<String> pokemons2 = new ArrayList<>(Poobkemon.getAvailablePokemon().subList(0, 6));
+        String[][] moves1 = new String[6][4];
+        String[][] moves2 = new String[6][4];
+        List<String> attacks = Poobkemon.getAvailableAttacks();
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 4; j++) {
+                moves1[i][j] = attacks.get((i + j) % attacks.size());
+                moves2[i][j] = attacks.get((i + j + 1) % attacks.size());
+            }
+        }
+        poobkemon.startBattleNormal("Ash", "Gary", pokemons1, pokemons2, new ArrayList<>(), new ArrayList<>(), moves1, moves2, Color.GREEN, Color.BLUE);
+
+        //Como todos los pokemones tienen su vida al maximo, ninguno es sacrificable
+        assertFalse(poobkemon.esSacrificable(true));
+    }
+
+    @Test
+    public void testSacrificarPokemonThrowsIfNotSacrificable() throws PoobkemonException {
+        ArrayList<String> pokemons1 = new ArrayList<>(Poobkemon.getAvailablePokemon().subList(0, 6));
+        ArrayList<String> pokemons2 = new ArrayList<>(Poobkemon.getAvailablePokemon().subList(0, 6));
+        String[][] moves1 = new String[6][4];
+        String[][] moves2 = new String[6][4];
+        List<String> attacks = Poobkemon.getAvailableAttacks();
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 4; j++) {
+                moves1[i][j] = attacks.get((i + j) % attacks.size());
+                moves2[i][j] = attacks.get((i + j + 1) % attacks.size());
+            }
+        }
+        poobkemon.startBattleNormal("Ash", "Gary", pokemons1, pokemons2, new ArrayList<>(), new ArrayList<>(), moves1, moves2, Color.GREEN, Color.BLUE);
+
+        // Simula que solo queda un Pokémon vivo (el activo)
+        for (int i = 1; i < pokemons1.size(); i++) {
+            poobkemon.getBattleArena().getCoach(0).getPokemons().get(i).setPs(0);
+        }
+        // Ahora no debería ser sacrificable
+        assertFalse(poobkemon.esSacrificable(true));
+        // Y sacrificar debe lanzar excepción
+        assertThrows(PoobkemonException.class, () -> poobkemon.sacrificarPokemon(true, pokemons1.get(0)));
+    }
 }

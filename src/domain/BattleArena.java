@@ -620,5 +620,37 @@ public abstract class BattleArena implements Serializable {
     public abstract void setupMachineVsMachine(String machine1Name, String machine2Name,
                      ArrayList<String> machine1Pokemon, ArrayList<String> machine2Pokemon,
                      String machine1Type, String machine2Type, Color player1Color, Color player2Color) throws PoobkemonException;
+
+    /**
+     * Verifica si el Pokémon activo del jugador es sacrificable.
+     *
+     * @param esJugador1 {@code true} si es el jugador 1, {@code false} si es el jugador 2.
+     * @return {@code true} si el Pokémon puede ser sacrificado, {@code false} en caso contrario.
+     */
+	public boolean esSacrificable(boolean esJugador1) {
+		return coaches[esJugador1 ? 0 : 1].getActivePokemon().getPs() < coaches[esJugador1 ? 0 : 1].getActivePokemon().getTotalPs()/2;
+	}
+
+    /**
+     * Sacrifica el Pokémon activo del jugador y le transfiere sus PS a otro Pokémon del mismo entrenador.
+     *
+     * @param isJugador1   {@code true} si es el jugador 1, {@code false} si es el jugador 2.
+     * @param pokemonName  Nombre del Pokémon al que se le transferirán los PS.
+     */
+    public void sacrificarPokemon(boolean isJugador1, String pokemonName) throws PoobkemonException {
+        Coach currentCoach = coaches[isJugador1 ? 0 : 1];
+        Pokemon pokemonSacrificado = currentCoach.getActivePokemon();
+        Pokemon pokemonBeneficiado = currentCoach.getPokemonByName(pokemonName);
+        
+        if (pokemonSacrificado != null) {
+            pokemonBeneficiado.setTotalPs(pokemonBeneficiado.getTotalPs() + pokemonSacrificado.getPs());
+            pokemonBeneficiado.setPs(pokemonBeneficiado.getPs() + pokemonSacrificado.getPs());
+            pokemonSacrificado.setPs(0);
+            throw new PoobkemonException(PoobkemonException.POKEMON_SACRIFICADO);
+            
+        } else {
+            throw new PoobkemonException(PoobkemonException.POKEMON_NOT_AVAILABLE);
+        }
+    }
 }
 

@@ -82,6 +82,8 @@ public class Pokemon implements Serializable {
     public void setPhysicalDefense(int physicalDefense) { this.physicalDefense = physicalDefense; }
     public void setStatus(int status) { this.status = status; }
     public void setTurnStatus(int turnStatus) { this.turnStatus = turnStatus; }
+    public void setTotalPs(int total_ps) { this.total_ps = total_ps; }
+
 
     /**
      * Añade un ataque al Pokémon.

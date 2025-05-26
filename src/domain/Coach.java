@@ -143,9 +143,7 @@ public abstract class Coach implements Serializable {
             throw new PoobkemonException(PoobkemonException.INVALID_POKEMON_INDEX);
         }
         Pokemon selected = pokemons.get(index);
-        if (selected.getPs() <= 0) {
-            throw new PoobkemonException(PoobkemonException.FAINTED_POKEMON);
-        }
+        
         this.activePokemonIndex = index;
         System.out.println("El entrenador ha cambiado al Pokémon activo a: " + selected.getName());
     }
@@ -183,9 +181,7 @@ public abstract class Coach implements Serializable {
      */
     public void useItem(Item item) throws PoobkemonException {
         Pokemon activePokemon = getActivePokemon();
-        if (activePokemon == null) {
-            throw new PoobkemonException(PoobkemonException.NO_POKEMONS_SELECTED);
-        }
+
         if (activePokemon.getPs() == activePokemon.getTotalPs()) {
             throw new PoobkemonException(PoobkemonException.FULL_POKEMON_HEALTH);
         }
@@ -340,5 +336,20 @@ public abstract class Coach implements Serializable {
      */
     public void setColor(Color colorCoach) {
         this.colorCoach = colorCoach;
+    }
+
+    /**
+     * Busca un Pokémon por su nombre en el equipo del entrenador.
+     * @param nombrePokemon Nombre del Pokémon a buscar.
+     * @return El Pokémon encontrado, o {@code null} si no se encuentra.
+     */
+    public Pokemon getPokemonByName(String nombrePokemon) {
+        for (Pokemon pokemon : pokemons) {
+            if (pokemon.getName().equals(nombrePokemon)) {
+                return pokemon;
+            }
+        }
+        return null;
+
     }
 }
