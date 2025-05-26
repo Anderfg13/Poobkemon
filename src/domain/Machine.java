@@ -260,4 +260,4 @@ public abstract class Machine extends Coach implements Serializable {
     public boolean isMachine() {
         return true;
     }
-}  // Fin de la clase Machine
+}  

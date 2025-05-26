@@ -12,7 +12,11 @@ public class FrozenPokemonDecorator extends PokemonDecorator {
         super(pokemon);
         pokemon.setStatus(4);  // Establecer estado de congelado
     }
-    
+
+    /*
+     * Realiza un ataque del Pokémon congelado.
+     * Si el Pokémon se descongela, puede atacar normalmente.
+     */
     @Override
     public int attack(PokemonBase defensor, Attack attack) {
         // Verificar si el Pokémon se descongela
@@ -27,6 +31,10 @@ public class FrozenPokemonDecorator extends PokemonDecorator {
         return 0;
     }
     
+    /**
+     * Aplica el daño del efecto de congelación al final del turno.
+     * Existe una probabilidad de descongelarse al final del turno.
+     */
     @Override
     public void applyEffectDamage() {
         // Verificar si el Pokémon se descongela al final del turno
@@ -39,6 +47,11 @@ public class FrozenPokemonDecorator extends PokemonDecorator {
         super.applyEffectDamage();
     }
     
+    /**
+     * Obtiene el nombre del Pokémon congelado.
+     * 
+     * @return Nombre del Pokémon con el estado de congelación añadido.
+     */
     @Override
     public String getName() {
         return pokemon.getName() + " (Congelado)";

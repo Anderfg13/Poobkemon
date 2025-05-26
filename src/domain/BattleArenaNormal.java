@@ -459,20 +459,20 @@ private void applyStatusEffects() {
     }
 
     /**
- * Actualiza la referencia a un Pokémon en la lista de un entrenador.
- * Necesario cuando se aplican decoradores.
- */
-private void updatePokemonReference(Coach coach, Pokemon oldPokemon, Pokemon newPokemon) {
-    List<Pokemon> pokemons = coach.getPokemons();
-    for (int i = 0; i < pokemons.size(); i++) {
-        if (pokemons.get(i) == oldPokemon) {
-            pokemons.set(i, newPokemon);
-            // Si es el Pokémon activo, también actualizarlo
-            if (coach.getActivePokemon() == oldPokemon) {
-                coach.setActivePokemon(newPokemon);
+     * Actualiza la referencia a un Pokémon en la lista de un entrenador.
+     * Necesario cuando se aplican decoradores.
+     */
+    private void updatePokemonReference(Coach coach, Pokemon oldPokemon, Pokemon newPokemon) {
+        List<Pokemon> pokemons = coach.getPokemons();
+        for (int i = 0; i < pokemons.size(); i++) {
+            if (pokemons.get(i) == oldPokemon) {
+                pokemons.set(i, newPokemon);
+                // Si es el Pokémon activo, también actualizarlo
+                if (coach.getActivePokemon() == oldPokemon) {
+                    coach.setActivePokemon(newPokemon);
+                }
+                return;
             }
-            return;
         }
     }
-}
 }

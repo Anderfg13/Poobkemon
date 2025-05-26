@@ -280,6 +280,10 @@ public class GeminiMachine extends Machine {
 
     /**
      * Construye el prompt para enviar a Gemini para selección de movimiento
+     * @param currentPokemon El Pokémon actual de la máquina
+     * @param opponentPokemon El Pokémon del oponente
+     * @param availableMoves Lista de movimientos disponibles
+     * @return El prompt formateado para enviar a Gemini
      */
     private String buildPromptForMoveSelection(Pokemon currentPokemon, Pokemon opponentPokemon, List<String> availableMoves) {
         StringBuilder prompt = new StringBuilder();
@@ -313,6 +317,10 @@ public class GeminiMachine extends Machine {
 
     /**
      * Construye el prompt para enviar a Gemini para cambio de Pokémon
+     * @param currentPokemon El Pokémon actual de la máquina
+     * @param opponentPokemon El Pokémon del oponente
+     * @param availablePokemons Lista de nombres de Pokémon disponibles para cambiar
+     * @return El prompt formateado para enviar a Gemini
      */
     private String buildPromptForPokemonChange(Pokemon currentPokemon, Pokemon opponentPokemon, List<String> availablePokemons) {
         StringBuilder prompt = new StringBuilder();
@@ -346,6 +354,10 @@ public class GeminiMachine extends Machine {
 
     /**
      * Envía una consulta a la API de Gemini
+     * (Implementación simplificada sin usar JSONObject)
+     * Construye el cuerpo de la solicitud como una cadena JSON.
+     * @param prompt El prompt a enviar a Gemini
+     * @return Respuesta de la API de Gemini como cadena JSON
      */
     private String queryGeminiAPI(String prompt) throws IOException, InterruptedException {
         // Implementación simplificada usando String para el cuerpo de la solicitud
@@ -374,6 +386,9 @@ public class GeminiMachine extends Machine {
     /**
      * Analiza la respuesta de Gemini y extrae el movimiento seleccionado
      * (Versión simplificada sin usar JSONObject)
+     * Busca el nombre del movimiento en la respuesta JSON.
+     * @param responseJson Respuesta JSON de Gemini
+     * @param availableMoves Lista de movimientos disponibles
      */
     private String parseGeminiResponseForMove(String responseJson, List<String> availableMoves) {
         // Método simple para extraer el texto de la respuesta
@@ -393,6 +408,9 @@ public class GeminiMachine extends Machine {
     /**
      * Analiza la respuesta de Gemini y extrae el Pokémon seleccionado
      * (Versión simplificada sin usar JSONObject)
+     * Busca el nombre del Pokémon en la respuesta JSON.
+     * @param responseJson Respuesta JSON de Gemini
+     * @return El nombre del Pokémon seleccionado o null si no se encuentra.
      */
     private String parseGeminiResponseForPokemon(String responseJson, List<String> availablePokemons) {
         // Método simple para extraer el texto de la respuesta
@@ -411,6 +429,9 @@ public class GeminiMachine extends Machine {
     
     /**
      * Extrae el texto de la respuesta JSON (método simplificado)
+     * Busca el campo "text" y devuelve su valor.
+     * @param responseJson Respuesta JSON de Gemini
+     * @return El texto extraído del campo "text" o una cadena vacía si no se encuentra.
      */
     private String extractTextFromResponse(String responseJson) {
         // Buscar el campo "text" en la respuesta JSON

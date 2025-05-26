@@ -13,6 +13,10 @@ public class PoisonedPokemonDecorator extends PokemonDecorator {
         pokemon.setStatus(5);  // Establecer estado de envenenado
     }
     
+    /**
+     * Aplica el daño del efecto de envenenamiento al final del turno.
+     * El daño aumenta con cada turno que el Pokémon ha estado envenenado.
+     */
     @Override
     public void applyEffectDamage() {
         // Incrementar contador de turnos
@@ -35,6 +39,9 @@ public class PoisonedPokemonDecorator extends PokemonDecorator {
         super.applyEffectDamage();
     }
     
+    /**
+     * Devuelve el nombre del Pokémon con el estado de envenenamiento.
+     */
     @Override
     public String getName() {
         return pokemon.getName() + " (Envenenado)";

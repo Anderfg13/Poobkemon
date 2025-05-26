@@ -44,6 +44,9 @@ public class SleepingPokemonDecorator extends PokemonDecorator {
         return super.attack(defensor, attack);
     }
     
+    /**
+     * Obitene el nombre del Pokémon con el estado de sueño añadido.
+     */
     @Override
     public String getName() {
         return pokemon.getName() + " (Dormido)";

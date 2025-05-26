@@ -85,6 +85,8 @@ public class GameController {
     
     /**
      * Configura los equipos de Pokémon para ambos entrenadores
+     * @param playerPokemonNames Lista de nombres de Pokémon del jugador
+     * @param machinePokemonNames Lista de nombres de Pokémon de la máquina
      */
     private void setupPokemonTeams(List<String> playerPokemonNames, List<String> machinePokemonNames) {
         // Configurar el equipo del jugador humano
@@ -111,6 +113,8 @@ public class GameController {
     
     /**
      * Asigna movimientos a un Pokémon según la estrategia de la máquina
+     * @param pokemon Pokémon al que se le asignarán los movimientos
+     * @param strategyType Tipo de estrategia ("Defensive" o "Attacking")
      */
     private void assignMovesBasedOnStrategy(Pokemon pokemon, String strategyType) {
         List<Attack> availableAttacks = new ArrayList<>();
@@ -221,6 +225,7 @@ public class GameController {
     
     /**
      * Obtiene una lista de ataques defensivos
+     * @return Lista de ataques defensivos
      */
     private List<Attack> getDefensiveAttacks() {
         List<Attack> defensiveAttacks = new ArrayList<>();
@@ -231,6 +236,7 @@ public class GameController {
     
     /**
      * Obtiene una lista de ataques ofensivos
+     * @return Lista de ataques ofensivos
      */
     private List<Attack> getOffensiveAttacks() {
         List<Attack> offensiveAttacks = new ArrayList<>();
@@ -293,6 +299,9 @@ public class GameController {
 
     /**
      * Ejecuta un turno de la máquina.
+     * @param machine Máquina que ejecuta el turno
+     * @param battleArena Arena de batalla donde se desarrolla el turno
+     * @return true si el turno se ejecutó correctamente, false en caso contrario
      */
     public boolean executeMachineTurn(Machine machine, BattleArena battleArena) {
         return machine.executeTurn(battleArena);
@@ -330,6 +339,10 @@ public class GameController {
         return playerTurn;
     }
 
+    /**
+     * Establece el estado del juego como terminado o no.
+     * @param gameOver true si el juego ha terminado, false en caso contrario
+     */
     public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
     }

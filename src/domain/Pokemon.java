@@ -272,6 +272,13 @@ public class Pokemon implements PokemonBase, Serializable {
         return null; // O lanza una excepción si prefieres
     }
 
+
+    /**
+     * Ataca a otro Pokémon con un ataque específico.
+     * @param defensor El Pokémon defensor.
+     * @param attack El ataque a usar.
+     * @return el daño causado
+     */
     @Override
     public int attack(PokemonBase defensor, Attack attack) {
         // Implementar método para trabajar con PokemonBase
