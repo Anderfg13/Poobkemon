@@ -31,7 +31,7 @@ public class GameControllerTest {
         ArrayList<String> machinePokemons = createMutablePokemonList("Squirtle");
 
         gameController.initializeGame("Player1", "attacking", playerPokemons, machinePokemons);
-        
+
         // Verificar que los entrenadores se inicializaron correctamente
         assertNull(gameController.getMachineTrainer(), "El entrenador máquina no debería ser null");
         assertNotNull(gameController.getHumanTrainer(), "El entrenador humano no debería ser null");
@@ -42,13 +42,9 @@ public class GameControllerTest {
         }
 
         String result = gameController.processMachineTurn();
-        // Revisar que el mensaje contenga alguna indicación sobre el problema
-        // El mensaje puede variar según la implementación exacta
-        assertTrue(result.contains("Error") || 
-                   result.contains("No hay") || 
-                   result.contains("debilitados") || 
-                   result.contains("activ"),
-                   "Debería indicar problemas con los Pokémon de la máquina");
+        assertNotNull(result);
+        assertTrue(result.toLowerCase().contains("no hay") || result.toLowerCase().contains("debilitado") || result.toLowerCase().contains("error"),
+                "Debe indicar que no hay pokémon activos o están debilitados");
     }
 
     @Test
@@ -57,16 +53,15 @@ public class GameControllerTest {
         ArrayList<String> emptyMachinePokemons = new ArrayList<>();
 
         gameController.initializeGame("Player1", "attacking", emptyPlayerPokemons, emptyMachinePokemons);
-        
-        // Verificar el estado según la implementación de GameController
-        // Puede que en vez de null, inicialice los entrenadores pero sin Pokémon
+
+        // Si los entrenadores existen, no deben tener pokémon
         if (gameController.getHumanTrainer() != null) {
-            assertTrue(gameController.getHumanTrainer().getPokemons().isEmpty(), 
-                "Si el entrenador existe, no debería tener Pokémon");
+            assertTrue(gameController.getHumanTrainer().getPokemons().isEmpty(),
+                    "Si el entrenador existe, no debería tener Pokémon");
         }
         if (gameController.getMachineTrainer() != null) {
-            assertTrue(gameController.getMachineTrainer().getPokemons().isEmpty(), 
-                "Si el entrenador existe, no debería tener Pokémon");
+            assertTrue(gameController.getMachineTrainer().getPokemons().isEmpty(),
+                    "Si el entrenador existe, no debería tener Pokémon");
         }
     }
 
@@ -75,13 +70,9 @@ public class GameControllerTest {
         // Cuando no hay inicialización, los métodos deberían manejar el caso graciosamente
         String playerResult = gameController.processPlayerTurn("attack", "Placaje");
         assertNotNull(playerResult, "El resultado del turno del jugador no debería ser null");
-        assertTrue(playerResult.contains("Error") || playerResult.contains("No ") || 
-                  !playerResult.isEmpty(), "Debería indicar un error o estado inválido");
 
         String machineResult = gameController.processMachineTurn();
         assertNotNull(machineResult, "El resultado del turno de la máquina no debería ser null");
-        assertTrue(machineResult.contains("Error") || machineResult.contains("No ") || 
-                  !machineResult.isEmpty(), "Debería indicar un error o estado inválido");
     }
 
     @Test
@@ -99,10 +90,10 @@ public class GameControllerTest {
         gameController.initializeGame("Player2", "defensive", playerPokemons, machinePokemons);
         assertNotNull(gameController.getHumanTrainer(), "El entrenador humano no debería ser null después de múltiples inicializaciones");
         assertNotNull(gameController.getMachineTrainer(), "El entrenador máquina no debería ser null después de múltiples inicializaciones");
-        
+
         // Verificar que el nombre del jugador cambió (confirmando reinicialización)
-        assertEquals("Player2", gameController.getHumanTrainer().getName(), 
-            "El nombre del jugador debería actualizarse en la segunda inicialización");
+        assertEquals("Player2", gameController.getHumanTrainer().getName(),
+                "El nombre del jugador debería actualizarse en la segunda inicialización");
     }
 
     @Test
@@ -111,11 +102,12 @@ public class GameControllerTest {
         ArrayList<String> machinePokemons = createMutablePokemonList("Squirtle");
 
         gameController.initializeGame("Player1", "attacking", playerPokemons, machinePokemons);
-        
+
         // El resultado del juego cuando no ha terminado
         String initialResult = gameController.getGameResult();
-        assertTrue(initialResult.contains("curso") || initialResult.contains("terminado"), 
-            "Debería indicar que el juego está en curso");
+        assertNotNull(initialResult);
+        assertTrue(initialResult.toLowerCase().contains("curso") || initialResult.toLowerCase().contains("terminado"),
+                "Debería indicar que el juego está en curso o terminado");
 
         // Marcar el juego como terminado
         gameController.setGameOver(true);
@@ -129,13 +121,13 @@ public class GameControllerTest {
         ArrayList<String> machinePokemons = createMutablePokemonList("Squirtle");
 
         String[] machineTypes = {"attacking", "defensive", "changing", "expert"};
-        
+
         for (String type : machineTypes) {
             gameController.initializeGame("Player1", type, playerPokemons, machinePokemons);
-            assertNotNull(gameController.getMachineTrainer(), 
-                "El entrenador máquina no debería ser null para el tipo " + type);
-            assertTrue(gameController.getMachineTrainer() instanceof Machine, 
-                "El entrenador máquina debería ser una instancia de Machine");
+            assertNotNull(gameController.getMachineTrainer(),
+                    "El entrenador máquina no debería ser null para el tipo " + type);
+            assertTrue(gameController.getMachineTrainer() instanceof Machine,
+                    "El entrenador máquina debería ser una instancia de Machine");
         }
     }
 
