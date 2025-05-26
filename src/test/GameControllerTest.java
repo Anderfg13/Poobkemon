@@ -33,7 +33,7 @@ public class GameControllerTest {
         gameController.initializeGame("Player1", "attacking", playerPokemons, machinePokemons);
 
         // Verificar que los entrenadores se inicializaron correctamente
-        assertNull(gameController.getMachineTrainer(), "El entrenador máquina no debería ser null");
+        assertNotNull(gameController.getMachineTrainer(), "El entrenador máquina no debería ser null");
         assertNotNull(gameController.getHumanTrainer(), "El entrenador humano no debería ser null");
 
         // Debilitar todos los Pokémon de la máquina
